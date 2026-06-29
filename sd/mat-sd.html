@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matematika SDIT — Uji Kompetensi Guru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ENGINE CONFIG MATHJAX -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* ===========================
+       TOKEN SISTEM (Nuansa Biru Elegan Premium)
+    =========================== */
+    :root {
+      --warna-utama: #1E3A8A; /* Navy Elegan */
+      --warna-utama-gelap: #172554;
+      --warna-krem: #E0F2FE; /* Soft Light Blue */
+      --warna-krem-gelap: #BAE6FD;
+      --warna-putih: #FFFFFF;
+      --warna-teks: #1E293B;
+      --warna-teks-redup: #475569;
+
+      /* Status Navigasi Progress */
+      --warna-belum-jawab: #E2E8F0;
+      --warna-sudah-jawab: #DCFCE7;
+      --warna-teks-hijau: #14532D;
+
+      --font-teks: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius: 12px;
+      --bayangan: 0 4px 20px rgba(30, 58, 138, 0.08);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-teks);
+      background-color: #F8FAFC; /* Bersih tanpa background polkadot */
+      color: var(--warna-teks);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pembungkus-desktop {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    nav.pita-navigasi {
+      background: var(--warna-putih);
+      border-bottom: 2px solid var(--warna-krem-gelap);
+      padding: 16px 20px;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .isi-nav {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .logo-nav {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--warna-utama);
+      letter-spacing: 0.5px;
+    }
+
+    .seksi-konten {
+      padding: 24px 0 60px;
+    }
+    .kartu-form, .kartu-soal, .kartu-skor {
+      background: var(--warna-putih);
+      border-radius: var(--radius);
+      box-shadow: var(--bayangan);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .judul-sub-kartu {
+      color: var(--warna-utama);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--warna-krem);
+      padding-bottom: 8px;
+    }
+    
+    .grup-input { margin-bottom: 20px; }
+    .grup-input label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+    .grup-input input {
+      width: 100%; padding: 12px; height: 48px; border: 2px solid var(--warna-krem-gelap); border-radius: 8px; outline: none; font-size: 1rem; font-family: inherit;
+    }
+    
+    .grup-input select {
+      width: 100%; 
+      height: 48px;
+      padding: 0 36px 0 12px;
+      border: 2px solid var(--warna-krem-gelap); 
+      border-radius: 8px; 
+      outline: none; 
+      font-size: 1rem; 
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E3A8A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 16px) center;
+      background-size: 16px;
+      background-color: var(--warna-putih);
+    }
+    .grup-input input:focus, .grup-input select:focus { border-color: var(--warna-utama); }
+
+    .tombol-primer {
+      display: inline-block; width: 100%; background: var(--warna-utama); color: white; border: none;
+      padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit;
+    }
+    .tombol-primer:hover { background: var(--warna-utama-gelap); }
+
+    /* ===========================
+       BAR UTILITY CBT ATAS
+    =========================== */
+    #info-ujian { display: none; }
+    .bar-kontrol-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .kotak-timer-cbt {
+      background: var(--warna-putih);
+      border: 1px solid var(--warna-krem-gelap);
+      box-shadow: var(--bayangan);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #DC2626; /* Merah kontras untuk timer seperti ing-smp */
+      height: 43px;
+    }
+
+    .btn-trigger-progress {
+      background: var(--warna-putih);
+      color: var(--warna-utama);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--bayangan);
+      height: 43px;
+    }
+    .btn-trigger-progress:hover { background: var(--warna-krem); }
+
+    /* ===========================
+       FLOATING OVERLAY PANEL
+    =========================== */
+    .overlay-progress-cbt {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(26, 32, 44, 0.4);
+      z-index: 9999;
+    }
+    .panel-floating-progress {
+      position: absolute;
+      top: 75px;
+      left: 20px;
+      background: white;
+      width: calc(100% - 40px);
+      max-width: 360px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 18px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    @media (min-width: 768px) {
+      .panel-floating-progress { left: calc((100vw - 720px)/2); }
+    }
+    @media (min-width: 1025px) {
+      .panel-floating-progress { left: calc((100vw - 760px)/2); }
+    }
+
+    .header-panel-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--warna-krem-gelap);
+      padding-bottom: 6px;
+    }
+    .judul-panel-cbt { font-weight: 700; color: var(--warna-utama); font-size: 0.95rem; }
+    .btn-tutup-panel { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--warna-teks-redup); }
+
+    .bar-tab-lembaran {
+      display: flex; gap: 4px; margin-bottom: 12px; background: #EDF2F7; padding: 4px; border-radius: 6px;
+    }
+    .tab-item {
+      flex: 1; padding: 6px 2px; font-size: 0.78rem; font-weight: 700; text-align: center; border: none; background: none; cursor: pointer; border-radius: 4px; color: var(--warna-teks-redup); font-family: inherit;
+    }
+    .tab-item.aktif {
+      background: var(--warna-putih); color: var(--warna-utama); box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .konten-lembaran-soal { display: none; }
+    .konten-lembaran-soal.aktif { display: block; }
+
+    .grid-progress {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    }
+    .kotak-nomor {
+      background: var(--warna-belum-jawab);
+      border: 1px solid #CBD5E0;
+      text-align: center; padding: 8px 0; font-weight: 700;
+      font-size: 0.8rem; border-radius: 6px; cursor: pointer; transition: all 0.1s; color: var(--warna-teks-redup);
+    }
+    .kotak-nomor:hover { border-color: var(--warna-utama); }
+    
+    .kotak-nomor.sudah-isi { 
+      background: var(--warna-sudah-jawab); 
+      border: 1px solid #48BB78; 
+      color: var(--warna-teks-hijau); 
+    }
+
+    /* ===========================
+       WIZARD SOAL CAROUSEL
+    =========================== */
+    #area-ujian { display: none; }
+    .kontainer-item-soal { display: none; }
+    .kontainer-item-soal.aktif { display: block; }
+    
+    .nomor-soal { font-size: 0.8rem; color: var(--warna-utama); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .teks-soal { font-size: 1.05rem; font-weight: 500; line-height: 1.6; margin-bottom: 16px; }
+    
+    /* Blok Gambar menyesuaikan layout ing-smp */
+    .blok-gambar {
+      text-align: center;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+    .blok-gambar img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid var(--warna-krem-gelap);
+    }
+    .blok-gambar img.gambar-opsi {
+      max-width: 220px;
+      margin-top: 6px;
+    }
+    
+    .pilihan-jawaban { display: flex; flex-direction: column; gap: 10px; }
+    .label-pilihan { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border: 1px solid var(--warna-krem-gelap); border-radius: 8px; cursor: pointer; font-size: 0.95rem; background: var(--warna-putih); transition: background 0.15s; line-height: 1.5; }
+    .label-pilihan:hover { background: #F8FAFC; border-color: #CBD5E0; }
+    .label-pilihan input[type="radio"] { accent-color: var(--warna-utama); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+
+    .bar-navigasi-soal { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; border-top: 1px solid var(--warna-krem-gelap); padding-top: 16px; }
+    .btn-nav { flex: 1; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; text-align: center; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
+    .btn-back { background: var(--warna-krem); color: var(--warna-utama); border: 1px solid var(--warna-krem-gelap); }
+    .btn-next { background: var(--warna-utama); color: white; }
+    .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #area-skor { display: none; text-align: center; }
+    .angka-skor { font-size: 4.5rem; font-weight: 700; color: var(--warna-utama); margin: 4px 0 2px; line-height: 1; }
+    .detail-jawaban-benar { font-size: 1.1rem; font-weight: 600; color: var(--warna-teks-redup); margin: 0 0 12px; }
+
+    footer.kaki-halaman { 
+      background: var(--warna-putih); padding: 16px 0; text-align: center; font-size: 0.8rem; color: var(--warna-teks-redup); width: 100%; border-top: 2px solid var(--warna-krem-gelap); margin-top: auto; box-shadow: 0 -2px 10px rgba(0,0,0,0.01);
+    }
+
+    /* Show/Hide Password Utility */
+    .pembungkus-password { position: relative; display: flex; align-items: center; width: 100%; }
+    .pembungkus-password input { padding-right: 45px; }
+    .ikon-mata { position: absolute; right: 16px; color: var(--warna-teks-redup); cursor: pointer; font-size: 1.1rem; user-select: none; transition: color 0.2s; }
+    .ikon-mata:hover { color: var(--warna-utama); }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="pita-navigasi">
+    <div class="isi-nav">
+      <span class="logo-nav">Matematika SDIT</span>
+    </div>
+  </nav>
+
+  <div class="pembungkus-desktop">
+    <main class="seksi-konten">
+      
+      <!-- STEP 1: AUTH BIO -->
+      <section id="form-biodata" class="kartu-form">
+        <h2 class="judul-sub-kartu"><i class="fa-solid fa-user-check"></i> Autentikasi Pengajar</h2>
+        <div class="grup-input">
+          <label for="nama">Nama Lengkap (Tanpa Gelar):</label>
+          <input type="text" id="nama" placeholder="Contoh: Nabila Nailatus Sakina" required />
+        </div>
+        <div class="grup-input">
+          <label for="jenjang">Jenjang Dituju / Mengajar:</label>
+          <select id="jenjang" required>
+            <option value="" disabled selected>-- Pilih Jenjang --</option>
+            <option value="Daycare">Daycare</option>
+            <option value="Batita">Batita</option>
+            <option value="PAUD">PAUD</option>
+            <option value="PG">PG</option>
+            <option value="TK">TK</option>
+            <option value="SD">SD</option>
+            <option value="SMP">SMP</option>
+            <option value="SMA">SMA</option>
+          </select>
+        </div>
+        <div class="grup-input">
+          <label for="kode-akses">Kode Akses Ujian:</label>
+          <div class="pembungkus-password">
+            <input type="password" id="kode-akses" placeholder="Masukkan kode dari pengawas" required />
+            <i class="fa-solid fa-eye-slash ikon-mata" id="tombol-mata" onclick="togglePasswordVisibility()"></i>
+          </div>
+        </div>
+        <p id="pesan-kode-salah" style="display:none; color:#C53030; font-size:0.88rem; margin: -12px 0 16px; font-weight:600;">
+          <i class="fa-solid fa-circle-exclamation"></i> Kode akses salah. Silakan coba lagi.
+        </p>
+        <button type="button" class="tombol-primer" onclick="mulaiUjian()">Mulai Sesi Ujian</button>
+      </section>
+
+      <!-- UTILITY HEADER BAR -->
+      <section id="info-ujian" class="bar-kontrol-cbt">
+        <button type="button" class="btn-trigger-progress" onclick="bukaPanelProgress()">
+          <i class="fa-solid fa-list-check"></i> Check Progress
+        </button>
+        <div class="kotak-timer-cbt">
+          <i class="fa-solid fa-hourglass-half"></i> <span id="countdown-timer">120:00</span>
+        </div>
+      </section>
+
+      <!-- FLOATING SLIM TAB PANEL OVERLAY -->
+      <div class="overlay-progress-cbt" id="overlay-nav" onclick="tutupPanelProgressLuar(event)">
+        <div class="panel-floating-progress">
+          <div class="header-panel-cbt">
+            <span class="judul-panel-cbt"><i class="fa-solid fa-compass"></i> Peta Lembar Jawaban</span>
+            <button type="button" class="btn-tutup-panel" onclick="tutupPanelProgress()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          
+          <div class="bar-tab-lembaran">
+            <button type="button" class="tab-item aktif" id="tab-btn-1" onclick="pindahHalamanTab(1)">No. 01 - 20</button>
+            <button type="button" class="tab-item" id="tab-btn-2" onclick="pindahHalamanTab(2)">No. 21 - 40</button>
+          </div>
+          
+          <div class="konten-lembaran-soal aktif" id="lembaran-page-1">
+            <div class="grid-progress" id="grup-progress-awal"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-2">
+            <div class="grid-progress" id="grup-progress-akhir"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: AREA CBT CAROUSEL SOAL (40 SOAL) -->
+      <section id="area-ujian">
+        <form id="form-soal" onsubmit="prosesEvaluasi(event)">
+          
+          <!-- SOAL 01 -->
+          <div class="kontainer-item-soal" data-nomor="1">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 01</span>
+              <p class="teks-soal">Hasil dari $24 - 2 \times 5 + 3 = ....$</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q1" value="A" onchange="updateIndikator(1)"> A. 8</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="B" onchange="updateIndikator(1)"> B. 17</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="C" onchange="updateIndikator(1)"> C. 113</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="D" onchange="updateIndikator(1)"> D. 176</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 02 -->
+          <div class="kontainer-item-soal" data-nomor="2">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 02</span>
+              <p class="teks-soal">Sebuah toko mempunyai persediaan kain sebanyak 1.296 potong. Kain tersebut terjual 144 potong dan sisanya dibeli oleh 12 pedagang sama banyak. Berapa potong kain yang diterima setiap pedagang tersebut?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q2" value="A" onchange="updateIndikator(2)"> A. 21 potong</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="B" onchange="updateIndikator(2)"> B. 96 potong</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="C" onchange="updateIndikator(2)"> C. 108 potong</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="D" onchange="updateIndikator(2)"> D. 120 potong</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 03 -->
+          <div class="kontainer-item-soal" data-nomor="3">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 03</span>
+              <p class="teks-soal">Jika hasil dari $965 + (-34) \times 27 = n$, maka nilai n adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q3" value="A" onchange="updateIndikator(3)"> A. -57</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="B" onchange="updateIndikator(3)"> B. -47</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="C" onchange="updateIndikator(3)"> C. 47</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="D" onchange="updateIndikator(3)"> D. 57</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 04 -->
+          <div class="kontainer-item-soal" data-nomor="4">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 04</span>
+              <p class="teks-soal">Ibu Yati membeli beras sebanyak $3\frac{1}{4}$ kg, kemudian dimasak sebanyak 1,5 kg. Bu Yati membeli lagi $2\frac{3}{4}$ kg. Berat beras Bu Yati sekarang adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q4" value="A" onchange="updateIndikator(4)"> A. $3\frac{1}{4}$ kg</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="B" onchange="updateIndikator(4)"> B. $3\frac{1}{2}$ kg</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="C" onchange="updateIndikator(4)"> C. $4\frac{1}{4}$ kg</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="D" onchange="updateIndikator(4)"> D. $4\frac{1}{2}$ kg</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 05 -->
+          <div class="kontainer-item-soal" data-nomor="5">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 05</span>
+              <p class="teks-soal">Hasil dari $3\frac{3}{4} \times \frac{5}{8} : 15\%$ adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q5" value="A" onchange="updateIndikator(5)"> A. $20\frac{5}{6}$</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="B" onchange="updateIndikator(5)"> B. $15\frac{5}{8}$</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="C" onchange="updateIndikator(5)"> C. $12\frac{1}{2}$</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="D" onchange="updateIndikator(5)"> D. $10\frac{5}{12}$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 06 -->
+          <div class="kontainer-item-soal" data-nomor="6">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 06</span>
+              <p class="teks-soal">Denah sawah Pak Amat berukuran panjang 6 cm dan lebar 4 cm. Jika skala pada denah 1 : 1.200 berapakah luas sebenarnya sawah Pak Amat?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q6" value="A" onchange="updateIndikator(6)"> A. $2.456\text{ m}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="B" onchange="updateIndikator(6)"> B. $2.880\text{ m}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="C" onchange="updateIndikator(6)"> C. $3.456\text{ m}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="D" onchange="updateIndikator(6)"> D. $28.800\text{ m}^2$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 07 -->
+          <div class="kontainer-item-soal" data-nomor="7">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 07</span>
+              <p class="teks-soal">Diketahui pecahan sebagai berikut: $\frac{5}{8}; 30\%; 0,75; 0,8$. Urutan pecahan dari yang terkecil adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q7" value="A" onchange="updateIndikator(7)"> A. $0,8; 30\%; \frac{5}{8}; 0,75$</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="B" onchange="updateIndikator(7)"> B. $\frac{5}{8}; 0,8; 30\%; 0,75$</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="C" onchange="updateIndikator(7)"> C. $30\%; \frac{5}{8}; 0,75; 0,8$</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="D" onchange="updateIndikator(7)"> D. $30\%; 0,75; 0,8; \frac{5}{8}$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 08 -->
+          <div class="kontainer-item-soal" data-nomor="8">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 08</span>
+              <p class="teks-soal">Kelipatan persekutuan terkecil (KPK) dari 72 dan 189 dalam bentuk faktorisasi adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q8" value="A" onchange="updateIndikator(8)"> A. $2^2 \times 3^2 \times 7$</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="B" onchange="updateIndikator(8)"> B. $2^3 \times 3^2 \times 7$</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="C" onchange="updateIndikator(8)"> C. $2^3 \times 3^3 \times 7$</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="D" onchange="updateIndikator(8)"> D. $2^3 \times 3^5 \times 7$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 09 -->
+          <div class="kontainer-item-soal" data-nomor="9">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 09</span>
+              <p class="teks-soal">Faktor Persekutuan Terbesar (FPB) dari 56, 84, dan 98 adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q9" value="A" onchange="updateIndikator(9)"> A. 12</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="B" onchange="updateIndikator(9)"> B. 14</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="C" onchange="updateIndikator(9)"> C. 16</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="D" onchange="updateIndikator(9)"> D. 21</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 10 -->
+          <div class="kontainer-item-soal" data-nomor="10">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 10</span>
+              <p class="teks-soal">Firdha, Sabrina, dan Sekha kursus menari di sanggar yang sama. Firdha berlatih setiap 6 hari sekali, Sabrina berlatih setiap 8 hari sekali, dan Sekha berlatih setiap 4 hari sekali. Jika pada tanggal 9 September 2013 mereka berlatih bersama-sama, mereka akan berlatih bersama-sama lagi untuk yang kedua kalinya pada tanggal ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q10" value="A" onchange="updateIndikator(10)"> A. 20 September 2013</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="B" onchange="updateIndikator(10)"> B. 21 September 2013</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="C" onchange="updateIndikator(10)"> C. 2 Oktober 2013</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="D" onchange="updateIndikator(10)"> D. 3 Oktober 2013</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 11 -->
+          <div class="kontainer-item-soal" data-nomor="11">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 11</span>
+              <p class="teks-soal">Rapat Karang Taruna dihadiri remaja putra 84 orang dan remaja putri 72 orang. Pengurus akan membuat sebanyak-banyaknya kelompok diskusi. Setiap kelompok terdiri dari remaja putra dan putri dengan jenis dan jumlah yang sama banyak. Berapa banyak remaja putri pada setiap kelompok diskusi?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q11" value="A" onchange="updateIndikator(11)"> A. 13 orang</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="B" onchange="updateIndikator(11)"> B. 12 orang</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="C" onchange="updateIndikator(11)"> C. 7 orang</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="D" onchange="updateIndikator(11)"> D. 6 orang</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 12 -->
+          <div class="kontainer-item-soal" data-nomor="12">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 12</span>
+              <p class="teks-soal">Hasil dari $21^2 - 13^2 = ....$</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q12" value="A" onchange="updateIndikator(12)"> A. 16</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="B" onchange="updateIndikator(12)"> B. 64</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="C" onchange="updateIndikator(12)"> C. 272</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="D" onchange="updateIndikator(12)"> D. 282</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 13 -->
+          <div class="kontainer-item-soal" data-nomor="13">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 13</span>
+              <p class="teks-soal">Hasil dari $\sqrt[3]{59.319}$ adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q13" value="A" onchange="updateIndikator(13)"> A. 43</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="B" onchange="updateIndikator(13)"> B. 39</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="C" onchange="updateIndikator(13)"> C. 29</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="D" onchange="updateIndikator(13)"> D. 23</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 14 -->
+          <div class="kontainer-item-soal" data-nomor="14">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 14</span>
+              <p class="teks-soal">Susi membuat sebuah kardus berbentuk kubus untuk menempatkan kado yang akan diberikan kepada temannya. Jika volume kardus 35.937 $\text{cm}^3$, maka panjang rusuk kardus tersebut adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q14" value="A" onchange="updateIndikator(14)"> A. 23 cm</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="B" onchange="updateIndikator(14)"> B. 33 cm</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="C" onchange="updateIndikator(14)"> C. 37 cm</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="D" onchange="updateIndikator(14)"> D. 47 cm</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 15 -->
+          <div class="kontainer-item-soal" data-nomor="15">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 15</span>
+              <p class="teks-soal">Kelompok belajar "Kartini" mendapat tiga tugas dalam satu triwulan, yaitu membuat boneka, taplak meja, dan anyaman. Tugas pertama diselesaikan selama 6 minggu dan tugas kedua selama 27 hari. Berapa hari waktu yang dibutuhkan untuk menyelesaikan tugas ketiga?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q15" value="A" onchange="updateIndikator(15)"> A. 21 hari</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="B" onchange="updateIndikator(15)"> B. 27 hari</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="C" onchange="updateIndikator(15)"> C. 31 hari</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="D" onchange="updateIndikator(15)"> D. 57 hari</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 16 -->
+          <div class="kontainer-item-soal" data-nomor="16">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 16</span>
+              <p class="teks-soal">Ayah membersihkan lantai rumah dari abu vulkanik letusan Gunung Kelud menggunakan air melalui selang dengan debit 90 $\text{cm}^3$/detik selama $1\frac{1}{2}$ jam. Berapa liter air yang digunakan untuk membersihkan lantai rumah tersebut?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q16" value="A" onchange="updateIndikator(16)"> A. 135 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="B" onchange="updateIndikator(16)"> B. 216 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="C" onchange="updateIndikator(16)"> C. 335 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="D" onchange="updateIndikator(16)"> D. 486 liter</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 17 -->
+          <div class="kontainer-item-soal" data-nomor="17">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 17</span>
+              <p class="teks-soal">Arman membeli karpet seluas $72,5\text{ m}^2$ untuk ruang tamu dan ruang keluarga. Karpet tersebut dipasang di ruang tamu 964 $\text{dm}^2$. Jika terdapat sisa 800 $\text{cm}^2$, berapa luas karpet yang dipasang di ruang keluarga?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q17" value="A" onchange="updateIndikator(17)"> A. $6.386\text{ dm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="B" onchange="updateIndikator(17)"> B. $6.278\text{ dm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="C" onchange="updateIndikator(17)"> C. $5.486\text{ dm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="D" onchange="updateIndikator(17)"> D. $2.489\text{ dm}^2$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 18 -->
+          <div class="kontainer-item-soal" data-nomor="18">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 18</span>
+              <p class="teks-soal">Jarak kota M dan N adalah 275 km. Sinta mengendarai mobil dari kota M ke kota N pada pukul 08.30 dengan kecepatan rata-rata 45 km/jam. Pada waktu yang sama Nanda mengendarai mobil dari kota N ke kota M dengan kecepatan rata-rata 65 km/jam. Jika mereka melalui jalan yang sama, pada pukul berapakah mereka akan berpapasan?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q18" value="A" onchange="updateIndikator(18)"> A. pukul 10.00</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="B" onchange="updateIndikator(18)"> B. pukul 10.15</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="C" onchange="updateIndikator(18)"> C. pukul 10.30</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="D" onchange="updateIndikator(18)"> D. pukul 11.00</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 19 -->
+          <div class="kontainer-item-soal" data-nomor="19">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 19</span>
+              <p class="teks-soal">Pernyataan di bawah ini yang merupakan sifat-sifat persegi panjang adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q19" value="A" onchange="updateIndikator(19)"> A. keempat sudutnya siku-siku, sisi yang berhadapan sejajar dan sama panjang, dua diagonalnya sama panjang dan berpotongan tegak lurus di tengah-tengah</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="B" onchange="updateIndikator(19)"> B. mempunyai dua pasang sisi sejajar dan sama panjang, mempunyai tepat sepasang sudut yang sama besar, dan kedua diagonalnya saling berpotongan di tengah</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="C" onchange="updateIndikator(19)"> C. keempat sudutnya siku-siku, sisi yang berhadapan sejajar dan sama panjang, dua diagonalnya sama panjang dan berpotongan di tengah-tengah</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="D" onchange="updateIndikator(19)"> D. keempat sisinya sama panjang, keempat sudutnya sama besar, dua diagonalnya berpotongan di tengah-tengah</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 20 (2 Susun Atas-Bawah) -->
+          <div class="kontainer-item-soal" data-nomor="20">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 20</span>
+              <p class="teks-soal">Hasil pencerminan bangun datar terhadap garis g yang tepat ditunjukkan oleh gambar ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-20-i-ii.jpg" alt="Visualisasi Refleksi Cermin Bagian 1" />
+                <img src="src/images/sd/mat-sd-20-iii-iv.jpg" alt="Visualisasi Refleksi Cermin Bagian 2" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q20" value="A" onchange="updateIndikator(20)"> A. (i)</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="B" onchange="updateIndikator(20)"> B. (ii)</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="C" onchange="updateIndikator(20)"> C. (iii)</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="D" onchange="updateIndikator(20)"> D. (iv)</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 21 -->
+          <div class="kontainer-item-soal" data-nomor="21">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 21</span>
+              <p class="teks-soal">Perhatikan gambar ruang di samping! Berapakah banyak rusuk pada bangun tersebut?</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-21.jpg" alt="Bangun Ruang Kombinasi" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q21" value="A" onchange="updateIndikator(21)"> A. 10</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="B" onchange="updateIndikator(21)"> B. 12</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="C" onchange="updateIndikator(21)"> C. 18</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="D" onchange="updateIndikator(21)"> D. 20</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 22 (2 Susun Atas-Bawah) -->
+          <div class="kontainer-item-soal" data-nomor="22">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 22</span>
+              <p class="teks-soal">Bangun yang sama dan sebangun (kongruen) ditunjukkan oleh gambar ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-22-i-ii.jpg" alt="Kesebangunan Geometri Bagian 1" />
+                <img src="src/images/sd/mat-sd-22-iii-iv.jpg" alt="Kesebangunan Geometri Bagian 2" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q22" value="A" onchange="updateIndikator(22)"> A. i dan iii</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="B" onchange="updateIndikator(22)"> B. ii dan iv</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="C" onchange="updateIndikator(22)"> C. i dan iv</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="D" onchange="updateIndikator(22)"> D. ii dan iii</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 23 (2 Susun Atas-Bawah) -->
+          <div class="kontainer-item-soal" data-nomor="23">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 23</span>
+              <p class="teks-soal">Manakah gambar berikut yang merupakan jaring-jaring bangun prisma segitiga?</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-23-a-b.jpg" alt="Jaring Jaring Prisma Bagian 1" />
+                <img src="src/images/sd/mat-sd-23-c-d.jpg" alt="Jaring Jaring Prisma Bagian 2" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q23" value="A" onchange="updateIndikator(23)"> A. Opsi A</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="B" onchange="updateIndikator(23)"> B. Opsi B</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="C" onchange="updateIndikator(23)"> C. Opsi C</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="D" onchange="updateIndikator(23)"> D. Opsi D</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 24 -->
+          <div class="kontainer-item-soal" data-nomor="24">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 24</span>
+              <p class="teks-soal">Perhatikan gambar trapesium di samping! Luas daerah bangun tersebut adalah ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-24.jpg" alt="Luas Trapesium Siku-siku" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q24" value="A" onchange="updateIndikator(24)"> A. $784\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="B" onchange="updateIndikator(24)"> B. $504\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="C" onchange="updateIndikator(24)"> C. $288\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="D" onchange="updateIndikator(24)"> D. $144\text{ cm}^2$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 25 -->
+          <div class="kontainer-item-soal" data-nomor="25">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 25</span>
+              <p class="teks-soal">Perhatikan gambar bidang gabungan! Berapakah luas daerah yang diarsir?</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-25.jpg" alt="Luas Irisan Persegi Segitiga" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q25" value="A" onchange="updateIndikator(25)"> A. $780\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="B" onchange="updateIndikator(25)"> B. $725\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="C" onchange="updateIndikator(25)"> C. $680\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="D" onchange="updateIndikator(25)"> D. $515\text{ cm}^2$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 26 -->
+          <div class="kontainer-item-soal" data-nomor="26">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 26</span>
+              <p class="teks-soal">Perhatikan gambar lingkaran! Berapakah luas daerah yang diarsir pada gambar tersebut? ($\pi = 3,14$)</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-26.jpg" alt="Luas Juring Lingkaran Arsir" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q26" value="A" onchange="updateIndikator(26)"> A. $1.884\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="B" onchange="updateIndikator(26)"> B. $2.512\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="C" onchange="updateIndikator(26)"> C. $3.768\text{ cm}^2$</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="D" onchange="updateIndikator(26)"> D. $5.024\text{ cm}^2$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 27 -->
+          <div class="kontainer-item-soal" data-nomor="27">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 27</span>
+              <p class="teks-soal">Sebuah aquarium berbentuk balok mempunyai ukuran panjang 15 dm, lebar 12 dm, dan tinggi 10 dm. Aquarium diisi air dari $\frac{3}{5}$ tingginya. Berapa liter air yang dibutuhkan?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q27" value="A" onchange="updateIndikator(27)"> A. 360 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="B" onchange="updateIndikator(27)"> B. 720 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="C" onchange="updateIndikator(27)"> C. 1.080 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="D" onchange="updateIndikator(27)"> D. 1.800 liter</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 28 -->
+          <div class="kontainer-item-soal" data-nomor="28">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 28</span>
+              <p class="teks-soal">Perhatikan gambar prisma tegak segitiga di samping! Volume bangun tersebut adalah ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-28.jpg" alt="Volume Prisma Segitiga" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q28" value="A" onchange="updateIndikator(28)"> A. $4.554\text{ cm}^3$</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="B" onchange="updateIndikator(28)"> B. $4.454\text{ cm}^3$</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="C" onchange="updateIndikator(28)"> C. $2.277\text{ cm}^3$</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="D" onchange="updateIndikator(28)"> D. $2.177\text{ cm}^3$</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 29 -->
+          <div class="kontainer-item-soal" data-nomor="29">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 29</span>
+              <p class="teks-soal">Perhatikan gambar tabung di samping! Berapakah volume bangun ruang tersebut?</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-29.jpg" alt="Volume Silinder Tabung" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q29" value="A" onchange="updateIndikator(29)"> A. 1.800 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="B" onchange="updateIndikator(29)"> B. 2.826 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="C" onchange="updateIndikator(29)"> C. 22.608 liter</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="D" onchange="updateIndikator(29)"> D. 56.520 liter</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 30 -->
+          <div class="kontainer-item-soal" data-nomor="30">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 30</span>
+              <p class="teks-soal">Koordinat (4,2) pada gambar bidang kartesius di samping ditempati oleh ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-30.jpg" alt="Koordinat Cartesius" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q30" value="A" onchange="updateIndikator(30)"> A. titik P</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="B" onchange="updateIndikator(30)"> B. titik Q</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="C" onchange="updateIndikator(30)"> C. titik R</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="D" onchange="updateIndikator(30)"> D. titik S</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 31 -->
+          <div class="kontainer-item-soal" data-nomor="31">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 31</span>
+              <p class="teks-soal">Berikut ini adalah diagram hasil panen kebun Pak Dirja pada tahun 2013. Selisih berat hasil panen singkong dan jagung adalah ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-31.jpg" alt="Diagram Batang Hasil Panen" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q31" value="A" onchange="updateIndikator(31)"> A. 600 kg</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="B" onchange="updateIndikator(31)"> B. 450 kg</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="C" onchange="updateIndikator(31)"> C. 200 kg</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="D" onchange="updateIndikator(31)"> D. 100 kg</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 32 -->
+          <div class="kontainer-item-soal" data-nomor="32">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 32</span>
+              <p class="teks-soal">Diagram lingkaran di samping menunjukkan data kota tujuan penumpang. Apabila banyak penumpang jurusan Denpasar 300 orang, berapa banyak penumpang jurusan Jakarta?</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-32.jpg" alt="Diagram Lingkaran Penumpang" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q32" value="A" onchange="updateIndikator(32)"> A. 480 orang</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="B" onchange="updateIndikator(32)"> B. 540 orang</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="C" onchange="updateIndikator(32)"> C. 600 orang</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="D" onchange="updateIndikator(32)"> D. 620 orang</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 33 (Gambar dimasukkan dalam setiap opsi jawaban A-D) -->
+          <div class="kontainer-item-soal" data-nomor="33">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 33</span>
+              <p class="teks-soal">Tabel berikut menyajikan banyak pasien di poliklinik sebuah rumah sakit umum.</p>
+              <div style="overflow-x: auto; margin: 12px 0 20px;">
+                <table style="border-collapse: collapse; font-size: 0.9rem; min-width: 260px; width: 100%;">
+                  <thead>
+                    <tr>
+                      <th style="border: 1.5px solid #718096; padding: 8px 20px; background: #EDF2F7; text-align: center;">Jenis Poliklinik</th>
+                      <th style="border: 1.5px solid #718096; padding: 8px 20px; background: #EDF2F7; text-align: center;">Banyak Pasien</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style="border: 1.5px solid #718096; padding: 8px 20px;">Mata</td><td style="border: 1.5px solid #718096; padding: 8px 20px; text-align: center;">75</td></tr>
+                    <tr><td style="border: 1.5px solid #718096; padding: 8px 20px;">Bersalin</td><td style="border: 1.5px solid #718096; padding: 8px 20px; text-align: center;">65</td></tr>
+                    <tr><td style="border: 1.5px solid #718096; padding: 8px 20px;">THT</td><td style="border: 1.5px solid #718096; padding: 8px 20px; text-align: center;">50</td></tr>
+                    <tr><td style="border: 1.5px solid #718096; padding: 8px 20px;">Penyakit Dalam</td><td style="border: 1.5px solid #718096; padding: 8px 20px; text-align: center;">80</td></tr>
+                    <tr><td style="border: 1.5px solid #718096; padding: 8px 20px;">Bedah</td><td style="border: 1.5px solid #718096; padding: 8px 20px; text-align: center;">45</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="teks-soal" style="margin-top:0;">Diagram berikut yang menunjukkan data pasien adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan">
+                  <input type="radio" name="q33" value="A" onchange="updateIndikator(33)"> 
+                  <div>
+                    <span>A. Grafik Batang A</span><br>
+                    <img src="src/images/sd/mat-sd-33-a.jpg" alt="Grafik A" class="gambar-opsi" />
+                  </div>
+                </label>
+                <label class="label-pilihan">
+                  <input type="radio" name="q33" value="B" onchange="updateIndikator(33)"> 
+                  <div>
+                    <span>B. Grafik Batang B</span><br>
+                    <img src="src/images/sd/mat-sd-33-b.jpg" alt="Grafik B" class="gambar-opsi" />
+                  </div>
+                </label>
+                <label class="label-pilihan">
+                  <input type="radio" name="q33" value="C" onchange="updateIndikator(33)"> 
+                  <div>
+                    <span>C. Grafik Batang C</span><br>
+                    <img src="src/images/sd/mat-sd-33-c.jpg" alt="Grafik C" class="gambar-opsi" />
+                  </div>
+                </label>
+                <label class="label-pilihan">
+                  <input type="radio" name="q33" value="D" onchange="updateIndikator(33)"> 
+                  <div>
+                    <span>D. Grafik Batang D</span><br>
+                    <img src="src/images/sd/mat-sd-33-d.jpg" alt="Grafik D" class="gambar-opsi" />
+                  </div>
+                </label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 34 -->
+          <div class="kontainer-item-soal" data-nomor="34">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 34</span>
+              <p class="teks-soal">Perhatikan diagram sebaran varietas penjualan beras! Jika penjualan beras jenis menthik wangi adalah 50 kg, maka banyak penjualan beras jenis rojolele adalah ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-34.jpg" alt="Diagram Lingkaran Beras" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q34" value="A" onchange="updateIndikator(34)"> A. 60 kg</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="B" onchange="updateIndikator(34)"> B. 40 kg</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="C" onchange="updateIndikator(34)"> C. 15 kg</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="D" onchange="updateIndikator(34)"> D. 10 kg</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 35 -->
+          <div class="kontainer-item-soal" data-nomor="35">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 35</span>
+              <p class="teks-soal">Sabrina mengikuti ulangan matematika sebanyak delapan kali dengan nilai sebagai berikut: 8, 9, 8, 7, 10, 8, 10, 8. Nilai rata-rata ulangan Sabrina adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q35" value="A" onchange="updateIndikator(35)"> A. 8,40</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="B" onchange="updateIndikator(35)"> B. 8,48</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="C" onchange="updateIndikator(35)"> C. 8,50</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="D" onchange="updateIndikator(35)"> D. 8,84</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 36 -->
+          <div class="kontainer-item-soal" data-nomor="36">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 36</span>
+              <p class="teks-soal">Hasil pengukuran lingkar batang pohon jati (dalam cm) di suatu perkebunan sebagai berikut:</p>
+              <div style="overflow-x: auto; margin: 12px 0 20px;">
+                <table style="border-collapse: collapse; font-size: 0.9rem; min-width: 320px; width: 100%;">
+                  <thead>
+                    <tr>
+                      <th style="border: 1.5px solid #718096; padding: 8px 16px; background: #EDF2F7; text-align: center;">Lingkar Batang (cm)</th>
+                      <th style="border: 1.5px solid #718096; padding: 8px 16px; background: #EDF2F7; text-align: center;">50</th>
+                      <th style="border: 1.5px solid #718096; padding: 8px 16px; background: #EDF2F7; text-align: center;">58</th>
+                      <th style="border: 1.5px solid #718096; padding: 8px 16px; background: #EDF2F7; text-align: center;">70</th>
+                      <th style="border: 1.5px solid #718096; padding: 8px 16px; background: #EDF2F7; text-align: center;">80</th>
+                      <th style="border: 1.5px solid #718096; padding: 8px 16px; background: #EDF2F7; text-align: center;">90</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="border: 1.5px solid #718096; padding: 8px 16px; text-align: center; font-weight: 600;">Banyak Pohon</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 16px; text-align: center;">4</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 16px; text-align: center;">1</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 16px; text-align: center;">1</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 16px; text-align: center;">3</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 16px; text-align: center;">2</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="teks-soal" style="margin-top: 0;">Rata-rata data tersebut adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q36" value="A" onchange="updateIndikator(36)"> A. 67,8 cm</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="B" onchange="updateIndikator(36)"> B. 68 cm</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="C" onchange="updateIndikator(36)"> C. 69,9 cm</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="D" onchange="updateIndikator(36)"> D. 70 cm</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 37 -->
+          <div class="kontainer-item-soal" data-nomor="37">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 37</span>
+              <p class="teks-soal">Data peristiwa gempa bumi yang dicatat oleh BMKG disajikan dalam diagram batang berikut. Rata-rata peristiwa gempa bumi setiap tahunnya adalah ....</p>
+              <div class="blok-gambar">
+                <img src="src/images/sd/mat-sd-37.jpg" alt="Statistik Grafik BMKG" />
+              </div>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q37" value="A" onchange="updateIndikator(37)"> A. 17 kali</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="B" onchange="updateIndikator(37)"> B. 16 kali</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="C" onchange="updateIndikator(37)"> C. 15 kali</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="D" onchange="updateIndikator(37)"> D. 14 kali</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 38 -->
+          <div class="kontainer-item-soal" data-nomor="38">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 38</span>
+              <p class="teks-soal">Data hasil tangkapan ikan (dalam kg) seorang nelayan sebagai berikut:</p>
+              <div style="overflow-x: auto; margin: 12px 0 20px;">
+                <table style="border-collapse: collapse; font-size: 0.95rem; width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">27</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">22</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">30</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">22</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">32</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">34</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">24</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">25</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">22</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">31</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="teks-soal" style="margin-top:0;">Median dari data tersebut adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q38" value="A" onchange="updateIndikator(38)"> A. 26</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="B" onchange="updateIndikator(38)"> B. 32</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="C" onchange="updateIndikator(38)"> C. 33</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="D" onchange="updateIndikator(38)"> D. 34</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 39 -->
+          <div class="kontainer-item-soal" data-nomor="39">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 39</span>
+              <p class="teks-soal">Hasil pendataan pilihan objek wisata 360 siswa SD Nusantara yang ingin dikunjungi adalah sebagai berikut:</p>
+              <div style="margin: 10px 0 20px; padding: 14px 20px; background: #F8FAFC; border-left: 3px solid #CBD5E0; border-radius: 4px; font-size: 0.9rem; line-height: 2;">
+                Tawangmangu &nbsp;: 70 anak<br>
+                Prambanan &nbsp;&nbsp;&nbsp;&nbsp;: 63 anak<br>
+                Lawang Sewu &nbsp;: 67 anak<br>
+                Baturaden &nbsp;&nbsp;&nbsp;&nbsp;: 78 anak<br>
+                dan siswa lainnya memilih Borobudur.
+              </div>
+              <p class="teks-soal" style="margin-top:0;">Jika banyak siswa 360 anak, modus data tersebut adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q39" value="A" onchange="updateIndikator(39)"> A. Borobudur</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="B" onchange="updateIndikator(39)"> B. Prambanan</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="C" onchange="updateIndikator(39)"> C. Baturaden</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="D" onchange="updateIndikator(39)"> D. Lawang Sewu</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- SOAL 40 -->
+          <div class="kontainer-item-soal" data-nomor="40">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 40</span>
+              <p class="teks-soal">Berikut adalah data jarak rumah siswa ke sekolah (dalam satuan meter):</p>
+              <div style="overflow-x: auto; margin: 12px 0 20px;">
+                <table style="border-collapse: collapse; font-size: 0.95rem; width: 100%;">
+                  <tbody>
+                    <tr>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">510</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">726</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">295</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">315</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">450</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">625</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">526</td>
+                    </tr>
+                    <tr>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">605</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">225</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">490</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">615</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">725</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">219</td>
+                      <td style="border: 1.5px solid #718096; padding: 8px 18px; text-align: center;">724</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="teks-soal" style="margin-top:0;">Selisih jarak rumah terjauh dan terdekat adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q40" value="A" onchange="updateIndikator(40)"> A. 501 meter</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="B" onchange="updateIndikator(40)"> B. 503 meter</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="C" onchange="updateIndikator(40)"> C. 506 meter</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="D" onchange="updateIndikator(40)"> D. 507 meter</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- Navigasi Slider CBT -->
+          <div class="bar-navigasi-soal">
+            <button type="button" class="btn-nav btn-back" id="btn-sebelumnya" onclick="navigasiKeSoal(-1)">
+              <i class="fa-solid fa-chevron-left"></i> Back
+            </button>
+            <button type="button" class="btn-nav btn-next" id="btn-selanjutnya" onclick="navigasiKeSoal(1)">
+              Next <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- STEP 3: SCREEN HASIL SKOR REALTIME -->
+      <section id="area-skor" class="kartu-skor">
+        <i class="fa-solid fa-square-poll-vertical fa-4x" style="color: var(--warna-utama);"></i>
+        <h2 style="margin: 10px 0 4px;">Berikut Skor Anda!</h2>
+        <p style="margin: 0 0 16px;">Terima kasih Ustadz/Ustadzah atas partisipasinya dalam asesmen mutu.</p>
+        <div class="angka-skor" id="skor-akhir">0</div>
+        <div class="detail-jawaban-benar" id="detail-benar">0/40 (0 benar dari 40 soal)</div>
+        <p style="color: var(--warna-teks-redup); font-size: 0.88rem; margin: 0;">Lembar jawaban dan akumulasi kompetensi telah tersimpan di database Manajemen BIAS Yaumi Fatimah.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="kaki-halaman">
+    <div class="isi-footer">
+      <p>© 2026 Manajemen BIAS Yaumi Fatimah</p>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       JS CBT ENGINE MASTER
+  =========================== -->
+  <script>
+    const kunciValidasi = {
+      q1: 'B', q2: 'B', q3: 'C', q4: 'D', q5: 'B',
+      q6: 'C', q7: 'C', q8: 'C', q9: 'B', q10: 'D',
+      q11: 'D', q12: 'C', q13: 'B', q14: 'B', q15: 'A',
+      q16: 'D', q17: 'B', q18: 'D', q19: 'C', q20: 'C',
+      q21: 'C', q22: 'A', q23: 'C', q24: 'B', q25: 'C',
+      q26: 'A', q27: 'C', q28: 'C', q29: 'D', q30: 'B',
+      q31: 'C', q32: 'A', q33: 'D', q34: 'B', q35: 'C',
+      q36: 'B', q37: 'A', q38: 'A', q39: 'A', q40: 'D'
+    };
+
+    let metadataUser = { nama: '', jenjang: '' };
+    let soalAktifSekarang = 1;
+    const totalSoalBatas = Object.keys(kunciValidasi).length;
+    let timerInterval = null;
+    let waktuSisaDetik = 120 * 60; /* Timer diganti menjadi 120 menit */
+    
+    let riwayatJawabanUser = new Set();
+    let ujianSedangBerjalan = false;
+    let dialogSedangTerbuka = false;
+    let hitungPelanggaran = 0;
+    const BATAS_PELANGGARAN = 4;
+
+    /* Ubah kode akses menjadi yuf71 */
+    const KODE_AKSES_UJIAN = 'yuf71';
+
+    function togglePasswordVisibility() {
+      const inputKode = document.getElementById('kode-akses');
+      const ikonMata = document.getElementById('tombol-mata');
+      
+      if (inputKode.type === 'password') {
+        inputKode.type = 'text';
+        ikonMata.classList.remove('fa-eye-slash');
+        ikonMata.classList.add('fa-eye');
+      } else {
+        inputKode.type = 'password';
+        ikonMata.classList.remove('fa-eye');
+        ikonMata.classList.add('fa-eye-slash');
+      }
+    }
+
+    function mulaiUjian() {
+      const namaVal = document.getElementById('nama').value.trim();
+      const jenjangVal = document.getElementById('jenjang').value;
+      const kodeVal = document.getElementById('kode-akses').value.trim();
+      const pesanSalah = document.getElementById('pesan-kode-salah');
+
+      if (!namaVal || !jenjangVal) {
+        alert('Maaf, Ustadz/Ustadzah wajib mengisi Nama Lengkap, memilih Jenjang, dan input kode ujian sebelum memulai!');
+        return;
+      }
+
+      if (kodeVal !== KODE_AKSES_UJIAN) {
+        pesanSalah.style.display = 'block';
+        document.getElementById('kode-akses').focus();
+        return;
+      }
+      pesanSalah.style.display = 'none';
+
+      metadataUser.nama = namaVal;
+      metadataUser.jenjang = jenjangVal;
+
+      document.getElementById('form-biodata').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'flex';
+      document.getElementById('area-ujian').style.display = 'block';
+
+      bikinPapanProgressMurni();
+      tampilkanNomorSoal(soalAktifSekarang);
+      mulaiPenghitungWaktu();
+      window.scrollTo(0, 0);
+
+      ujianSedangBerjalan = true;
+    }
+
+    function bikinPapanProgressMurni() {
+      const grupAwal = document.getElementById('grup-progress-awal');
+      const grupAkhir = document.getElementById('grup-progress-akhir');
+      
+      grupAwal.innerHTML = '';
+      grupAkhir.innerHTML = '';
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.createElement('div');
+        kotak.classList.add('kotak-nomor');
+        kotak.id = `kotak-nav-${i}`;
+        kotak.innerText = i < 10 ? `0${i}` : i;
+        kotak.setAttribute('onclick', `lompatKeSoal(${i})`);
+        
+        if (i <= 20) {
+          grupAwal.appendChild(kotak);
+        } else {
+          grupAkhir.appendChild(kotak);
+        }
+      }
+    }
+
+    function pindahHalamanTab(pageIndex) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
+      document.querySelectorAll('.konten-lembaran-soal').forEach(p => p.classList.remove('aktif'));
+
+      document.getElementById(`tab-btn-${pageIndex}`).classList.add('aktif');
+      document.getElementById(`lembaran-page-${pageIndex}`).classList.add('aktif');
+    }
+
+    function bukaPanelProgress() {
+      if (soalAktifSekarang <= 20) {
+        pindahHalamanTab(1);
+      } else {
+        pindahHalamanTab(2);
+      }
+      document.getElementById('overlay-nav').style.display = 'block';
+    }
+    
+    function tutupPanelProgress() {
+      document.getElementById('overlay-nav').style.display = 'none';
+    }
+    function tutupPanelProgressLuar(e) {
+      if (e.target.id === 'overlay-nav') {
+        tutupPanelProgress();
+      }
+    }
+
+    function tampilkanNomorSoal(nomor) {
+      const kumpulanSoal = document.querySelectorAll('.kontainer-item-soal');
+      kumpulanSoal.forEach(soal => soal.classList.remove('aktif'));
+
+      const targetSoal = document.querySelector(`.kontainer-item-soal[data-nomor="${nomor}"]`);
+      if (targetSoal) targetSoal.classList.add('aktif');
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.getElementById(`kotak-nav-${i}`);
+        if (kotak) {
+          kotak.classList.remove('sudah-isi');
+          if (riwayatJawabanUser.has(i)) {
+            kotak.classList.add('sudah-isi');
+          }
+        }
+      }
+
+      document.getElementById('btn-sebelumnya').disabled = (nomor === 1);
+      
+      const btnNext = document.getElementById('btn-selanjutnya');
+      if (nomor === totalSoalBatas) {
+        btnNext.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Submit';
+        btnNext.style.background = 'var(--warna-utama-gelap)';
+      } else {
+        btnNext.innerHTML = 'Next <i class="fa-solid fa-chevron-right"></i>';
+        btnNext.style.background = 'var(--warna-utama)';
+      }
+      
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        window.MathJax.typesetPromise();
+      }
+    }
+
+    function navigasiKeSoal(arah) {
+      if (arah === 1 && soalAktifSekarang === totalSoalBatas) {
+        document.getElementById('form-soal').requestSubmit();
+        return;
+      }
+      
+      let targetBaru = soalAktifSekarang + arah;
+      if (targetBaru >= 1 && targetBaru <= totalSoalBatas) {
+        soalAktifSekarang = targetBaru;
+        tampilkanNomorSoal(soalAktifSekarang);
+      }
+    }
+
+    function lompatKeSoal(nomor) {
+      soalAktifSekarang = nomor;
+      tampilkanNomorSoal(soalAktifSekarang);
+      tutupPanelProgress();
+    }
+
+    function updateIndikator(nomor) {
+      riwayatJawabanUser.add(nomor);
+      const elemenKotak = document.getElementById(`kotak-nav-${nomor}`);
+      if (elemenKotak && soalAktifSekarang !== nomor) {
+        elemenKotak.classList.add('sudah-isi');
+      }
+    }
+
+    function mulaiPenghitungWaktu() {
+      timerInterval = setInterval(() => {
+        waktuSisaDetik--;
+        
+        let menit = Math.floor(waktuSisaDetik / 60);
+        let detik = waktuSisaDetik % 60;
+
+        menit = menit < 10 ? '0' + menit : menit;
+        detik = detik < 10 ? '0' + detik : detik;
+
+        document.getElementById('countdown-timer').innerText = `${menit}:${detik}`;
+
+        if (waktuSisaDetik <= 0) {
+          clearInterval(timerInterval);
+          alert('Batas waktu pengerjaan 120 menit telah habis! Jawaban Anda akan langsung dikirim otomatis.');
+          evaluasiPaksaWaktuHabis();
+        }
+      }, 1000);
+    }
+
+    function prosesEvaluasi(event) {
+      if (event) event.preventDefault();
+      clearInterval(timerInterval);
+      ujianSedangBerjalan = false;
+
+      const formCbt = document.getElementById('form-soal');
+      const dataParsed = new FormData(formCbt);
+      
+      let akumulasiBenar = 0;
+
+      for (let propertiSoal in kunciValidasi) {
+        if (dataParsed.get(propertiSoal) === kunciValidasi[propertiSoal]) {
+          akumulasiBenar++;
+        }
+      }
+
+      let nilaiAkhir = Math.round((akumulasiBenar / totalSoalBatas) * 100);
+
+      document.getElementById('skor-akhir').innerText = nilaiAkhir;
+      document.getElementById('detail-benar').innerText = `${akumulasiBenar}/40 (${akumulasiBenar} benar dari 40 soal)`;
+      
+      document.getElementById('area-ujian').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'none';
+      document.getElementById('area-skor').style.display = 'block';
+      window.scrollTo(0, 0);
+
+      kirimKeGoogleSheet(nilaiAkhir);
+    }
+
+    function evaluasiPaksaWaktuHabis() {
+      prosesEvaluasi(null);
+    }
+
+    function kirimKeGoogleSheet(skor, percobaan = 1) {
+      const endpointWebApps = "https://script.google.com/macros/s/AKfycbyoz6oUzmeTdKUkqQsc87zpDxOuYnksPqnhY76kKMNFtuYASYZYRfUh6iqPCAbU-i1a/exec";
+      const MAKSIMAL_PERCOBAAN = 5;
+
+      const detailElemen = document.getElementById('detail-benar');
+      if (percobaan === 1) {
+        detailElemen.innerHTML += "<br><span id='status-sync' style='color:#dd6b20; font-size:0.9rem; display:block; margin-top:10px;'><i class='fa-solid fa-spinner fa-spin'></i> Menyimpan nilai ke database... Mohon jangan tutup halaman ini.</span>";
+      }
+
+      fetch(endpointWebApps, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        /* body: JSON.stringify({...}) menggunakan kategori: "MAT_SD" */
+        body: JSON.stringify({
+          nama: metadataUser.nama,
+          jenjang: metadataUser.jenjang,
+          skor: skor,
+          kategori: "MAT_SD",
+          timestamp: new Date().toLocaleString('id-ID')
+        })
+      })
+      .then(() => {
+        console.log('Sync Google Sheets Selesai.');
+        const statusSync = document.getElementById('status-sync');
+        if (statusSync) {
+          statusSync.innerHTML = "<i class='fa-solid fa-circle-check' style='color:#38a169;'></i> Nilai berhasil disimpan aman di database!";
+        }
+      })
+      .catch(err => {
+        console.error('Error Sync:', err);
+        
+        if (percobaan < MAKSIMAL_PERCOBAAN) {
+          setTimeout(() => {
+            kirimKeGoogleSheet(skor, percobaan + 1);
+          }, 3000);
+        } else {
+          const statusSync = document.getElementById('status-sync');
+          if (statusSync) {
+            statusSync.innerHTML = "<i class='fa-solid fa-circle-xmark' style='color:#e53e3e;'></i> Koneksi sibuk. Silakan screenshot halaman ini sebagai bukti nilai ke panitia.";
+          }
+        }
+      });
+    }
+
+    /* ========================================================
+       SISTEM KEAMANAN — CUSTOM MODAL 
+       ======================================================== */
+    let blurDariVisibility = false;
+
+    function pancingPeringatan(judulPesan, isiPesan) {
+      if (dialogSedangTerbuka) return;
+      dialogSedangTerbuka = true;
+      hitungPelanggaran++;
+
+      const sisaPercobaan = BATAS_PELANGGARAN - hitungPelanggaran;
+      const judulFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Batas Pelanggaran Tercapai!"
+        : judulPesan + " (Peringatan " + hitungPelanggaran + "/" + BATAS_PELANGGARAN + ")";
+
+      const isiFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Anda telah meninggalkan halaman ujian sebanyak " + BATAS_PELANGGARAN + " kali. Sesi ujian dianggap tidak sah..."
+        : isiPesan + " Sisa toleransi: " + sisaPercobaan + "x.";
+
+      document.getElementById('modal-judul').textContent = judulFinal;
+      document.getElementById('modal-isi').textContent = isiFinal;
+
+      const tombolKembali = document.getElementById('tombol-kembali');
+      if (hitungPelanggaran >= BATAS_PELANGGARAN) {
+        tombolKembali.style.display = 'none';
+        setTimeout(function() {
+          ujianSedangBerjalan = false;
+          window.location.reload();
+        }, 3000);
+      } else {
+        tombolKembali.style.display = '';
+      }
+
+      document.getElementById('modal-peringatan').style.display = 'flex';
+    }
+
+    function modalKonfirmasiLeave() {
+      ujianSedangBerjalan = false;
+      dialogSedangTerbuka = false;
+      document.getElementById('modal-peringatan').style.display = 'none';
+      window.location.reload();
+    }
+
+    function modalKembaliUjian() {
+      document.getElementById('modal-peringatan').style.display = 'none';
+      setTimeout(function() {
+        dialogSedangTerbuka = false;
+        blurDariVisibility = false;
+      }, 500);
+    }
+
+    const pesanModal = {
+      judul: "Dilarang meninggalkan laman ujian!",
+      isi: "Aktivitas meninggalkan halaman ujian dideteksi. Berpindah aplikasi, klik luar browser, atau membuka jendela lain tidak diizinkan."
+    };
+
+    document.addEventListener("visibilitychange", function() {
+      if (ujianSedangBerjalan && document.visibilityState === "hidden") {
+        blurDariVisibility = true;
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("blur", function() {
+      if (ujianSedangBerjalan && !dialogSedangTerbuka && !blurDariVisibility) {
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("keyup", function(e) {
+      if (ujianSedangBerjalan) {
+        if (e.key === "PrintScreen" || (e.ctrlKey && e.key === "p")) {
+          pancingPeringatan(
+            "Dilarang mengambil screenshot!",
+            "Dilarang keras mencetak atau mengambil screenshot halaman ujian."
+          );
+        }
+      }
+    });
+  </script>
+
+  <!-- MODAL PERINGATAN CURANG -->
+  <div id="modal-peringatan" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 32, 44, 0.75); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #fff; border-radius: 14px; max-width: 420px; width: 100%; padding: 28px 24px 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); text-align: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+      <div style="font-size: 2.4rem; color: #C53030; margin-bottom: 12px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="modal-judul" style="font-size: 1.1rem; font-weight: 700; color: #C53030; margin-bottom: 10px;"></h3>
+      <p id="modal-isi" style="font-size: 0.9rem; color: #4A5568; line-height: 1.6; margin-bottom: 24px;"></p>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="modalKonfirmasiLeave()" style="flex: 1; padding: 12px; background: transparent; color: #C53030; border: 2px solid #C53030; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i><span>Keluar</span>
+        </button>
+        <button id="tombol-kembali" onclick="modalKembaliUjian()" style="flex: 2; padding: 12px; background: var(--warna-utama); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-arrow-right-to-bracket" style="margin-right: 6px;"></i><span>Kembali</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bahasa Indonesia SDIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================
+       TOKEN SISTEM (Nuansa Ungu Elegan & Estetik)
+    =========================== */
+    :root {
+      --warna-utama: #6B3FA0;
+      --warna-utama-gelap: #4A2870;
+      --warna-krem: #F3EFF9;
+      --warna-krem-gelap: #DDD5EC;
+      --warna-putih: #FFFFFF;
+      --warna-teks: #1A202C;
+      --warna-teks-redup: #4a5568;
+
+      /* Status Navigasi Progress */
+      --warna-belum-jawab: #E2E8F0;
+      --warna-sudah-jawab: #C6F6D5;
+      --warna-teks-hijau: #22543D;
+
+      --font-teks: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius: 12px;
+      --bayangan: 0 4px 20px rgba(107, 63, 160, 0.08);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-teks);
+      background-color: #F9F7FC;
+      color: var(--warna-teks);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pembungkus-desktop {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    nav.pita-navigasi {
+      background: var(--warna-putih);
+      border-bottom: 2px solid var(--warna-krem-gelap);
+      padding: 16px 20px;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .isi-nav {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .logo-nav {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--warna-utama);
+      letter-spacing: 0.5px;
+    }
+
+    .seksi-konten {
+      padding: 24px 0 60px;
+    }
+    .kartu-form, .kartu-soal, .kartu-skor {
+      background: var(--warna-putih);
+      border-radius: var(--radius);
+      box-shadow: var(--bayangan);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .judul-sub-kartu {
+      color: var(--warna-utama);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--warna-krem);
+      padding-bottom: 8px;
+    }
+    
+    .grup-input { margin-bottom: 20px; }
+    .grup-input label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+    .grup-input input {
+      width: 100%; padding: 12px; height: 48px; border: 2px solid var(--warna-krem-gelap); border-radius: 8px; outline: none; font-size: 1rem; font-family: inherit;
+    }
+    
+    .grup-input select {
+      width: 100%; 
+      height: 48px;
+      padding: 0 36px 0 12px;
+      border: 2px solid var(--warna-krem-gelap); 
+      border-radius: 8px; 
+      outline: none; 
+      font-size: 1rem; 
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234A2870' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 16px) center;
+      background-size: 16px;
+      background-color: var(--warna-putih);
+    }
+    .grup-input input:focus, .grup-input select:focus { border-color: var(--warna-utama); }
+
+    .tombol-primer {
+      display: inline-block; width: 100%; background: var(--warna-utama); color: white; border: none;
+      padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit;
+    }
+    .tombol-primer:hover { background: var(--warna-utama-gelap); }
+
+    /* ===========================
+       BAR UTILITY CBT ATAS
+    =========================== */
+    #info-ujian { display: none; }
+    .bar-kontrol-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .kotak-timer-cbt {
+      background: var(--warna-putih);
+      border: 1px solid var(--warna-krem-gelap);
+      box-shadow: var(--bayangan);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #dc2626;
+      height: 43px;
+    }
+
+    .btn-trigger-progress {
+      background: var(--warna-putih);
+      color: var(--warna-utama);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--bayangan);
+      height: 43px;
+    }
+    .btn-trigger-progress:hover { background: var(--warna-krem); }
+
+    /* ===========================
+       FLOATING OVERLAY PANEL
+    =========================== */
+    .overlay-progress-cbt {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(26, 32, 44, 0.4);
+      z-index: 9999;
+    }
+    .panel-floating-progress {
+      position: absolute;
+      top: 75px;
+      left: 20px;
+      background: white;
+      width: calc(100% - 40px);
+      max-width: 360px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 18px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    @media (min-width: 768px) {
+      .panel-floating-progress { left: calc((100vw - 720px)/2); }
+    }
+    @media (min-width: 1025px) {
+      .panel-floating-progress { left: calc((100vw - 760px)/2); }
+    }
+
+    .header-panel-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--warna-krem-gelap);
+      padding-bottom: 6px;
+    }
+    .judul-panel-cbt { font-weight: 700; color: var(--warna-utama); font-size: 0.95rem; }
+    .btn-tutup-panel { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--warna-teks-redup); }
+
+    .bar-tab-lembaran {
+      display: flex; gap: 4px; margin-bottom: 12px; background: #EDF2F7; padding: 4px; border-radius: 6px;
+    }
+    .tab-item {
+      flex: 1; padding: 6px 2px; font-size: 0.78rem; font-weight: 700; text-align: center; border: none; background: none; cursor: pointer; border-radius: 4px; color: var(--warna-teks-redup); font-family: inherit;
+    }
+    .tab-item.aktif {
+      background: var(--warna-putih); color: var(--warna-utama); box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .konten-lembaran-soal { display: none; }
+    .konten-lembaran-soal.aktif { display: block; }
+
+    .grid-progress {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    }
+    .kotak-nomor {
+      background: var(--warna-belum-jawab);
+      border: 1px solid #CBD5E0;
+      text-align: center; padding: 8px 0; font-weight: 700;
+      font-size: 0.8rem; border-radius: 6px; cursor: pointer; transition: all 0.1s; color: var(--warna-teks-redup);
+    }
+    .kotak-nomor:hover { border-color: var(--warna-utama); }
+    
+    .kotak-nomor.sudah-isi { 
+      background: var(--warna-sudah-jawab); 
+      border: 1px solid #48BB78; 
+      color: var(--warna-teks-hijau); 
+    }
+
+    /* ===========================
+       WIZARD SOAL CAROUSEL
+    =========================== */
+    #area-ujian { display: none; }
+    .kontainer-item-soal { display: none; }
+    .kontainer-item-soal.aktif { display: block; }
+    
+    .nomor-soal { font-size: 0.8rem; color: var(--warna-utama); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .teks-soal { font-size: 1.05rem; font-weight: 500; line-height: 1.6; margin-bottom: 16px; }
+    
+    /* Modifikasi Instruksi Bacaan Terbuka */
+    .instruksi-bacaan-luar {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--warna-teks);
+      margin: 12px 0 10px 0;
+      display: block;
+      line-height: 1.5;
+    }
+
+    .blok-teks-bacaan {
+      background: #fdfdfd; border: 1px solid var(--warna-krem-gelap); border-left: 4px solid var(--warna-utama);
+      border-radius: 8px; padding: 16px 18px; margin-bottom: 16px; font-size: 0.95rem; line-height: 1.8; color: var(--warna-teks);
+    }
+    .blok-teks-bacaan .judul-bacaan {
+      font-weight: 700; color: var(--warna-utama); text-align: center; margin-bottom: 10px; font-size: 1rem;
+    }
+
+    /* Tabel Fleksibel */
+    .kontainer-tabel-fleksibel {
+      overflow-x: auto;
+      max-width: 100%;
+      margin: 12px 0 16px;
+      border: 1px solid var(--warna-krem-gelap);
+      border-radius: 6px;
+    }
+    .tabel-soal { border-collapse: collapse; font-size: 0.88rem; width: 100%; min-width: 450px; }
+    .tabel-soal th { border: 1.5px solid #718096; padding: 8px 12px; background: #EDF2F7; text-align: center; font-weight: 700; }
+    .tabel-soal td { border: 1.5px solid #718096; padding: 8px 12px; text-align: center; }
+    .tabel-soal td:first-child { text-align: left; }
+    
+    .pilihan-jawaban { display: flex; flex-direction: column; gap: 10px; }
+    .label-pilihan { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border: 1px solid var(--warna-krem-gelap); border-radius: 8px; cursor: pointer; font-size: 0.95rem; background: var(--warna-putih); transition: background 0.15s; line-height: 1.5; }
+    .label-pilihan:hover { background: #F9F7FC; border-color: #CBD5E0; }
+    .label-pilihan input[type="radio"] { accent-color: var(--warna-utama); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+
+    .bar-navigasi-soal { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; border-top: 1px solid var(--warna-krem-gelap); padding-top: 16px; }
+    .btn-nav { flex: 1; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; text-align: center; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
+    .btn-back { background: var(--warna-krem); color: var(--warna-utama); border: 1px solid var(--warna-krem-gelap); }
+    .btn-next { background: var(--warna-utama); color: white; }
+    .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #area-skor { display: none; }
+    .angka-skor { font-size: 4.5rem; font-weight: 700; color: var(--warna-utama); margin: 4px 0 2px; line-height: 1; }
+    .detail-jawaban-benar { font-size: 1.1rem; font-weight: 600; color: var(--warna-teks-redup); margin: 0 0 12px; }
+
+    footer.kaki-halaman { 
+      background: var(--warna-putih); padding: 16px 0; text-align: center; font-size: 0.8rem; color: var(--warna-teks-redup); width: 100%; border-top: 2px solid var(--warna-krem-gelap); margin-top: auto; box-shadow: 0 -2px 10px rgba(0,0,0,0.01);
+    }
+
+    /* Perbaikan Rapi Wadah Password / Ikon Mata Mobile */
+    .pembungkus-password { 
+      position: relative; 
+      display: block; 
+      width: 100%;
+    }
+    .pembungkus-password input { 
+      padding-right: 50px !important; 
+    }
+    .ikon-mata { 
+      position: absolute; 
+      right: 16px; 
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--warna-teks-redup); 
+      cursor: pointer; 
+      font-size: 1.15rem; 
+      user-select: none; 
+      transition: color 0.2s;
+      z-index: 10;
+      background-color: var(--warna-putih);
+      padding: 4px;
+    }
+    .ikon-mata:hover { color: var(--warna-utama); }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="pita-navigasi">
+    <div class="isi-nav">
+      <span class="logo-nav">Bahasa Indonesia SDIT</span>
+    </div>
+  </nav>
+
+  <div class="pembungkus-desktop">
+    <main class="seksi-konten">
+      
+      <!-- STEP 1: AUTH BIO -->
+      <section id="form-biodata" class="kartu-form">
+        <h2 class="judul-sub-kartu"><i class="fa-solid fa-user-check"></i> Autentikasi Pengajar</h2>
+        <div class="grup-input">
+          <label for="nama">Nama Lengkap (Tanpa Gelar):</label>
+          <input type="text" id="nama" placeholder="Contoh: Nabila Nailatus Sakina" required />
+        </div>
+        <div class="grup-input">
+          <label for="jenjang">Jenjang Dituju / Mengajar:</label>
+          <select id="jenjang" required>
+            <option value="" disabled selected>-- Pilih Jenjang --</option>
+            <option value="Daycare">Daycare</option>
+            <option value="Batita">Batita</option>
+            <option value="PAUD">PAUD</option>
+            <option value="PG">PG</option>
+            <option value="TK">TK</option>
+            <option value="SD">SD</option>
+            <option value="SMP">SMP</option>
+            <option value="SMA">SMA</option>
+          </select>
+        </div>
+        <div class="grup-input">
+          <label for="kode-akses">Kode Akses Ujian:</label>
+          <div class="pembungkus-password">
+            <input type="password" id="kode-akses" placeholder="Masukkan kode dari pengawas" required />
+            <i class="fa-solid fa-eye-slash ikon-mata" id="tombol-mata" onclick="togglePasswordVisibility()"></i>
+          </div>
+        </div>
+        <p id="pesan-kode-salah" style="display:none; color:#C53030; font-size:0.88rem; margin: -12px 0 16px; font-weight:600;">
+          <i class="fa-solid fa-circle-exclamation"></i> Kode akses salah. Silakan coba lagi.
+        </p>
+        <button type="button" class="tombol-primer" onclick="mulaiUjian()">Mulai Sesi Ujian</button>
+      </section>
+
+      <!-- UTILITY HEADER BAR -->
+      <section id="info-ujian" class="bar-kontrol-cbt">
+        <button type="button" class="btn-trigger-progress" onclick="bukaPanelProgress()">
+          <i class="fa-solid fa-list-check"></i> Check Progress
+        </button>
+        <div class="kotak-timer-cbt">
+          <i class="fa-solid fa-hourglass-half"></i> <span id="countdown-timer">90:00</span>
+        </div>
+      </section>
+
+      <!-- FLOATING SLIM TAB PANEL OVERLAY -->
+      <div class="overlay-progress-cbt" id="overlay-nav" onclick="tutupPanelProgressLuar(event)">
+        <div class="panel-floating-progress">
+          <div class="header-panel-cbt">
+            <span class="judul-panel-cbt"><i class="fa-solid fa-compass"></i> Peta Lembar Jawaban</span>
+            <button type="button" class="btn-tutup-panel" onclick="tutupPanelProgress()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          
+          <div class="bar-tab-lembaran">
+            <button type="button" class="tab-item aktif" id="tab-btn-1" onclick="pindahHalamanTab(1)">No. 01 - 20</button>
+            <button type="button" class="tab-item" id="tab-btn-2" onclick="pindahHalamanTab(2)">No. 21 - 40</button>
+            <button type="button" class="tab-item" id="tab-btn-3" onclick="pindahHalamanTab(3)">No. 41 - 45</button>
+          </div>
+          
+          <div class="konten-lembaran-soal aktif" id="lembaran-page-1">
+            <div class="grid-progress" id="grup-progress-awal"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-2">
+            <div class="grid-progress" id="grup-progress-tengah"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-3">
+            <div class="grid-progress" id="grup-progress-akhir"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: AREA CBT CAROUSEL SOAL (45 SOAL) -->
+      <section id="area-ujian">
+        <form id="form-soal" onsubmit="prosesEvaluasi(event)">
+          
+          <!-- ==================== SOAL 01 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="1">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 01</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf di bawah ini untuk menjawab soal nomor 1–3!</span>
+              <div class="blok-teks-bacaan">
+                <p>Dahulu kakekku seorang tentara. Menurut cerita kakek, beliau dan teman-temannya berperang mengusir penjajah di negara kita. Kata kakek, negara kita harus bebas dari penjajahan. Negara kita harus mampu berdiri dengan kukuh tanpa <strong><em>penjajah</em></strong>. Oleh karena itu, dengan semangat dan tekad kuat, kakek berjuang melawan penjajah.</p>
+              </div>
+              <p class="teks-soal">Makna kata yang bercetak tebal pada paragraf di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q1" value="A" onchange="updateIndikator(1)"> A. Mendukung bangsa kita.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="B" onchange="updateIndikator(1)"> B. Peduli dengan bangsa kita.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="C" onchange="updateIndikator(1)"> C. Menguasai negara kita.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="D" onchange="updateIndikator(1)"> D. Bersahabat dengan bangsa kita.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 02 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="2">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 02</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf di bawah ini untuk menjawab soal nomor 1–3!</span>
+              <div class="blok-teks-bacaan">
+                <p>Dahulu kakekku seorang tentara. Menurut cerita kakek, beliau dan teman-temannya berperang mengusir penjajah di negara kita. Kata kakek, negara kita harus bebas dari penjajahan. Negara kita harus mampu berdiri dengan kukuh tanpa <strong><em>penjajah</em></strong>. Oleh karena itu, dengan semangat dan tekad kuat, kakek berjuang melawan penjajah.</p>
+              </div>
+              <p class="teks-soal">Pernyataan yang sesuai dengan isi paragraf di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q2" value="A" onchange="updateIndikator(2)"> A. Negara mampu berdiri kukuh tanpa penjajah.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="B" onchange="updateIndikator(2)"> B. Kakek berjuang sendiri melawan penjajah.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="C" onchange="updateIndikator(2)"> C. Kita harus bersemangat ketika berperang.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="D" onchange="updateIndikator(2)"> D. Kakek adalah seorang pahlawan pemberani.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 03 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="3">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 03</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf di bawah ini untuk menjawab soal nomor 1–3!</span>
+              <div class="blok-teks-bacaan">
+                <p>Dahulu kakekku seorang tentara. Menurut cerita kakek, beliau dan teman-temannya berperang mengusir penjajah di negara kita. Kata kakek, negara kita harus bebas dari penjajahan. Negara kita harus mampu berdiri dengan kukuh tanpa <strong><em>penjajah</em></strong>. Oleh karena itu, dengan semangat dan tekad kuat, kakek berjuang melawan penjajah.</p>
+              </div>
+              <p class="teks-soal">Antonim kata <em>kukuh</em> dalam paragraf di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q3" value="A" onchange="updateIndikator(3)"> A. tegar</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="B" onchange="updateIndikator(3)"> B. lemah</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="C" onchange="updateIndikator(3)"> C. kuat</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="D" onchange="updateIndikator(3)"> D. takut</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 04 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="4">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 04</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Negeri Cina adalah negeri terluas di Benua Asia. Wilayah Cina membentang dari Pegunungan Himalaya sampai Laut Cina Selatan. Karena luasnya, daratan Cina ada yang berupa gurun pasir. Selain terluas, Cina pun <strong>memiliki</strong> penduduk terbanyak di dunia. Karena banyaknya, kota-kota di Cina penuh manusia. Oleh karena itu, rumah-rumah di Kota Cina kecil dan sempit.</p>
+              </div>
+              <p class="teks-soal">Kalimat utama paragraf di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q4" value="A" onchange="updateIndikator(4)"> A. Cina adalah negeri terluas di Benua Asia.</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="B" onchange="updateIndikator(4)"> B. Wilayah Cina sangat luas.</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="C" onchange="updateIndikator(4)"> C. Cina memiliki penduduk terbanyak di dunia.</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="D" onchange="updateIndikator(4)"> D. Kota-kota di Cina penuh manusia.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 05 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="5">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 05</span>
+              <span class="instruksi-bacaan-luar">Perhatikan dua teks berikut untuk menjawab soal no. 5 dan 6!</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Teks I</strong><br>Transportasi adalah pengangkutan orang dan barang. Jika kita amati, setiap hari pasti ada orang yang bepergian. Ada yang berangkat kerja, mengunjungi keluarga, atau pergi ke suatu tempat. Alat transportasi banyak jenisnya. Ada sepeda, becak, bus, taksi, kapal laut, atau pesawat udara. Jenis transportasi ini dikelompokkan ke dalam transportasi darat, laut, dan udara.</p>
+                <p style="margin-top:10px;"><strong>Teks II</strong><br>Kapal adalah kendaraan air untuk mengarungi samudra. Ada banyak jenis kapal, mulai dari kapal penumpang hingga kapal pengangkut barang dari dan ke pelabuhan di seluruh dunia. Kapal feri termasuk kapal penumpang dan barang dengan jarak tempuh yang tidak terlalu jauh.</p>
+              </div>
+              <p class="teks-soal">Persamaan isi kedua teks tersebut adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q5" value="A" onchange="updateIndikator(5)"> A. Jenis transportasi air digunakan untuk penumpang dan barang.</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="B" onchange="updateIndikator(5)"> B. Alat transportasi yang digunakan banyak jenisnya.</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="C" onchange="updateIndikator(5)"> C. Alat transportasi digunakan untuk bepergian.</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="D" onchange="updateIndikator(5)"> D. Alat transportasi terdiri atas transportasi darat, laut, dan udara.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 06 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="6">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 06</span>
+              <span class="instruksi-bacaan-luar">Perhatikan dua teks berikut untuk menjawab soal no. 5 dan 6!</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Teks I</strong><br>Transportasi adalah pengangkutan orang dan barang. Jika kita amati, setiap hari pasti ada orang yang bepergian. Ada yang berangkat kerja, mengunjungi keluarga, atau pergi ke suatu tempat. Alat transportasi banyak jenisnya. Ada sepeda, becak, bus, taksi, kapal laut, atau pesawat udara. Jenis transportasi ini dikelompokkan ke dalam transportasi darat, laut, dan udara.</p>
+                <p style="margin-top:10px;"><strong>Teks II</strong><br>Kapal adalah kendaraan air untuk mengarungi samudra. Ada banyak jenis kapal, mulai dari kapal penumpang hingga kapal pengangkut barang dari dan ke pelabuhan di seluruh dunia. Kapal feri termasuk kapal penumpang dan barang dengan jarak tempuh yang tidak terlalu jauh.</p>
+              </div>
+              <p class="teks-soal">Perbedaan isi kedua teks tersebut adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q6" value="A" onchange="updateIndikator(6)"> A. Teks 1 membahas tentang jenis kapal, teks 2 membahas tentang kegunaan kapal.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="B" onchange="updateIndikator(6)"> B. Teks 1 membahas tentang jenis alat transportasi, teks 2 membahas tentang jenis kapal.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="C" onchange="updateIndikator(6)"> C. Teks 1 membahas tentang kegunaan alat transportasi, teks 2 membahas tentang jenis kapal.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="D" onchange="updateIndikator(6)"> D. Teks 1 membahas tentang jenis-jenis alat transportasi, teks 2 membahas tentang jenis kapal.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 07 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="7">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 07</span>
+              <span class="instruksi-bacaan-luar">Bacalah teks berikut untuk menjawab soal nomor 7–9!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Jokowi Terbitkan Kartu BBM untuk Nelayan</p>
+                <p>Presiden Joko Widodo akan segera menerbitkan kartu BBM untuk nelayan di seluruh Indonesia. Kartu tersebut merupakan salah satu bentuk kompensasi atas kenaikan harga BBM.</p>
+                <p style="margin-top:8px;">Menurut Sekretaris Jenderal Kementerian Kelautan dan Perikanan, program kartu BBM akan diujicobakan di salah satu kampung nelayan di Indonesia. Jika uji coba tersebut berjalan baik, Presiden akan me-<em>launching</em> Kartu BBM untuk semua nelayan di Indonesia. Akan tetapi, pemerintah belum mengungkapkan jumlah penerima kartu BBM nelayan tersebut.</p>
+                <p style="margin-top:8px;">Syarief menjelaskan, Kartu BBM itu memiliki tiga fungsi. Pertama, memberi kemudahan bagi nelayan untuk mengakses BBM subsidi. Kedua, membuat pembukuan pendapatan nelayan menjadi lebih baik. Ketiga, membuat nelayan "melek" proses di perbankan.</p>
+                <p style="margin-top:8px;">Penggunaan Kartu BBM relatif mudah. Nelayan akan mendapatkan selembar fisik Kartu BBM. Kemudian, nelayan tersebut melaporkan jumlah hasil tangkapan ikannya ke bank. Bank akan mengisi kartu dengan sejumlah saldo senilai harga BBM bersubsidi sesuai dengan hasil tangkapan yang dilaporkan.</p>
+              </div>
+              <p class="teks-soal">Kalimat tanya yang sesuai dengan isi paragraf ketiga adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q7" value="A" onchange="updateIndikator(7)"> A. Dari mana saja asal Kartu BBM?</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="B" onchange="updateIndikator(7)"> B. Siapa yang menerbitkan Kartu BBM?</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="C" onchange="updateIndikator(7)"> C. Bagaimana cara menggunakan Kartu BBM?</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="D" onchange="updateIndikator(7)"> D. Apa fungsi Kartu BBM?</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 08 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="8">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 08</span>
+              <span class="instruksi-bacaan-luar">Bacalah teks berikut untuk menjawab soal nomor 7–9!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Jokowi Terbitkan Kartu BBM untuk Nelayan</p>
+                <p>Presiden Joko Widodo akan segera menerbitkan kartu BBM untuk nelayan di seluruh Indonesia. Kartu tersebut merupakan salah satu bentuk kompensasi atas kenaikan harga BBM.</p>
+                <p style="margin-top:8px;">Menurut Sekretaris Jenderal Kementerian Kelautan dan Perikanan, program kartu BBM akan diujicobakan di salah satu kampung nelayan di Indonesia. Jika uji coba tersebut berjalan baik, Presiden akan me-<em>launching</em> Kartu BBM untuk semua nelayan di Indonesia. Akan tetapi, pemerintah belum mengungkapkan jumlah penerima kartu BBM nelayan tersebut.</p>
+                <p style="margin-top:8px;">Syarief menjelaskan, Kartu BBM itu memiliki tiga fungsi. Pertama, memberi kemudahan bagi nelayan untuk mengakses BBM subsidi. Kedua, membuat pembukuan pendapatan nelayan menjadi lebih baik. Ketiga, membuat nelayan "melek" proses di perbankan.</p>
+                <p style="margin-top:8px;">Penggunaan Kartu BBM relatif mudah. Nelayan akan mendapatkan selembar fisik Kartu BBM. Kemudian, nelayan tersebut melaporkan jumlah hasil tangkapan ikannya ke bank. Bank akan mengisi kartu dengan sejumlah saldo senilai harga BBM bersubsidi sesuai dengan hasil tangkapan yang dilaporkan.</p>
+              </div>
+              <p class="teks-soal">Ide pokok paragraf pertama pada bacaan tersebut adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q8" value="A" onchange="updateIndikator(8)"> A. Presiden Joko Widodo menerbitkan Kartu Sakti.</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="B" onchange="updateIndikator(8)"> B. Presiden Joko Widodo menerbitkan Kartu BBM.</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="C" onchange="updateIndikator(8)"> C. Presiden Joko Widodo menerbitkan Kartu Indonesia Sehat.</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="D" onchange="updateIndikator(8)"> D. Presiden Joko Widodo menerbitkan Kartu Indonesia Pintar.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 09 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="9">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 09</span>
+              <span class="instruksi-bacaan-luar">Bacalah teks berikut untuk menjawab soal nomor 7–9!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Jokowi Terbitkan Kartu BBM untuk Nelayan</p>
+                <p>Presiden Joko Widodo akan segera menerbitkan kartu BBM untuk nelayan di seluruh Indonesia. Kartu tersebut merupakan salah satu bentuk kompensasi atas kenaikan harga BBM.</p>
+                <p style="margin-top:8px;">Menurut Sekretaris Jenderal Kementerian Kelautan Perikanan, program kartu BBM akan diujicobakan di salah satu kampung nelayan di Indonesia. Jika uji coba tersebut berjalan baik, Presiden akan me-<em>launching</em> Kartu BBM untuk semua nelayan di Indonesia. Akan tetapi, pemerintah belum mengungkapkan jumlah penerima kartu BBM nelayan tersebut.</p>
+                <p style="margin-top:8px;">Syarief menjelaskan, Kartu BBM itu memiliki tiga fungsi. Pertama, memberi kemudahan bagi nelayan untuk mengakses BBM subsidi. Kedua, membuat pembukuan pendapatan nelayan menjadi lebih baik. Ketiga, membuat nelayan "melek" proses di perbankan.</p>
+                <p style="margin-top:8px;">Penggunaan Kartu BBM relatif mudah. Nelayan akan mendapatkan selembar fisik Kartu BBM. Kemudian, nelayan tersebut melaporkan jumlah hasil tangkapan ikannya ke bank. Bank akan mengisi kartu dengan sejumlah saldo senilai harga BBM bersubsidi sesuai dengan hasil tangkapan yang dilaporkan.</p>
+              </div>
+              <p class="teks-soal">Bagaimana cara menggunakan Kartu BBM?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q9" value="A" onchange="updateIndikator(9)"> A. Nelayan mengisi sendiri saldo Kartu BBM bersubsidi senilai hasil tangkapan ikannya, lalu menunjukkan kepada pihak kelurahan.</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="B" onchange="updateIndikator(9)"> B. Nelayan mendaftar di Kelurahan setempat, lalu pihak kelurahan akan menerbitkan Kartu BBM tersebut.</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="C" onchange="updateIndikator(9)"> C. Nelayan membentuk kelompok, lalu ketua kelompok mengajukan permohonan kepada bank untuk memperoleh BBM subsidi.</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="D" onchange="updateIndikator(9)"> D. Nelayan melaporkan hasil tangkapan ikan, lalu pihak bank mengisi saldo senilai harga BBM bersubsidi sesuai hasil tangkapannya.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 10 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="10">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 10</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf di bawah ini untuk menjawab soal nomer 10–11!</span>
+              <div class="blok-teks-bacaan">
+                <p>Saat sudah terlihat <em>menguning</em>, tandanya padi siap dipanen. Petani pun menyiapkan peralatan yang bisa digunakan untuk panen. Salah satunya ani-ani. Ani-ani adalah alat pemotong padi yang terbuat dari kayu dan bambu yang bersilangan. Selain itu, petani juga menyiapkan alat pengayak untuk <strong>memisahkan</strong> biji padi dari pohonnya.</p>
+              </div>
+              <p class="teks-soal">Sinonim kata yang bercetak tebal ialah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q10" value="A" onchange="updateIndikator(10)"> A. menyatukan</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="B" onchange="updateIndikator(10)"> B. menggabungkan</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="C" onchange="updateIndikator(10)"> C. menyiapkan</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="D" onchange="updateIndikator(10)"> D. melepaskan</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 11 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="11">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 11</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf di bawah ini untuk menjawab soal nomer 10–11!</span>
+              <div class="blok-teks-bacaan">
+                <p>Saat sudah terlihat <em>menguning</em>, tandanya padi siap dipanen. Petani pun menyiapkan peralatan yang bisa digunakan untuk panen. Salah satunya ani-ani. Ani-ani adalah alat pemotong padi yang terbuat dari kayu dan bambu yang bersilangan. Selain itu, petani juga menyiapkan alat pengayak untuk <strong>memisahkan</strong> biji padi dari pohonnya.</p>
+              </div>
+              <p class="teks-soal">Makna kata yang dicetak miring pada paragraf di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q11" value="A" onchange="updateIndikator(11)"> A. terlihat kekuning-kuningan</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="B" onchange="updateIndikator(11)"> B. berwarna dasar kuning</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="C" onchange="updateIndikator(11)"> C. berubah warna menjadi kuning</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="D" onchange="updateIndikator(11)"> D. berubah warna menjadi keemasan</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 12 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="12">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 12</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf berikut untuk menjawab soal nomer 12 dan 13!</span>
+              <div class="blok-teks-bacaan">
+                <p>Bevan pulang sekolah pada siang hari. Bevan meletakkan sepatu di rak sepatu. Ia pun berganti pakaian, kemudian mencuci tangan dan kaki. Bevan makan siang ditemani oleh ibunya. Setelah selesai makan, Bevan pun tidur siang. Setelah bangun tidur, Bevan merapikan tempat tidur. Kamar Bevan bersih dan rapi.</p>
+              </div>
+              <p class="teks-soal">Prediksi yang akan terjadi sesuai dengan cerita di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q12" value="A" onchange="updateIndikator(12)"> A. Bevan akan membereskan mainannya setelah mandi.</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="B" onchange="updateIndikator(12)"> B. Ibu akan senang karena kamar Bevan terlihat rapi dan bersih.</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="C" onchange="updateIndikator(12)"> C. Bevan akan dibelikan mainan baru.</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="D" onchange="updateIndikator(12)"> D. Bevan akan senang main game lebih lama di kamar.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 13 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="13">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 13</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf berikut untuk menjawab soal nomer 12 dan 13!</span>
+              <div class="blok-teks-bacaan">
+                <p>Bevan pulang sekolah pada siang hari. Bevan meletakkan sepatu di rak sepatu. Ia pun berganti pakaian, kemudian mencuci tangan dan kaki. Bevan makan siang ditemani oleh ibunya. Setelah selesai makan, Bevan pun tidur siang. Setelah bangun tidur, Bevan merapikan tempat tidur. Kamar Bevan bersih dan rapi.</p>
+              </div>
+              <p class="teks-soal">Berdasarkan isinya, paragraf di atas termasuk jenis paragraf ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q13" value="A" onchange="updateIndikator(13)"> A. eksposisi</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="B" onchange="updateIndikator(13)"> B. argumentasi</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="C" onchange="updateIndikator(13)"> C. narasi</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="D" onchange="updateIndikator(13)"> D. deskripsi</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 14 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="14">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 14</span>
+              <span class="instruksi-bacaan-luar">Bacalah tabel berikut!</span>
+              <div class="kontainer-tabel-fleksibel">
+                <table class="tabel-soal">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Jenis Alat Tulis</th>
+                      <th>Jumlah</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td style="text-align:center;">1</td><td>Pensil warna</td><td>145</td></tr>
+                    <tr><td style="text-align:center;">2</td><td>Buku tulis</td><td>376</td></tr>
+                    <tr><td style="text-align:center;">3</td><td>Penggaris</td><td>367</td></tr>
+                    <tr><td style="text-align:center;">4</td><td>Jangka</td><td>89</td></tr>
+                    <tr><td style="text-align:center;">5</td><td>Pensil</td><td>654</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="teks-soal">Pernyataan yang paling tepat berdasarkan tabel Data Pembelian Alat Tulis di Toko Murni Bulan Januari 2019 di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q14" value="A" onchange="updateIndikator(14)"> A. Penggaris dan buku tulis memiliki jumlah penjualan yang sama.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="B" onchange="updateIndikator(14)"> B. Pensil lebih sedikit dibeli dibandingkan buku tulis.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="C" onchange="updateIndikator(14)"> C. Alat tulis yang paling sedikit dibeli adalah jangka.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="D" onchange="updateIndikator(14)"> D. Penjualan pensil warna lebih sedikit dibandingkan penjualan jangka.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 15 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="15">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 15</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Beti membaca buku di sofa untuk menghilangkan rasa bosan. Biasanya Beti menghilangkan rasa bosan dengan mendengarkan musik atau membaca. Akan tetapi, kali ini orang tuanya memberikan buku baru. Sekarang, Beti lebih senang membaca buku. Sebenarnya Beti adalah gadis pecinta semua jenis musik. Ia bercita-cita menjadi penyanyi terkenal.</p>
+              </div>
+              <p class="teks-soal">Simpulan yang tepat berdasarkan cerita di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q15" value="A" onchange="updateIndikator(15)"> A. Beti bercita-cita menjadi penyanyi terkenal dan memiliki album.</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="B" onchange="updateIndikator(15)"> B. Beti mendengarkan musik sambil membaca novel.</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="C" onchange="updateIndikator(15)"> C. Beti menghilangkan rasa bosan dengan membaca buku atau mendengarkan musik.</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="D" onchange="updateIndikator(15)"> D. Beti membaca buku baru di sofa sambil mendengarkan musik.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 16 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="16">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 16</span>
+              <span class="instruksi-bacaan-luar">Bacalah cerita berikut untuk menjawab soal nomor 16–20!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Danau Toba</p>
+                <p>Di wilayah Tapanuli Utara, hiduplah seorang petani miskin. Ia hidup sebatang kara. Untuk memenuhi kebutuhan sehari-hari, petani itu memancing ikan di sungai.</p>
+                <p style="margin-top:8px;">Suatu hari, ia mendapatkan ikan besar. Ikan itu ternyata bisa berbicara dan meminta kepada petani supaya di tempatkan di sawah milik petani itu.</p>
+                <p style="margin-top:8px;">Keesokan harinya, si petani pergi ke sawah. Ia amat terkejut, karena ikan itu tidak ada dan berubah menjadi gadis yang cantik jelita. Pada akhirnya si petani menikahi gadis itu dengan syarat ketika memiliki anak, si petani tidak boleh mengatakan bahwa anaknya adalah anak ikan. Mereka kemudian memiliki seorang anak yang diberi nama Toba.</p>
+                <p style="margin-top:8px;">Toba adalah anak yang keras kepala dan selalu membuat ulah. Suatu hari, Toba membuat ayahnya marah dan petani lupa janjinya. Ia pun ditinggal pergi oleh istri dan anaknya. Walaupun petani menyesal dan memohon kepada istri dan anaknya untuk kembali, tetapi semua sia-sia.</p>
+                <p style="margin-top:8px;">Tak lama kemudian, datanglah banjir bandang melanda desa itu dan rumah, sawah, serta semua penduduk tenggelam. Akhirnya daerah itu disebut Danau Toba.</p>
+              </div>
+              <p class="teks-soal">Untuk memahami sebuah cerita, kita harus mengetahui unsur-unsur intrinsik cerita tersebut. Tokoh dalam cerita di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q16" value="A" onchange="updateIndikator(16)"> A. Petani, ikan, dan Toba.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="B" onchange="updateIndikator(16)"> B. Petani, ibu petani, dan Toba.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="C" onchange="updateIndikator(16)"> C. Petani, saudagar, dan Toba.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="D" onchange="updateIndikator(16)"> D. Petani, nelayan, dan Toba.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 17 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="17">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 17</span>
+              <span class="instruksi-bacaan-luar">Bacalah cerita berikut untuk menjawab soal nomor 16–20!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Danau Toba</p>
+                <p>Di wilayah Tapanuli Utara, hiduplah seorang petani miskin. Ia hidup sebatang kara. Untuk memenuhi kebutuhan sehari-hari, petani itu memancing ikan di sungai.</p>
+                <p style="margin-top:8px;">Suatu hari, ia mendapatkan ikan besar. Ikan itu ternyata bisa berbicara dan meminta kepada petani supaya di tempatkan di sawah milik petani itu.</p>
+                <p style="margin-top:8px;">Keesokan harinya, si petani pergi ke sawah. Ia amat terkejut, karena ikan itu tidak ada dan berubah menjadi gadis yang cantik jelita. Pada akhirnya si petani menikahi gadis itu dengan syarat ketika memiliki anak, si petani tidak boleh mengatakan bahwa anaknya adalah anak ikan. Mereka kemudian memiliki seorang anak yang diberi nama Toba.</p>
+                <p style="margin-top:8px;">Toba adalah anak yang keras kepala dan selalu membuat ulah. Suatu hari, Toba membuat ayahnya marah dan petani lupa janjinya. Ia pun ditinggal pergi oleh istri dan anaknya. Walaupun petani menyesal dan memohon kepada istri dan anaknya untuk kembali, tetapi semua sia-sia.</p>
+                <p style="margin-top:8px;">Tak lama kemudian, datanglah banjir bandang melanda desa itu dan rumah, sawah, serta semua penduduk tenggelam. Akhirnya daerah itu disebut Danau Toba.</p>
+              </div>
+              <p class="teks-soal">Latar dari cerita di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q17" value="A" onchange="updateIndikator(17)"> A. sawah petani</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="B" onchange="updateIndikator(17)"> B. sungai jernih</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="C" onchange="updateIndikator(17)"> C. rumah petani</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="D" onchange="updateIndikator(17)"> D. Tapanuli Utara</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 18 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="18">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 18</span>
+              <span class="instruksi-bacaan-luar">Bacalah cerita berikut untuk menjawab soal nomor 16–20!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Danau Toba</p>
+                <p>Di wilayah Tapanuli Utara, hiduplah seorang petani miskin. Ia hidup sebatang kara. Untuk memenuhi kebutuhan sehari-hari, petani itu memancing ikan di sungai.</p>
+                <p style="margin-top:8px;">Suatu hari, ia mendapatkan ikan besar. Ikan itu ternyata bisa berbicara dan meminta kepada petani supaya di tempatkan di sawah milik petani itu.</p>
+                <p style="margin-top:8px;">Keesokan harinya, si petani pergi ke sawah. Ia amat terkejut, karena ikan itu tidak ada dan berubah menjadi gadis yang cantik jelita. Pada akhirnya si petani menikahi gadis itu dengan syarat ketika memiliki anak, si petani tidak boleh mengatakan bahwa anaknya adalah anak ikan. Mereka kemudian memiliki seorang anak yang diberi nama Toba.</p>
+                <p style="margin-top:8px;">Toba adalah anak yang keras kepala dan selalu membuat ulah. Suatu hari, Toba membuat ayahnya marah dan petani lupa janjinya. Ia pun ditinggal pergi oleh istri dan anaknya. Walaupun petani menyesal dan memohon kepada istri dan anaknya untuk kembali, tetapi semua sia-sia.</p>
+                <p style="margin-top:8px;">Tak lama kemudian, datanglah banjir bandang melanda desa itu dan rumah, sawah, serta semua penduduk tenggelam. Akhirnya daerah itu disebut Danau Toba.</p>
+              </div>
+              <p class="teks-soal">Watak tokoh Toba dalam cerita di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q18" value="A" onchange="updateIndikator(18)"> A. Keras kepala dan selalu membuat ulah.</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="B" onchange="updateIndikator(18)"> B. Sombong dan selalu membantah orang tua.</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="C" onchange="updateIndikator(18)"> C. Pemarah dan mau menang sendiri.</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="D" onchange="updateIndikator(18)"> D. Malas bekerja dan tidak menaati orang tua.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 19 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="19">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 19</span>
+              <span class="instruksi-bacaan-luar">Bacalah cerita berikut untuk menjawab soal nomor 16–20!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Danau Toba</p>
+                <p>Di wilayah Tapanuli Utara, hiduplah seorang petani miskin. Ia hidup sebatang kara. Untuk memenuhi kebutuhan sehari-hari, petani itu memancing ikan di sungai.</p>
+                <p style="margin-top:8px;">Suatu hari, ia mendapatkan ikan besar. Ikan itu ternyata bisa berbicara dan meminta kepada petani supaya di tempatkan di sawah milik petani itu.</p>
+                <p style="margin-top:8px;">Keesokan harinya, si petani pergi ke sawah. Ia amat terkejut, karena ikan itu tidak ada dan berubah menjadi gadis yang cantik jelita. Pada akhirnya si petani menikahi gadis itu dengan syarat ketika memiliki anak, si petani tidak boleh mengatakan bahwa anaknya adalah anak ikan. Mereka kemudian memiliki seorang anak yang diberi nama Toba.</p>
+                <p style="margin-top:8px;">Toba adalah anak yang keras kepala dan selalu membuat ulah. Suatu hari, Toba membuat ayahnya marah dan petani lupa janjinya. Ia pun ditinggal pergi oleh istri dan anaknya. Walaupun petani menyesal dan memohon kepada istri dan anaknya untuk kembali, tetapi semua sia-sia.</p>
+                <p style="margin-top:8px;">Tak lama kemudian, datanglah banjir bandang melanda desa itu dan rumah, sawah, serta semua penduduk tenggelam. Akhirnya daerah itu disebut Danau Toba.</p>
+              </div>
+              <p class="teks-soal">Amanat cerita di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q19" value="A" onchange="updateIndikator(19)"> A. Rajinlah bekerja agar mendapat rezeki yang banyak.</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="B" onchange="updateIndikator(19)"> B. Sayangilah anak supaya cepat tumbuh besar dan pintar.</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="C" onchange="updateIndikator(19)"> C. Jangan biarkan anak bermain di sungai.</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="D" onchange="updateIndikator(19)"> D. Jangan mudah mengingkari janji supaya tidak celaka.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 20 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="20">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 20</span>
+              <span class="instruksi-bacaan-luar">Bacalah cerita berikut untuk menjawab soal nomor 16–20!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Danau Toba</p>
+                <p>Di wilayah Tapanuli Utara, hiduplah seorang petani miskin. Ia hidup sebatang kara. Untuk memenuhi kebutuhan sehari-hari, petani itu memancing ikan di sungai.</p>
+                <p style="margin-top:8px;">Suatu hari, ia mendapatkan ikan besar. Ikan itu ternyata bisa berbicara dan meminta kepada petani supaya di tempatkan di sawah milik petani itu.</p>
+                <p style="margin-top:8px;">Keesokan harinya, si petani pergi ke sawah. Ia amat terkejut, karena ikan itu tidak ada dan berubah menjadi gadis yang cantik jelita. Pada akhirnya si petani menikahi gadis itu dengan syarat ketika memiliki anak, si petani tidak boleh mengatakan bahwa anaknya adalah anak ikan. Mereka kemudian memiliki seorang anak yang diberi nama Toba.</p>
+                <p style="margin-top:8px;">Toba adalah anak yang keras kepala dan selalu membuat ulah. Suatu hari, Toba membuat ayahnya marah dan petani lupa janjinya. Ia pun ditinggal pergi oleh istri dan anaknya. Walaupun petani menyesal dan memohon kepada istri dan anaknya untuk kembali, tetapi semua sia-sia.</p>
+                <p style="margin-top:8px;">Tak lama kemudian, datanglah banjir bandang melanda desa itu dan rumah, sawah, serta semua penduduk tenggelam. Akhirnya daerah itu disebut Danau Toba.</p>
+              </div>
+              <p class="teks-soal">Mengapa petani ditinggal pergi oleh istri dan anaknya?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q20" value="A" onchange="updateIndikator(20)"> A. Anak dan istri petani itu sudah besar dan pergi bekerja.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="B" onchange="updateIndikator(20)"> B. Anak dan istri petani itu dimarahi oleh si petani.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="C" onchange="updateIndikator(20)"> C. Anak dan istri petani itu tidak bisa hidup di desa.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="D" onchange="updateIndikator(20)"> D. Petani itu melanggar janji kepada istrinya.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 21 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="21">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 21</span>
+              <span class="instruksi-bacaan-luar">Bacalah kutipan syair berikut untuk menjawab soal nomor 21–22!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  . . . . .<br>
+                  Wahai engkau ananda muda<br>
+                  Tetap <strong>terjaga</strong> saat senja<br>
+                  Tiada lalai dalam baca<br>
+                  Ilmumu akan berguna sepanjang masa<br>
+                  Tak akan habis karena usia<br>
+                  Selalu eja apa yang kau biasa<br>
+                  Akan cemerlang pikirmu ketika dewasa
+                </p>
+              </div>
+              <p class="teks-soal">Kutipan syair di atas berisi nasihat agar ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q21" value="A" onchange="updateIndikator(21)"> A. membaca sepanjang hari.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="B" onchange="updateIndikator(21)"> B. jangan lelah untuk belajar.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="C" onchange="updateIndikator(21)"> C. tidak tidur di sore hari.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="D" onchange="updateIndikator(21)"> D. selalu berjaga sepanjang hari.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 22 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="22">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 22</span>
+              <span class="instruksi-bacaan-luar">Bacalah kutipan syair berikut untuk menjawab soal nomor 21–22!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  . . . . .<br>
+                  Wahai engkau ananda muda<br>
+                  Tetap <strong>terjaga</strong> saat senja<br>
+                  Tiada lalai dalam baca<br>
+                  Ilmumu akan berguna sepanjang masa<br>
+                  Tak akan habis karena usia<br>
+                  Selalu eja apa yang kau biasa<br>
+                  Akan cemerlang pikirmu ketika dewasa
+                </p>
+              </div>
+              <p class="teks-soal">Makna kata bercetak tebal pada syair di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q22" value="A" onchange="updateIndikator(22)"> A. terbangun</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="B" onchange="updateIndikator(22)"> B. tertidur</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="C" onchange="updateIndikator(22)"> C. terlelap</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="D" onchange="updateIndikator(22)"> D. terlindungi</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 23 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="23">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 23</span>
+              <span class="instruksi-bacaan-luar">Bacalah pantun berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  Ke hulu membuat pagar<br>
+                  Jangan terpotong batang durian<br>
+                  Cari guru tempat belajar<br>
+                  Supaya jangan sesal kemudian
+                </p>
+              </div>
+              <p class="teks-soal">Pesan yang terdapat pada pantun tersebut adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q23" value="A" onchange="updateIndikator(23)"> A. Pandai-pandailah memilih guru yang akan mengajari kita.</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="B" onchange="updateIndikator(23)"> B. Tuntutlah ilmu di sekolah agar kelak tak menyesal.</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="C" onchange="updateIndikator(23)"> C. Tolaklah jika diberi guru yang tidak kita sukai.</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="D" onchange="updateIndikator(23)"> D. Jangan mau diajar oleh guru yang tidak pandai.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 24 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="24">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 24</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf rumpang di bawah ini!</span>
+              <div class="blok-teks-bacaan">
+                <p>. . . . .<br>Ada yang terbuat dari tanah liat, kaleng bekas, dan kayu bekas. Ada pula yang terbuat dari ban bekas.<br>Semua hasil karya tersebut sangat menarik minat orang lain untuk membeli. Pak Kades tersenyum bangga.</p>
+              </div>
+              <p class="teks-soal">Kalimat yang tepat untuk melengkapi paragraf di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q24" value="A" onchange="updateIndikator(24)"> A. Pameran karya seni di sekolah.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="B" onchange="updateIndikator(24)"> B. Hasil karya seni dipamerkan di balai desa.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="C" onchange="updateIndikator(24)"> C. Barang-barang bekas dipamerkan.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="D" onchange="updateIndikator(24)"> D. Bermacam-macam hasil karya seni dari barang bekas dipamerkan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 25 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="25">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 25</span>
+              <span class="instruksi-bacaan-luar">Bacalah teks berikut untuk menjawab soal nomor 25–27!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Tubuh Zebra</p>
+                <p>Suatu ketika terjadi musim kemarau yang sangat lama. Banyak mata air menjadi kering. Para hewan pun kesulitan mendapatkan air. Tetapi ada satu kolam yang masih berisi air. Kolam itu dijaga oleh seekor Babon yang mengaku sebagai pemilik kolam.</p>
+                <p style="margin-top:8px;">Suatu hari zebra datang untuk minum di sana. Saat itu zebra masih berbulu putih polos. Melihat zebra mendekati kolamnya, Babon marah dan mendorong zebra. Zebra terjatuh dekat api unggun. Api unggun itu dibuat Babon untuk menghangatkan badannya jika malam hari tiba.</p>
+                <p style="margin-top:8px;">Beberapa bagian bulu zebra hangus terkena api. Kejadian itu menyisakan belang-belang hitam. Zebra tetap menyukai belang-belang itu. Sejak saat itulah bulu-bulu zebra menjadi belang putih hitam.</p>
+              </div>
+              <p class="teks-soal">Nilai moral yang dapat diambil dari cerita tersebut adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q25" value="A" onchange="updateIndikator(25)"> A. Tidak membalas perilaku buruk orang lain kepada kita.</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="B" onchange="updateIndikator(25)"> B. Menawarkan bantuan kepada salah satu teman.</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="C" onchange="updateIndikator(25)"> C. Berbaik hati dan ikhlas menolong orang lain.</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="D" onchange="updateIndikator(25)"> D. Membalas kebaikan orang lain karena orang itu baik kepada kita.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 26 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="26">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 26</span>
+              <span class="instruksi-bacaan-luar">Bacalah teks berikut untuk menjawab soal nomor 25–27!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Tubuh Zebra</p>
+                <p>Suatu ketika terjadi musim kemarau yang sangat lama. Banyak mata air menjadi kering. Para hewan pun kesulitan mendapatkan air. Tetapi ada satu kolam yang masih berisi air. Kolam itu dijaga oleh seekor Babon yang mengaku sebagai pemilik kolam.</p>
+                <p style="margin-top:8px;">Suatu hari zebra datang untuk minum di sana. Saat itu zebra masih berbulu putih polos. Melihat zebra mendekati kolamnya, Babon marah dan mendorong zebra. Zebra terjatuh dekat api unggun. Api unggun itu dibuat Babon untuk menghangatkan badannya jika malam hari tiba.</p>
+                <p style="margin-top:8px;">Beberapa bagian bulu zebra hangus terkena api. Kejadian itu menyisakan belang-belang hitam. Zebra tetap menyukai belang-belang itu. Sejak saat itulah bulu-bulu zebra menjadi belang putih hitam.</p>
+              </div>
+              <p class="teks-soal">Perilaku yang dapat diteladani dari tokoh zebra pada cerita di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q26" value="A" onchange="updateIndikator(26)"> A. tidak pendendam</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="B" onchange="updateIndikator(26)"> B. penyayang teman</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="C" onchange="updateIndikator(26)"> C. suka menolong</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="D" onchange="updateIndikator(26)"> D. tidak serakah</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 27 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="27">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 27</span>
+              <span class="instruksi-bacaan-luar">Bacalah teks berikut untuk menjawab soal nomor 25–27!</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Asal Mula Tubuh Zebra</p>
+                <p>Suatu ketika terjadi musim kemarau yang sangat lama. Banyak mata air menjadi kering. Para hewan pun kesulitan mendapatkan air. Tetapi ada satu kolam yang masih berisi air. Kolam itu dijaga oleh seekor Babon yang mengaku sebagai pemilik kolam.</p>
+                <p style="margin-top:8px;">Suatu hari zebra datang untuk minum di sana. Saat itu zebra masih berbulu putih polos. Melihat zebra mendekati kolamnya, Babon marah dan mendorong zebra. Zebra terjatuh dekat api unggun. Api unggun itu dibuat Babon untuk menghangatkan badannya jika malam hari tiba.</p>
+                <p style="margin-top:8px;">Beberapa bagian bulu zebra hangus terkena api. Kejadian itu menyisakan belang-belang hitam. Zebra tetap menyukai belang-belang itu. Sejak saat itulah bulu-bulu zebra menjadi belang putih hitam.</p>
+              </div>
+              <p class="teks-soal">Hal yang mungkin terjadi selanjutnya berdasarkan konflik cerita di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q27" value="A" onchange="updateIndikator(27)"> A. Tokoh Babon meminta maaf dan mengizinkan zebra untuk minum di kolam.</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="B" onchange="updateIndikator(27)"> B. Zebra marah kepada Babon karena bulunya menjadi belang-belang.</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="C" onchange="updateIndikator(27)"> C. Bulu zebra yang putih berubah jadi belang-belang.</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="D" onchange="updateIndikator(27)"> D. Zebra putus asa karena tidak diizinkan minum air kolam.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 28 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="28">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 28</span>
+              <span class="instruksi-bacaan-luar">Perhatikan petunjuk acak berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  1) Aduk rata rebusan sagu mutiara, gula, dan air hingga tercampur.<br>
+                  2) Masukkan dua bungkus sagu mutiara dan gula sesuai selera ke dalam panci.<br>
+                  3) Aduk terus sagu mutiara dan tunggu hingga sagu matang.<br>
+                  4) Setelah semua tercampur rata dan matang menyerupai bubur, matikan kompor.<br>
+                  5) Letakkan panci berisi air satu liter di atas kompor, lalu nyalakan kompor.<br>
+                  6) Tuangkan bubur sagu ke dalam mangkuk dan beri tambahan air santan matang.<br>
+                  7) Bubur mutiara siap untuk dihidangkan.
+                </p>
+              </div>
+              <p class="teks-soal">Urutan yang tepat untuk membuat bubur mutiara adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q28" value="A" onchange="updateIndikator(28)"> A. 5–2–1–6–7–3–4</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="B" onchange="updateIndikator(28)"> B. 2–1–5–6–7–4–3</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="C" onchange="updateIndikator(28)"> C. 1–2–3–6–7–4–5</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="D" onchange="updateIndikator(28)"> D. 5–2–1–3–4–6–7</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 29 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="29">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 29</span>
+              <div class="blok-teks-bacaan" style="font-weight:700; text-align:center; font-size:1rem;">
+                Rambut ketombe? siapa takut!<br>
+                Bersihkan dengan sampo sunsilk
+              </div>
+              <p class="teks-soal">Pernyataan sesuai dengan iklan tersebut adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q29" value="A" onchange="updateIndikator(29)"> A. Promosi sampo sunsilk diadakan di kota-kota besar.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="B" onchange="updateIndikator(29)"> B. Sampo sunsilk bisa membersihkan ketombe.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="C" onchange="updateIndikator(29)"> C. Semua orang menggunakan sampo sunsilk.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="D" onchange="updateIndikator(29)"> D. Sampo sunsilk menantang semua orang.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 30 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="30">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 30</span>
+              <span class="instruksi-bacaan-luar">Bacalah ilustrasi berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Ketika Pak Guru masuk ke dalam kelas, beliau langsung marah karena melihat salah satu meja di kelas itu penuh dengan coretan. Yang berbuat hanya Dudung tetapi seluruh siswa dimarahi.</p>
+              </div>
+              <p class="teks-soal">Peribahasa yang sesuai dengan ilustrasi di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q30" value="A" onchange="updateIndikator(30)"> A. Seekor kerbau menanduk sekelompok anak.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="B" onchange="updateIndikator(30)"> B. Kerbau punya susu, sapi punya nama.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="C" onchange="updateIndikator(30)"> C. Seekor kerbau berkubang, semua kena lumpurnya.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="D" onchange="updateIndikator(30)"> D. Induk kerbau menanduk anaknya sendiri.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 31 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="31">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 31</span>
+              <span class="instruksi-bacaan-luar">Bacalah ilustrasi berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Pak Dudung membuka usaha membuat tempe, tetapi usahanya tidak ada kemajuan. Penyebabnya, harga kedelai semakin mahal. Akhirnya, usahanya bangkrut.</p>
+              </div>
+              <p class="teks-soal">Ungkapan yang tepat untuk ilustrasi di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q31" value="A" onchange="updateIndikator(31)"> A. Pasang surut</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="B" onchange="updateIndikator(31)"> B. Tutup buku</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="C" onchange="updateIndikator(31)"> C. Kembali modal</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="D" onchange="updateIndikator(31)"> D. Gulung tikar</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 32 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="32">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 32</span>
+              <span class="instruksi-bacaan-luar">Bacalah kutipan pidato berikut untuk menjawab soal nomor 32 dan 33!</span>
+              <div class="blok-teks-bacaan">
+                <p>Yang terhormat Kepala SD Mutiara, Bapak/Ibu Guru, serta teman-teman yang saya sayangi.</p>
+                <p style="margin-top:8px;">Pada pagi yang berbahagia ini saya akan menyampaikan pidato dalam rangka hari Sumpah Pemuda. Tema yang saya sampaikan berkaitan dengan semangat juang para pemuda Indonesia saat ini.</p>
+                <p style="margin-top:8px;">Pada tanggal 28 Oktober 1928 para pemuda telah mengikrarkan persatuan.</p>
+                <p style="margin-top:8px;">. . . .</p>
+                <p style="font-style:italic;">Saya berharap pidato ini yang mana saya sampaikan dapat memacu kreativitas kita dalam mengisi kemerdekaan.</p>
+              </div>
+              <p class="teks-soal">Kalimat ajakan yang tepat untuk melengkapi pidato di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q32" value="A" onchange="updateIndikator(32)"> A. Marilah kita tingkatkan semangat persatuan dan kesatuan bangsa Indonesia.</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="B" onchange="updateIndikator(32)"> B. Pemudalah harapan bangsa yang akan mengambil alih kepemimpinan bangsa.</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="C" onchange="updateIndikator(32)"> C. Peringatan hari Sumpah Pemuda sangat penting diikuti oleh siswa-siswi.</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="D" onchange="updateIndikator(32)"> D. Penerus bangsa dapat mengemban amanat bangsa tetap adil, makmur, dan sejahtera.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 33 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="33">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 33</span>
+              <span class="instruksi-bacaan-luar">Bacalah kutipan pidato berikut untuk menjawab soal nomor 32 dan 33!</span>
+              <div class="blok-teks-bacaan">
+                <p>Yang terhormat Kepala SD Mutiara, Bapak/Ibu Guru, serta teman-teman yang saya sayangi.</p>
+                <p style="margin-top:8px;">Pada pagi yang berbahagia ini saya akan menyampaikan pidato dalam rangka hari Sumpah Pemuda. Tema yang saya sampaikan berkaitan dengan semangat juang para pemuda Indonesia saat ini.</p>
+                <p style="margin-top:8px;">Pada tanggal 28 Oktober 1928 para pemuda telah mengikrarkan persatuan.</p>
+                <p style="margin-top:8px;">. . . .</p>
+                <p style="font-style:italic;">Saya berharap pidato ini yang mana saya sampaikan dapat memacu kreativitas kita dalam mengisi kemerdekaan.</p>
+              </div>
+              <p class="teks-soal">Perbaikan kalimat yang bercetak miring dalam teks pidato di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q33" value="A" onchange="updateIndikator(33)"> A. Saya berharap pidato ini saya sampaikan dapat memacu kreativitas kita dalam mengisi kemerdekaan.</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="B" onchange="updateIndikator(33)"> B. Saya berharap pidato ini dapat memacu kreativitas kita dalam mengisi kemerdekaan.</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="C" onchange="updateIndikator(33)"> C. Saya berharap pidato yang saya sampaikan dapat memacu kreativitas kita dalam mengisi kemerdekaan.</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="D" onchange="updateIndikator(33)"> D. Saya berharap pidato ini yang mana dapat memacu kreativitas kita dalam mengisi kemerdekaan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 34 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="34">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 34</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf berikut untuk menjawab soal nomor 34 dan 35!</span>
+              <div class="blok-teks-bacaan">
+                <p>Mematikan barang elektronik saat ditinggal pergi pemiliknya merupakan salah satu cara menghemat energi. Selain itu, hal tersebut dapat menghindari <strong>...(1)</strong> listrik. Saat rumah tidak ada penghuninya, bisa saja terjadi kebakaran karena kabel <strong>...(2)</strong> akibat gigitan tikus.</p>
+              </div>
+              <p class="teks-soal">Kata baku yang tepat untuk melengkapi bagian rumpang nomor (1) adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q34" value="A" onchange="updateIndikator(34)"> A. korsleting.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="B" onchange="updateIndikator(34)"> B. konsleting.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="C" onchange="updateIndikator(34)"> C. korslet.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="D" onchange="updateIndikator(34)"> D. konslet.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 35 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="35">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 35</span>
+              <span class="instruksi-bacaan-luar">Bacalah paragraf berikut untuk menjawab soal nomor 34 dan 35!</span>
+              <div class="blok-teks-bacaan">
+                <p>Mematikan barang elektronik saat ditinggal pergi pemiliknya merupakan salah satu cara menghemat energi. Selain itu, hal tersebut dapat menghindari <strong>...(1)</strong> listrik. Saat rumah tidak ada penghuninya, bisa saja terjadi kebakaran karena kabel <strong>...(2)</strong> akibat gigitan tikus.</p>
+              </div>
+              <p class="teks-soal">Kata bentukan yang tepat untuk melengkapi bagian rumpang nomor (2) adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q35" value="A" onchange="updateIndikator(35)"> A. dikelupasi</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="B" onchange="updateIndikator(35)"> B. mengelupasi</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="C" onchange="updateIndikator(35)"> C. pengelupas</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="D" onchange="updateIndikator(35)"> D. mengelupas</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 36 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="36">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 36</span>
+              <span class="instruksi-bacaan-luar">Bacalah kalimat acak berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  (1) Bahkan orang-orang rela untuk menukar segala harta benda yang dimilikinya agar sehat kembali.<br>
+                  (2) Tanpa kesehatan, manusia akan sangat kesulitan.<br>
+                  (3) Kesehatan merupakan suatu hal yang sangat berharga.<br>
+                  (4) Meskipun kita memiliki uang yang banyak, semua itu tidak ada gunanya jika kita sedang sakit.
+                </p>
+              </div>
+              <p class="teks-soal">Urutan kalimat acak di atas agar menjadi paragraf yang padu adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q36" value="A" onchange="updateIndikator(36)"> A. 4–2–1–3</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="B" onchange="updateIndikator(36)"> B. 3–2–4–1</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="C" onchange="updateIndikator(36)"> C. 4–2–3–1</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="D" onchange="updateIndikator(36)"> D. 1–2–3–4</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 37 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="37">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 37</span>
+              <span class="instruksi-bacaan-luar">Bacalah pantun rumpang berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  Pergi bermain ke tanah lapang<br>
+                  Bermain bersama teman sedesa<br>
+                  . . . .<br>
+                  . . . .
+                </p>
+              </div>
+              <p class="teks-soal">Isi yang tepat untuk melengkapi pantun di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q37" value="A" onchange="updateIndikator(37)"> A. Jika ada ingatan hilang<br>&nbsp;&nbsp;&nbsp;&nbsp;Mungkin buku teman yang sejati</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="B" onchange="updateIndikator(37)"> B. Bila umur masih panjang<br>&nbsp;&nbsp;&nbsp;&nbsp;Tuntutlah ilmu tanpa putus asa</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="C" onchange="updateIndikator(37)"> C. Kalau bekerja dengan keras<br>&nbsp;&nbsp;&nbsp;&nbsp;Akan datang kemakmuran</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="D" onchange="updateIndikator(37)"> D. Bila tampak mega mulai jingga<br>&nbsp;&nbsp;&nbsp;&nbsp;Tanda kelelawar mulai terjaga</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 38 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="38">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 38</span>
+              <p class="teks-soal">Kalimat di bawah ini yang menggunakan tanda baca dengan tepat adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q38" value="A" onchange="updateIndikator(38)"> A. Ibu pergi ke pasar membeli beras, kopi, gula, minyak goreng dan ikan asin.</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="B" onchange="updateIndikator(38)"> B. Ibu pergi ke pasar membeli, beras, kopi, gula, minyak goreng dan ikan asin.</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="C" onchange="updateIndikator(38)"> C. Ibu pergi ke pasar, membeli beras, kopi, gula, minyak goreng dan ikan asin.</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="D" onchange="updateIndikator(38)"> D. Ibu pergi ke pasar membeli beras, kopi, gula, minyak goreng, dan ikan asin.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 39 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="39">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 39</span>
+              <div class="blok-teks-bacaan">
+                <p>Pada tanggal 16 November 2018, Kabupaten Grobogan, Jawa Tengah dilanda oleh angin keras. Banyak pohon yang longsor akibat angin tersebut. Oleh karena itu, setiap pengendara diharapkan berhati-hati apabila berkendara di daerah yang banyak pohon-pohon besar.</p>
+              </div>
+              <p class="teks-soal">Penggunaan kata yang kurang tepat pada paragraf di atas adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q39" value="A" onchange="updateIndikator(39)"> A. Keras dan longsor</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="B" onchange="updateIndikator(39)"> B. Kota dan angin</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="C" onchange="updateIndikator(39)"> C. Keras dan pohon</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="D" onchange="updateIndikator(39)"> D. Kota dan longsor</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 40 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="40">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 40</span>
+              <div class="blok-teks-bacaan">
+                <p>Setiap hari, di Pasar Bintoro Demak terjadi kemacetan. Hal tersebut karena banyaknya pedagang di pinggir jalan. <em>Para pedagang-pedagang tersebut meletakkan dagangannya di pinggir jalan sehingga menjadi sempit jalanan.</em></p>
+              </div>
+              <p class="teks-soal">Perbaikan kalimat bercetak miring agar membentuk kata kalimat yang benar adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q40" value="A" onchange="updateIndikator(40)"> A. Para semua pedagang-pedagang tersebut meletakkan dagangannya di pinggir jalan sehingga jalanan menjadi sempit.</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="B" onchange="updateIndikator(40)"> B. Semua pedagang-pedagang tersebut meletakkan dagangannya di pinggir jalan sehingga jalanannya sempit.</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="C" onchange="updateIndikator(40)"> C. Para pedagang tersebut meletakkan dagangannya di pinggir jalan sehingga jalanan menjadi sempit.</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="D" onchange="updateIndikator(40)"> D. Para pedagang-pedagang semua tersebut meletakkan dagangannya di pinggir jalan sehingga menjadi sempit jalanan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 41 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="41">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 41</span>
+              <div class="blok-teks-bacaan">
+                <p>Salah satu wahana yang digemari anak-anak ketika <strong>kunjung</strong> ke Taman Mini Indonesia Indah adalah menaiki kereta <em>eromofel</em> atau kereta magnet. Dinamakan kereta magnet karena kereta tersebut dijalankan <strong>guna</strong> tenaga magnet. Kereta tersebut <strong>jalan</strong> dengan tidak terlalu kencang sehingga ramah untuk anak-anak.</p>
+              </div>
+              <p class="teks-soal">Kata baku yang tepat untuk memperbaiki kata bercetak miring (<em>eromofel</em>), dan kata bentukan yang tepat untuk memperbaiki tiga (3) kata yang bercetak tebal (<strong>kunjung, guna, jalan</strong>) berturut-turut adalah ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q41" value="A" onchange="updateIndikator(41)"> A. monorel; berkunjung, digunakan, jalan-jalan</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="B" onchange="updateIndikator(41)"> B. aeromovel; berkunjung, menggunakan, berjalan</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="C" onchange="updateIndikator(41)"> C. eromovel; kunjungan, berguna, dijalankan</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="D" onchange="updateIndikator(41)"> D. aeromobil; pengunjung, kegunaan, perjalanan</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 42 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="42">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 42</span>
+              <span class="instruksi-bacaan-luar">Perhatikan tabel berikut!</span>
+              <div class="kontainer-tabel-fleksibel">
+                <table class="tabel-soal">
+                  <thead>
+                    <tr>
+                      <th rowspan="2">No.</th>
+                      <th rowspan="2">Jenis Buku</th>
+                      <th colspan="2">Jumlah Pinjaman</th>
+                    </tr>
+                    <tr>
+                      <th>Laki-laki</th>
+                      <th>Perempuan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>1</td><td>Agama</td><td>57</td><td>84</td></tr>
+                    <tr><td>2</td><td>Pelajaran</td><td>59</td><td>61</td></tr>
+                    <tr><td>3</td><td>Umum</td><td>49</td><td>51</td></tr>
+                    <tr><td>4</td><td>Motivasi</td><td>28</td><td>30</td></tr>
+                    <tr><td>5</td><td>Fiksi / Cerita</td><td>74</td><td>58</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="teks-soal">Berdasarkan tabel Data Peminjaman Buku Perpustakaan Bulan November 2018, pernyataan di bawah ini yang <strong>tidak sesuai</strong> dengan isi data adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q42" value="A" onchange="updateIndikator(42)"> A. Kategori buku motivasi adalah jenis buku yang paling sedikit dipinjam oleh siswa laki-laki maupun perempuan.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="B" onchange="updateIndikator(42)"> B. Siswa perempuan paling banyak melakukan aktivitas peminjaman pada kategori buku agama.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="C" onchange="updateIndikator(42)"> C. Akumulasi total peminjaman buku pelajaran lebih banyak dibandingkan akumulasi total buku umum.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="D" onchange="updateIndikator(42)"> D. Jumlah peminjaman buku fiksi/cerita oleh siswa perempuan lebih banyak dibandingkan siswa laki-laki.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 43 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="43">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 43</span>
+              <div class="blok-teks-bacaan">
+                <p>Jalur pendakian ke gunung rinjani melewati desa aik berik, kecamatan batuklian utara, lombok tengah, secara resmi dibuka untuk membangkitkan perekonomian masyarakat di sekitar taman nasional yang sempat lumpuh akibat gempa bumi agustus 2018. Pembukaan jalur pendakian sekaligus dirangkai dengan peluncuran program e-rinjani. Peluncuran program itu diresmikan oleh bupati lombok tengah, Suhaili FT, bersama dengan kepala balai taman nasional gunung rinjani, Sudiyono, pada senin, 19 nopember 2018.</p>
+              </div>
+              <p class="teks-soal">Perbaikan ejaan sesuai PUEBI yang paling tepat untuk kalimat di atas adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q43" value="A" onchange="updateIndikator(43)"> A. Desa Aik Berik, bupati Lombok Tengah, Senin, 19 Nopember 2018</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="B" onchange="updateIndikator(43)"> B. desa Aik Berik, Bupati Lombok tengah, senin, 19 November 2018</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="C" onchange="updateIndikator(43)"> C. Desa Aik Berik, Bupati Lombok Tengah, Senin, 19 November 2018</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="D" onchange="updateIndikator(43)"> D. Desa aik berik, Bupati Lombok Tengah, Senin, 19 Nopember 2018</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 44 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="44">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 44</span>
+              <div class="blok-teks-bacaan">
+                <p>Sesuai dengan <strong>jadual</strong> piket di <strong>apotik</strong>, seharusnya Edo bertugas pada hari <strong>Jum'at</strong>, tetapi karena <strong>aktifitas</strong> Edo padat, ia tidak bisa melaksanakan piket itu.</p>
+              </div>
+              <p class="teks-soal">Perbaikan rangkaian kata tidak baku secara berurutan sesuai KBBI yang benar adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q44" value="A" onchange="updateIndikator(44)"> A. jadwal, apotek, Jumat, aktivitas</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="B" onchange="updateIndikator(44)"> B. jadual, apotik, Jumat, aktifitas</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="C" onchange="updateIndikator(44)"> C. jadwal, apotek, Jum'at, aktivitas</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="D" onchange="updateIndikator(44)"> D. jadual, apotek, Jumat, aktifitas</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 45 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="45">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 45</span>
+              <span class="instruksi-bacaan-luar">Bacalah kalimat acak berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p style="line-height:2.2;">
+                  1) Gerabah dari Kasongan masih memiliki banyak peminat.<br>
+                  2) Gerabah yang dihasilkan kemudian dipasarkan di sepanjang jalan Kasongan tersebut, sebagian dikirim ke luar kota, bahkan ke luar negeri.<br>
+                  3) Pengamatan itu diadakan pada tanggal 25 Mei 2018.<br>
+                  4) Siswa Kelas V SD Mutiara melakukan pengamatan tentang kerajinan gerabah di Kasongan, Yogyakarta.<br>
+                  5) Hasil pengamatan menunjukkan penduduk di Kasongan rata-rata bermata pencaharian sebagai perajin gerabah.
+                </p>
+              </div>
+              <p class="teks-soal">Susunan sistematika penulisan laporan yang padu dan logis adalah ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q45" value="A" onchange="updateIndikator(45)"> A. 4 – 3 – 1 – 5 – 2</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="B" onchange="updateIndikator(45)"> B. 4 – 3 – 5 – 2 – 1</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="C" onchange="updateIndikator(45)"> C. 4 – 5 – 2 – 3 – 1</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="D" onchange="updateIndikator(45)"> D. 4 – 2 – 5 – 1 – 3</label>
+              </div>
+            </article>
+          </div>
+
+          <div class="bar-navigasi-soal">
+            <button type="button" class="btn-nav btn-back" id="btn-sebelumnya" onclick="navigasiKeSoal(-1)">
+              <i class="fa-solid fa-chevron-left"></i> Back
+            </button>
+            <button type="button" class="btn-nav btn-next" id="btn-selanjutnya" onclick="navigasiKeSoal(1)">
+              Next <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- STEP 3: SCREEN HASIL SKOR REALTIME -->
+      <section id="area-skor" class="kartu-skor" style="text-align:center;">
+        <i class="fa-solid fa-square-poll-vertical fa-4x" style="color: var(--warna-utama);"></i>
+        <h2 style="margin: 10px 0 4px;">Berikut Skor Anda!</h2>
+        <p style="margin: 0 0 16px;">Terima kasih Ustadz/Ustadzah atas partisipasinya dalam asesmen mutu.</p>
+        <div class="angka-skor" id="skor-akhir">0</div>
+        <div class="detail-jawaban-benar" id="detail-benar">0/45 (0 benar dari 45 soal)</div>
+        <p style="color: var(--warna-teks-redup); font-size: 0.88rem; margin: 0;">Lembar jawaban dan akumulasi kompetensi telah tersimpan di database Manajemen BIAS Yaumi Fatimah.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="kaki-halaman">
+    <div class="isi-footer">
+      <p>© 2026 Manajemen BIAS Yaumi Fatimah</p>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       JS CBT ENGINE
+  =========================== -->
+  <script>
+    const kunciValidasi = {
+      q1: 'C', q2: 'A', q3: 'B', q4: 'A', q5: 'B',
+      q6: 'B', q7: 'D', q8: 'B', q9: 'D', q10: 'D',
+      q11: 'C', q12: 'B', q13: 'A', q14: 'C', q15: 'C',
+      q16: 'A', q17: 'D', q18: 'A', q19: 'D', q20: 'D',
+      q21: 'B', q22: 'A', q23: 'B', q24: 'D', q25: 'A',
+      q26: 'A', q27: 'A', q28: 'D', q29: 'B', q30: 'C',
+      q31: 'D', q32: 'A', q33: 'B', q34: 'A', q35: 'D',
+      q36: 'B', q37: 'B', q38: 'D', q39: 'A', q40: 'C',
+      q41: 'B', q42: 'D', q43: 'C', q44: 'A', q45: 'B'
+    };
+
+    let metadataUser = { nama: '', jenjang: '' };
+    let soalAktifSekarang = 1;
+    const totalSoalBatas = Object.keys(kunciValidasi).length;
+    let timerInterval = null;
+    let waktuSisaDetik = 90 * 60; 
+    
+    let riwayatJawabanUser = new Set();
+
+    let ujianSedangBerjalan = false;
+    let dialogSedangTerbuka = false;
+    let blurDariVisibility = false;
+    let hitungPelanggaran = 0;
+    const BATAS_PELANGGARAN = 4;
+
+    const KODE_AKSES_UJIAN = 'yuf71'; 
+
+    function togglePasswordVisibility() {
+      const inputKode = document.getElementById('kode-akses');
+      const ikonMata = document.getElementById('tombol-mata');
+      
+      if (inputKode.type === 'password') {
+        inputKode.type = 'text';
+        ikonMata.classList.remove('fa-eye-slash');
+        ikonMata.classList.add('fa-eye');
+      } else {
+        inputKode.type = 'password';
+        ikonMata.classList.remove('fa-eye');
+        ikonMata.classList.add('fa-eye-slash');
+      }
+    }
+
+    function mulaiUjian() {
+      const namaVal = document.getElementById('nama').value.trim();
+      const jenjangVal = document.getElementById('jenjang').value;
+      const kodeVal = document.getElementById('kode-akses').value.trim();
+      const pesanSalah = document.getElementById('pesan-kode-salah');
+
+      if (!namaVal || !jenjangVal) {
+        alert('Maaf, Ustadz/Ustadzah wajib mengisi Nama Lengkap, memilih Jenjang, dan input kode ujian sebelum memulai!');
+        return;
+      }
+
+      if (kodeVal !== KODE_AKSES_UJIAN) {
+        pesanSalah.style.display = 'block';
+        document.getElementById('kode-akses').focus();
+        return;
+      }
+      pesanSalah.style.display = 'none';
+
+      metadataUser.nama = namaVal;
+      metadataUser.jenjang = jenjangVal;
+
+      document.getElementById('form-biodata').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'flex';
+      document.getElementById('area-ujian').style.display = 'block';
+
+      bikinPapanProgressMurni();
+      tampilkanNomorSoal(soalAktifSekarang);
+      mulaiPenghitungWaktu();
+      window.scrollTo(0, 0);
+
+      ujianSedangBerjalan = true;
+    }
+
+    function bikinPapanProgressMurni() {
+      const grupAwal = document.getElementById('grup-progress-awal');
+      const grupTengah = document.getElementById('grup-progress-tengah');
+      const grupAkhir = document.getElementById('grup-progress-akhir');
+      
+      grupAwal.innerHTML = '';
+      grupTengah.innerHTML = '';
+      grupAkhir.innerHTML = '';
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.createElement('div');
+        kotak.classList.add('kotak-nomor');
+        kotak.id = `kotak-nav-${i}`;
+        kotak.innerText = i < 10 ? `0${i}` : i;
+        kotak.setAttribute('onclick', `lompatKeSoal(${i})`);
+        
+        if (i <= 20) {
+          grupAwal.appendChild(kotak);
+        } else if (i <= 40) {
+          grupTengah.appendChild(kotak);
+        } else {
+          grupAkhir.appendChild(kotak);
+        }
+      }
+    }
+
+    function pindahHalamanTab(pageIndex) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
+      document.querySelectorAll('.konten-lembaran-soal').forEach(p => p.classList.remove('aktif'));
+
+      document.getElementById(`tab-btn-${pageIndex}`).classList.add('aktif');
+      document.getElementById(`lembaran-page-${pageIndex}`).classList.add('aktif');
+    }
+
+    function bukaPanelProgress() {
+      if (soalAktifSekarang <= 20) {
+        pindahHalamanTab(1);
+      } else if (soalAktifSekarang <= 40) {
+        pindahHalamanTab(2);
+      } else {
+        pindahHalamanTab(3);
+      }
+      document.getElementById('overlay-nav').style.display = 'block';
+    }
+    
+    function tutupPanelProgress() {
+      document.getElementById('overlay-nav').style.display = 'none';
+    }
+    function tutupPanelProgressLuar(e) {
+      if (e.target.id === 'overlay-nav') {
+        tutupPanelProgress();
+      }
+    }
+
+    function tampilkanNomorSoal(nomor) {
+      const kumpulanSoal = document.querySelectorAll('.kontainer-item-soal');
+      kumpulanSoal.forEach(soal => soal.classList.remove('aktif'));
+
+      const targetSoal = document.querySelector(`.kontainer-item-soal[data-nomor="${nomor}"]`);
+      if (targetSoal) targetSoal.classList.add('aktif');
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.getElementById(`kotak-nav-${i}`);
+        if (kotak) {
+          kotak.classList.remove('sudah-isi');
+          if (riwayatJawabanUser.has(i)) {
+            kotak.classList.add('sudah-isi');
+          }
+        }
+      }
+
+      document.getElementById('btn-sebelumnya').disabled = (nomor === 1);
+      
+      const btnNext = document.getElementById('btn-selanjutnya');
+      if (nomor === totalSoalBatas) {
+        btnNext.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Submit';
+        btnNext.style.background = 'var(--warna-utama-gelap)';
+      } else {
+        btnNext.innerHTML = 'Next <i class="fa-solid fa-chevron-right"></i>';
+        btnNext.style.background = 'var(--warna-utama)';
+      }
+    }
+
+    function navigasiKeSoal(arah) {
+      if (arah === 1 && soalAktifSekarang === totalSoalBatas) {
+        document.getElementById('form-soal').requestSubmit();
+        return;
+      }
+      
+      let targetBaru = soalAktifSekarang + arah;
+      if (targetBaru >= 1 && targetBaru <= totalSoalBatas) {
+        soalAktifSekarang = targetBaru;
+        tampilkanNomorSoal(soalAktifSekarang);
+      }
+    }
+
+    function lompatKeSoal(nomor) {
+      soalAktifSekarang = nomor;
+      tampilkanNomorSoal(soalAktifSekarang);
+      tutupPanelProgress();
+    }
+
+    function updateIndikator(nomor) {
+      riwayatJawabanUser.add(nomor);
+      const elemenKotak = document.getElementById(`kotak-nav-${nomor}`);
+      if (elemenKotak && soalAktifSekarang !== nomor) {
+        elemenKotak.classList.add('sudah-isi');
+      }
+    }
+
+    function mulaiPenghitungWaktu() {
+      timerInterval = setInterval(() => {
+        waktuSisaDetik--;
+        
+        let menit = Math.floor(waktuSisaDetik / 60);
+        let detik = waktuSisaDetik % 60;
+
+        menit = menit < 10 ? '0' + menit : menit;
+        detik = detik < 10 ? '0' + detik : detik;
+
+        document.getElementById('countdown-timer').innerText = `${menit}:${detik}`;
+
+        if (waktuSisaDetik <= 0) {
+          clearInterval(timerInterval);
+          alert('Batas waktu pengerjaan 90 menit telah habis! Jawaban Anda akan langsung dikirim otomatis.');
+          evaluasiPaksaWaktuHabis();
+        }
+      }, 1000);
+    }
+
+    function prosesEvaluasi(event) {
+      if (event) event.preventDefault();
+      clearInterval(timerInterval);
+      ujianSedangBerjalan = false;
+
+      const formCbt = document.getElementById('form-soal');
+      const dataParsed = new FormData(formCbt);
+      
+      let akumulasiBenar = 0;
+
+      for (let propertiSoal in kunciValidasi) {
+        if (dataParsed.get(propertiSoal) === kunciValidasi[propertiSoal]) {
+          akumulasiBenar++;
+        }
+      }
+
+      let nilaiAkhir = Math.round((akumulasiBenar / totalSoalBatas) * 100);
+
+      document.getElementById('skor-akhir').innerText = nilaiAkhir;
+      document.getElementById('detail-benar').innerText = `${akumulasiBenar}/45 (${akumulasiBenar} benar dari 45 soal)`;
+      
+      document.getElementById('area-ujian').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'none';
+      document.getElementById('area-skor').style.display = 'block';
+      window.scrollTo(0, 0);
+
+      kirimKeGoogleSheet(nilaiAkhir);
+    }
+
+    function evaluasiPaksaWaktuHabis() {
+      prosesEvaluasi(null);
+    }
+
+    function kirimKeGoogleSheet(skor, percobaan = 1) {
+      const endpointWebApps = "https://script.google.com/macros/s/AKfycbyoz6oUzmeTdKUkqQsc87zpDxOuYnksPqnhY76kKMNFtuYASYZYRfUh6iqPCAbU-i1a/exec";
+      const MAKSIMAL_PERCOBAAN = 5;
+
+      const detailElemen = document.getElementById('detail-benar');
+      if (percobaan === 1) {
+        detailElemen.innerHTML += "<br><span id='status-sync' style='color:#dd6b20; font-size:0.9rem; display:block; margin-top:10px;'><i class='fa-solid fa-spinner fa-spin'></i> Menyimpan nilai ke database... Mohon jangan tutup halaman ini.</span>";
+      }
+
+      fetch(endpointWebApps, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nama: metadataUser.nama,
+          jenjang: metadataUser.jenjang,
+          skor: skor,
+          kategori: "INDO_SD", 
+          timestamp: new Date().toLocaleString('id-ID')
+        })
+      })
+      .then(() => {
+        console.log('Sync Google Sheets Selesai.');
+        const statusSync = document.getElementById('status-sync');
+        if (statusSync) {
+          statusSync.innerHTML = "<i class='fa-solid fa-circle-check' style='color:#38a169;'></i> Nilai berhasil disimpan aman di database!";
+        }
+      })
+      .catch(err => {
+        console.error('Error Sync:', err);
+        
+        if (percobaan < MAKSIMAL_PERCOBAAN) {
+          setTimeout(() => {
+            kirimKeGoogleSheet(skor, percobaan + 1);
+          }, 3000);
+        } else {
+          const statusSync = document.getElementById('status-sync');
+          if (statusSync) {
+            statusSync.innerHTML = "<i class='fa-solid fa-circle-xmark' style='color:#e53e3e;'></i> Koneksi sibuk. Silakan screenshot halaman ini sebagai bukti nilai ke panitia.";
+          }
+        }
+      });
+    }
+
+    /* SISTEM KEAMANAN MODAL */
+    function pancingPeringatan(judulPesan, isiPesan) {
+      if (dialogSedangTerbuka) return;
+      dialogSedangTerbuka = true;
+      hitungPelanggaran++;
+
+      const sisaPercobaan = BATAS_PELANGGARAN - hitungPelanggaran;
+      const judulFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Batas Pelanggaran Tercapai!"
+        : judulPesan + " (Peringatan " + hitungPelanggaran + "/" + BATAS_PELANGGARAN + ")";
+
+      const isiFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Anda telah meninggalkan halaman ujian sebanyak " + BATAS_PELANGGARAN + " kali. Sesi ujian dianggap tidak sah..."
+        : isiPesan + " Sisa toleransi: " + sisaPercobaan + "x.";
+
+      document.getElementById('modal-judul').textContent = judulFinal;
+      document.getElementById('modal-isi').textContent = isiFinal;
+
+      const tombolKembali = document.getElementById('tombol-kembali');
+      if (hitungPelanggaran >= BATAS_PELANGGARAN) {
+        tombolKembali.style.display = 'none';
+        setTimeout(function() {
+          ujianSedangBerjalan = false;
+          window.location.reload();
+        }, 3000);
+      } else {
+        tombolKembali.style.display = '';
+      }
+
+      document.getElementById('modal-peringatan').style.display = 'flex';
+    }
+
+    function modalKonfirmasiLeave() {
+      ujianSedangBerjalan = false;
+      dialogSedangTerbuka = false;
+      document.getElementById('modal-peringatan').style.display = 'none';
+      window.location.reload();
+    }
+
+    function modalKembaliUjian() {
+      document.getElementById('modal-peringatan').style.display = 'none';
+      setTimeout(function() {
+        dialogSedangTerbuka = false;
+        blurDariVisibility = false;
+      }, 500);
+    }
+
+    const pesanModal = {
+      judul: "Dilarang meninggalkan laman ujian!",
+      isi: "Aktivitas meninggalkan halaman ujian dideteksi. Berpindah aplikasi, klik luar browser, atau membuka jendela lain tidak diizinkan."
+    };
+
+    document.addEventListener("visibilitychange", function() {
+      if (ujianSedangBerjalan && document.visibilityState === "hidden") {
+        blurDariVisibility = true;
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("blur", function() {
+      if (ujianSedangBerjalan && !dialogSedangTerbuka && !blurDariVisibility) {
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("keyup", function(e) {
+      if (ujianSedangBerjalan) {
+        if (e.key === "PrintScreen" || (e.ctrlKey && e.key === "p")) {
+          pancingPeringatan(
+            "Dilarang mengambil screenshot!",
+            "Dilarang keras mencetak atau mengambil screenshot halaman ujian."
+          );
+        }
+      }
+    });
+  </script>
+
+  <!-- MODAL PERINGATAN CURANG -->
+  <div id="modal-peringatan" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 32, 44, 0.75); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #fff; border-radius: 14px; max-width: 420px; width: 100%; padding: 28px 24px 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); text-align: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+      <div style="font-size: 2.4rem; color: #C53030; margin-bottom: 12px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="modal-judul" style="font-size: 1.1rem; font-weight: 700; color: #C53030; margin-bottom: 10px;"></h3>
+      <p id="modal-isi" style="font-size: 0.9rem; color: #4A5568; line-height: 1.6; margin-bottom: 24px;"></p>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="modalKonfirmasiLeave()" style="flex: 1; padding: 12px; background: transparent; color: #C53030; border: 2px solid #C53030; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i><span>Keluar</span>
+        </button>
+        <button id="tombol-kembali" onclick="modalKembaliUjian()" style="flex: 2; padding: 12px; background: var(--warna-utama); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-arrow-right-to-bracket" style="margin-right: 6px;"></i><span>Kembali</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uji Kompetensi SMAIT — Pilih Mata Pelajaran</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --warna-utama: #2D8C4E;
+      --warna-utama-gelap: #1E6337;
+      --warna-emas: #F5C800;
+      --warna-krem: #F0F7F2;
+      --warna-krem-gelap: #DDF0E4;
+      --warna-aksen: #E84B1A;
+      --warna-teks: #1A1A1A;
+      --warna-teks-redup: #5A5A5A;
+      --warna-putih: #FFFFFF;
+      --font-teks: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius: 12px;
+      --bayangan: 0 4px 20px rgba(45, 140, 78, 0.08);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-teks);
+      background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+      color: var(--warna-teks);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pembungkus-desktop {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    nav.pita-navigasi {
+      background: var(--warna-putih);
+      border-bottom: 2px solid var(--warna-krem-gelap);
+      width: 100%;
+    }
+    .isi-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      gap: 12px;
+    }
+    .logo-nav {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--warna-utama);
+      letter-spacing: 0.5px;
+    }
+    .tombol-kembali {
+      text-decoration: none;
+      color: var(--warna-teks-redup);
+      font-size: 0.88rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+    .tombol-kembali:hover {
+      color: var(--warna-utama);
+    }
+
+    .seksi-konten {
+      padding: 24px 0 40px;
+    }
+
+    .header-jenjang-box {
+      background: var(--warna-utama);
+      border-radius: var(--radius);
+      box-shadow: var(--bayangan);
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: var(--warna-putih);
+    }
+    .badge-emoji-besar {
+      font-size: 2.2rem;
+      background: rgba(255, 255, 255, 0.15);
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .info-header-teks {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+    }
+    .info-header-teks h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0;
+    }
+    .info-header-teks p {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .kartu-mapel-wadah {
+      background: var(--warna-putih);
+      border-radius: var(--radius);
+      box-shadow: var(--bayangan);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 24px;
+    }
+
+    .judul-tengah-divider {
+      text-align: center;
+      color: var(--warna-utama);
+      margin-bottom: 24px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--warna-krem-gelap);
+      padding-bottom: 12px;
+    }
+
+    .grid-mapel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .kartu-item-link {
+      background: var(--warna-putih);
+      border: 2px solid var(--warna-krem);
+      border-radius: 10px;
+      padding: 14px 18px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+    .kartu-item-link:hover {
+      border-color: var(--warna-utama);
+      background: var(--warna-krem);
+    }
+
+    .info-kiri-kartu {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .ikon-mapel {
+      font-size: 1.2rem;
+      color: var(--warna-utama);
+      background: var(--warna-krem);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .kartu-item-link:hover .ikon-mapel {
+      background: var(--warna-putih);
+    }
+    
+    /* Box pembungkus teks agar tatanan nama & sub-info rapat */
+    .konten-teks-mapel {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      text-align: left;
+    }
+    .nama-mapel {
+      font-size: 0.98rem;
+      font-weight: 700;
+    }
+    .sub-detail-mapel {
+      font-size: 0.8rem;
+      color: var(--warna-teks-redup);
+      font-weight: 500;
+    }
+
+    .tombol-mulai {
+      background: var(--warna-utama);
+      color: white;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.2s;
+      text-align: center;
+    }
+    .kartu-item-link:hover .tombol-mulai {
+      background: var(--warna-utama-gelap);
+    }
+
+    footer.kaki-halaman { 
+      background: var(--warna-putih); 
+      padding: 16px 0; 
+      text-align: center; 
+      font-size: 0.8rem; 
+      color: var(--warna-teks-redup);
+      border-top: 2px solid var(--warna-krem-gelap);
+      margin-top: auto;
+    }
+
+    @media (max-width: 576px) {
+      .isi-nav {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+        padding: 12px 0;
+      }
+      .logo-nav {
+        font-size: 0.95rem;
+      }
+      .tombol-kembali {
+        font-size: 0.82rem;
+      }
+
+      .header-jenjang-box {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 14px;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .badge-emoji-besar {
+        width: 48px;
+        height: 48px;
+        font-size: 1.6rem;
+      }
+      .info-header-teks h1 {
+        font-size: 1.15rem;
+      }
+      .info-header-teks p {
+        font-size: 0.82rem;
+      }
+      
+      .kartu-mapel-wadah {
+        padding: 16px;
+      }
+      .judul-tengah-divider {
+        font-size: 1.05rem;
+        margin-bottom: 16px;
+      }
+      .kartu-item-link {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+        gap: 12px;
+        text-align: center;
+      }
+      .info-kiri-kartu {
+        flex-direction: column;
+        gap: 6px;
+        align-items: center;
+      }
+      .konten-teks-mapel {
+        text-align: center;
+      }
+      .nama-mapel {
+        font-size: 0.95rem;
+      }
+      .tombol-mulai {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="pita-navigasi">
+    <div class="pembungkus-desktop">
+      <div class="isi-nav">
+        <span class="logo-nav">Uji Kompetensi Ustadz/ah</span>
+        <a href="index.html" class="tombol-kembali"><i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="pembungkus-desktop">
+    <main class="seksi-konten">
+      
+      <div class="header-jenjang-box">
+        <div class="badge-emoji-besar">🎓</div>
+        <div class="info-header-teks">
+          <h1>Tingkat SMAIT</h1>
+          <p>Silakan pilih mata pelajaran kompetensi Anda untuk memulai ujian asesmen internal.</p>
+        </div>
+      </div>
+
+      <section class="kartu-mapel-wadah">
+        <h2 class="judul-tengah-divider">Pilih Mata Pelajaran Anda</h2>
+        
+        <div class="grid-mapel">
+          
+          <a href="#" class="kartu-item-link">
+            <div class="info-kiri-kartu">
+              <div class="ikon-mapel"><i class="fa-solid fa-book"></i></div>
+              <div class="konten-teks-mapel">
+                <span class="nama-mapel">B. Indonesia</span>
+              </div>
+            </div>
+            <div class="tombol-mulai">Mulai Ujian</div>
+          </a>
+
+          <a href="#" class="kartu-item-link">
+            <div class="info-kiri-kartu">
+              <div class="ikon-mapel"><i class="fa-solid fa-calculator"></i></div>
+              <div class="konten-teks-mapel">
+                <span class="nama-mapel">Matematika</span>
+              </div>
+            </div>
+            <div class="tombol-mulai">Mulai Ujian</div>
+          </a>
+
+          <!-- Rincian IPA SMA -->
+          <a href="#" class="kartu-item-link">
+            <div class="info-kiri-kartu">
+              <div class="ikon-mapel"><i class="fa-solid fa-flask"></i></div>
+              <div class="konten-teks-mapel">
+                <span class="nama-mapel">IPA</span>
+                <span class="sub-detail-mapel">Gabungan Biologi & Kimia</span>
+              </div>
+            </div>
+            <div class="tombol-mulai">Mulai Ujian</div>
+          </a>
+
+          <!-- Rincian IPS SMA -->
+          <a href="#" class="kartu-item-link">
+            <div class="info-kiri-kartu">
+              <div class="ikon-mapel"><i class="fa-solid fa-earth-americas"></i></div>
+              <div class="konten-teks-mapel">
+                <span class="nama-mapel">IPS</span>
+                <span class="sub-detail-mapel">Gabungan Geografi & Ekonomi</span>
+              </div>
+            </div>
+            <div class="tombol-mulai">Mulai Ujian</div>
+          </a>
+
+          <a href="#" class="kartu-item-link">
+            <div class="info-kiri-kartu">
+              <div class="ikon-mapel"><i class="fa-solid fa-language"></i></div>
+              <div class="konten-teks-mapel">
+                <span class="nama-mapel">B. Inggris</span>
+              </div>
+            </div>
+            <div class="tombol-mulai">Mulai Ujian</div>
+          </a>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="kaki-halaman">
+    <p>© 2026 Manajemen BIAS Yaumi Fatimah</p>
+  </footer>
+
+</body>
+</html>
