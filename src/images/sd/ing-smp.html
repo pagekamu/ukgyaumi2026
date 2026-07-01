@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bahasa Inggris SMPIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================
+       TOKEN SISTEM (Nuansa Teal/Turquoise Estetik)
+    =========================== */
+    :root {
+      --warna-utama: #0d9488;
+      --warna-utama-gelap: #0f766e;
+      --warna-krem: #e6f7f4;
+      --warna-krem-gelap: #ccebe5;
+      --warna-putih: #FFFFFF;
+      --warna-teks: #1A202C;
+      --warna-teks-redup: #4a5568;
+
+      /* Status Navigasi Progress */
+      --warna-belum-jawab: #E2E8F0;
+      --warna-sudah-jawab: #C6F6D5;
+      --warna-teks-hijau: #22543D;
+
+      --font-teks: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius: 12px;
+      --bayangan: 0 4px 20px rgba(13, 148, 136, 0.08);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-teks);
+      background-color: #f4fbfb;
+      color: var(--warna-teks);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pembungkus-desktop {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    nav.pita-navigasi {
+      background: var(--warna-putih);
+      border-bottom: 2px solid var(--warna-krem-gelap);
+      padding: 16px 20px;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .isi-nav {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .logo-nav {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--warna-utama);
+      letter-spacing: 0.5px;
+    }
+
+    .seksi-konten {
+      padding: 24px 0 60px;
+    }
+    .kartu-form, .kartu-soal, .kartu-skor {
+      background: var(--warna-putih);
+      border-radius: var(--radius);
+      box-shadow: var(--bayangan);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .judul-sub-kartu {
+      color: var(--warna-utama);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--warna-krem);
+      padding-bottom: 8px;
+    }
+    
+    .grup-input { margin-bottom: 20px; }
+    .grup-input label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+    .grup-input input {
+      width: 100%; padding: 12px; height: 48px; border: 2px solid var(--warna-krem-gelap); border-radius: 8px; outline: none; font-size: 1rem; font-family: inherit;
+    }
+    
+    .grup-input select {
+      width: 100%; 
+      height: 48px;
+      padding: 0 36px 0 12px;
+      border: 2px solid var(--warna-krem-gelap); 
+      border-radius: 8px; 
+      outline: none; 
+      font-size: 1rem; 
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 16px) center;
+      background-size: 16px;
+      background-color: var(--warna-putih);
+    }
+    .grup-input input:focus, .grup-input select:focus { border-color: var(--warna-utama); }
+
+    .tombol-primer {
+      display: inline-block; width: 100%; background: var(--warna-utama); color: white; border: none;
+      padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit;
+    }
+    .tombol-primer:hover { background: var(--warna-utama-gelap); }
+
+    /* ===========================
+       BAR UTILITY CBT ATAS
+    =========================== */
+    #info-ujian { display: none; }
+    .bar-kontrol-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .kotak-timer-cbt {
+      background: var(--warna-putih);
+      border: 1px solid var(--warna-krem-gelap);
+      box-shadow: var(--bayangan);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #dc2626;
+      height: 43px;
+    }
+
+    .btn-trigger-progress {
+      background: var(--warna-putih);
+      color: var(--warna-utama);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--bayangan);
+      height: 43px;
+    }
+    .btn-trigger-progress:hover { background: var(--warna-krem); }
+
+    /* ===========================
+       FLOATING OVERLAY PANEL
+    =========================== */
+    .overlay-progress-cbt {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(26, 32, 44, 0.4);
+      z-index: 9999;
+    }
+    .panel-floating-progress {
+      position: absolute;
+      top: 75px;
+      left: 20px;
+      background: white;
+      width: calc(100% - 40px);
+      max-width: 360px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 18px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    @media (min-width: 768px) {
+      .panel-floating-progress { left: calc((100vw - 720px)/2); }
+    }
+    @media (min-width: 1025px) {
+      .panel-floating-progress { left: calc((100vw - 760px)/2); }
+    }
+
+    .header-panel-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--warna-krem-gelap);
+      padding-bottom: 6px;
+    }
+    .judul-panel-cbt { font-weight: 700; color: var(--warna-utama); font-size: 0.95rem; }
+    .btn-tutup-panel { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--warna-teks-redup); }
+
+    .bar-tab-lembaran {
+      display: flex; gap: 4px; margin-bottom: 12px; background: #EDF2F7; padding: 4px; border-radius: 6px;
+    }
+    .tab-item {
+      flex: 1; padding: 6px 2px; font-size: 0.78rem; font-weight: 700; text-align: center; border: none; background: none; cursor: pointer; border-radius: 4px; color: var(--warna-teks-redup); font-family: inherit;
+    }
+    .tab-item.aktif {
+      background: var(--warna-putih); color: var(--warna-utama); box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .konten-lembaran-soal { display: none; }
+    .konten-lembaran-soal.aktif { display: block; }
+
+    .grid-progress {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    }
+    .kotak-nomor {
+      background: var(--warna-belum-jawab);
+      border: 1px solid #CBD5E0;
+      text-align: center; padding: 8px 0; font-weight: 700;
+      font-size: 0.8rem; border-radius: 6px; cursor: pointer; transition: all 0.1s; color: var(--warna-teks-redup);
+    }
+    .kotak-nomor:hover { border-color: var(--warna-utama); }
+    
+    .kotak-nomor.sudah-isi { 
+      background: var(--warna-sudah-jawab); 
+      border: 1px solid #48BB78; 
+      color: var(--warna-teks-hijau); 
+    }
+
+    /* ===========================
+       WIZARD SOAL CAROUSEL
+    =========================== */
+    #area-ujian { display: none; }
+    .kontainer-item-soal { display: none; }
+    .kontainer-item-soal.aktif { display: block; }
+    
+    .nomor-soal { font-size: 0.8rem; color: var(--warna-utama); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .teks-soal { font-size: 1.05rem; font-weight: 500; line-height: 1.6; margin-bottom: 16px; }
+    
+    .petunjuk-luar-box {
+      font-family: var(--font-teks);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--warna-teks);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .blok-teks-bacaan {
+      background: #fdfdfd; border: 1px solid var(--warna-krem-gelap); border-left: 4px solid var(--warna-utama);
+      border-radius: 8px; padding: 16px 18px; margin-bottom: 16px; font-size: 0.95rem; line-height: 1.8; color: var(--warna-teks);
+    }
+    .blok-teks-bacaan .judul-bacaan {
+      font-weight: 700; color: var(--warna-utama); text-align: center; margin-bottom: 10px; font-size: 1rem;
+    }
+
+    .blok-gambar {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .blok-gambar img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid var(--warna-krem-gelap);
+    }
+    
+    .pilihan-jawaban { display: flex; flex-direction: column; gap: 10px; }
+    .label-pilihan { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border: 1px solid var(--warna-krem-gelap); border-radius: 8px; cursor: pointer; font-size: 0.95rem; background: var(--warna-putih); transition: background 0.15s; line-height: 1.5; }
+    .label-pilihan:hover { background: #f4fbfb; border-color: #CBD5E0; }
+    .label-pilihan input[type="radio"] { accent-color: var(--warna-utama); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+
+    .bar-navigasi-soal { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; border-top: 1px solid var(--warna-krem-gelap); padding-top: 16px; }
+    .btn-nav { flex: 1; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; text-align: center; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
+    .btn-back { background: var(--warna-krem); color: var(--warna-utama); border: 1px solid var(--warna-krem-gelap); }
+    .btn-next { background: var(--warna-utama); color: white; }
+    .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #area-skor { display: none; }
+    .angka-skor { font-size: 4.5rem; font-weight: 700; color: var(--warna-utama); margin: 4px 0 2px; line-height: 1; }
+    .detail-jawaban-benar { font-size: 1.1rem; font-weight: 600; color: var(--warna-teks-redup); margin: 0 0 12px; }
+
+    footer.kaki-halaman { 
+      background: var(--warna-putih); padding: 16px 0; text-align: center; font-size: 0.8rem; color: var(--warna-teks-redup); width: 100%; border-top: 2px solid var(--warna-krem-gelap); margin-top: auto; box-shadow: 0 -2px 10px rgba(0,0,0,0.01);
+    }
+
+    /* Style Tambahan untuk Fitur Show/Hide Password */
+    .pembungkus-password { position: relative; display: flex; align-items: center; }
+    .pembungkus-password input { padding-right: 45px; }
+    .ikon-mata { position: absolute; right: 16px; color: var(--warna-teks-redup); cursor: pointer; font-size: 1.1rem; user-select: none; transition: color 0.2s; }
+    .ikon-mata:hover { color: var(--warna-utama); }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="pita-navigasi">
+    <div class="isi-nav">
+      <span class="logo-nav">Bahasa Inggris SMPIT</span>
+    </div>
+  </nav>
+
+  <div class="pembungkus-desktop">
+    <main class="seksi-konten">
+      
+      <!-- STEP 1: AUTH BIO -->
+      <section id="form-biodata" class="kartu-form">
+        <h2 class="judul-sub-kartu"><i class="fa-solid fa-user-check"></i> Autentikasi Pengajar</h2>
+        <div class="grup-input">
+          <label for="nama">Nama Lengkap (Tanpa Gelar):</label>
+          <input type="text" id="nama" placeholder="Contoh: Nabila Nailatus Sakina" required />
+        </div>
+        <div class="grup-input">
+          <label for="jenjang">Jenjang Dituju / Mengajar:</label>
+          <select id="jenjang" required>
+            <option value="" disabled selected>-- Pilih Jenjang --</option>
+            <option value="Daycare">Daycare</option>
+            <option value="Batita">Batita</option>
+            <option value="PAUD">PAUD</option>
+            <option value="PG">PG</option>
+            <option value="TK">TK</option>
+            <option value="SD">SD</option>
+            <option value="SMP">SMP</option>
+            <option value="SMA">SMA</option>
+          </select>
+        </div>
+        <div class="grup-input">
+          <label for="kode-akses">Kode Akses Ujian:</label>
+          <div class="pembungkus-password">
+            <input type="password" id="kode-akses" placeholder="Masukkan kode dari pengawas" required />
+            <i class="fa-solid fa-eye-slash ikon-mata" id="tombol-mata" onclick="togglePasswordVisibility()"></i>
+          </div>
+        </div>
+        <p id="pesan-kode-salah" style="display:none; color:#C53030; font-size:0.88rem; margin: -12px 0 16px; font-weight:600;">
+          <i class="fa-solid fa-circle-exclamation"></i> Kode akses salah. Silakan coba lagi.
+        </p>
+        <button type="button" class="tombol-primer" onclick="mulaiUjian()">Mulai Sesi Ujian</button>
+      </section>
+
+      <!-- UTILITY HEADER BAR -->
+      <section id="info-ujian" class="bar-kontrol-cbt">
+        <button type="button" class="btn-trigger-progress" onclick="bukaPanelProgress()">
+          <i class="fa-solid fa-list-check"></i> Check Progress
+        </button>
+        <div class="kotak-timer-cbt">
+          <i class="fa-solid fa-hourglass-half"></i> <span id="countdown-timer">90:00</span>
+        </div>
+      </section>
+
+      <!-- FLOATING SLIM TAB PANEL OVERLAY -->
+      <div class="overlay-progress-cbt" id="overlay-nav" onclick="tutupPanelProgressLuar(event)">
+        <div class="panel-floating-progress">
+          <div class="header-panel-cbt">
+            <span class="judul-panel-cbt"><i class="fa-solid fa-compass"></i> Peta Lembar Jawaban</span>
+            <button type="button" class="btn-tutup-panel" onclick="tutupPanelProgress()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          
+          <div class="bar-tab-lembaran">
+            <button type="button" class="tab-item aktif" id="tab-btn-1" onclick="pindahHalamanTab(1)">No. 01 - 20</button>
+            <button type="button" class="tab-item" id="tab-btn-2" onclick="pindahHalamanTab(2)">No. 21 - 40</button>
+            <button type="button" class="tab-item" id="tab-btn-3" onclick="pindahHalamanTab(3)">No. 41 - 50</button>
+          </div>
+          
+          <div class="konten-lembaran-soal aktif" id="lembaran-page-1">
+            <div class="grid-progress" id="grup-progress-awal"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-2">
+            <div class="grid-progress" id="grup-progress-tengah"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-3">
+            <div class="grid-progress" id="grup-progress-akhir"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: AREA CBT CAROUSEL SOAL (50 SOAL) -->
+      <section id="area-ujian">
+        <form id="form-soal" onsubmit="prosesEvaluasi(event)">
+          
+          <!-- ==================== SOAL 01 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="1">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 01</span>
+              <span class="petunjuk-luar-box">The notice is for question number 1 and 2.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-1-2.jpg" alt="Signboard" />
+              </div>
+              <p class="teks-soal">Where do we most probably find the text?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q1" value="A" onchange="updateIndikator(1)"> A. On the beach.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="B" onchange="updateIndikator(1)"> B. On the lake.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="C" onchange="updateIndikator(1)"> C. In the pool.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="D" onchange="updateIndikator(1)"> D. In the pond.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 02 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="2">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 02</span>
+              <span class="petunjuk-luar-box">The notice is for question number 1 and 2.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-1-2.jpg" alt="Signboard" />
+              </div>
+              <p class="teks-soal">What can we infer from reading the text?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q2" value="A" onchange="updateIndikator(2)"> A. Children are prohibited to swim without adult supervision.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="B" onchange="updateIndikator(2)"> B. All adults must be competent in swimming in the pool area.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="C" onchange="updateIndikator(2)"> C. Children must supervise the non-swimmers for their safety.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="D" onchange="updateIndikator(2)"> D. The pool area is under the supervision of adult swimmers.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 03 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="3">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 03</span>
+              <span class="petunjuk-luar-box">This text is for question number 3 to 5.</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Popular Mexican Tortilla Dishes</p>
+                <p>Mexican cuisine is famous for using tortillas, which are thin, flat breads made from corn or wheat flour. There are three popular dishes that use tortillas as their main ingredient: Tacos, Quesadillas, and Enchiladas. These dishes are not only delicious but also very easy to customize with various fillings.</p>
+                <p style="margin-top:8px;">First is the Taco. A taco is a small, hand-sized tortilla folded around a filling. People usually fill it with grilled beef, shredded chicken, or beans. To make it fresh, they add toppings like chopped onions, cilantro, and a squeeze of lime juice. It is a perfect snack or a light meal that you can eat with your hands.</p>
+                <p style="margin-top:8px;">Second is the Quesadilla. The name comes from "queso," which means cheese in Spanish. To make a quesadilla, you put a lot of cheese inside a folded tortilla and grill it until the cheese melts. Sometimes people add mushrooms or pieces of chicken. It is warm, crunchy outside, and very gooey on the inside.</p>
+                <p style="margin-top:8px;">Finally, there are Enchiladas. Unlike tacos, enchiladas are rolled tortillas filled with chicken or beans, then placed in a baking dish. They are covered with a savory chili sauce and sprinkled with cheese, then baked in the oven. Because they are served with a lot of sauce, people usually eat enchiladas using a fork and a knife.</p>
+              </div>
+              <p class="teks-soal">What is the topic of the text?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q3" value="A" onchange="updateIndikator(3)"> A. The process of making enchiladas in Mexico.</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="B" onchange="updateIndikator(3)"> B. The description of some delicious snacks Mexico.</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="C" onchange="updateIndikator(3)"> C. The experience of eating tacos for the first time.</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="D" onchange="updateIndikator(3)"> D. Tips on how to make crispy and delicious tortillas.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 04 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="4">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 04</span>
+              <span class="petunjuk-luar-box">This text is for question number 3 to 5.</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Popular Mexican Tortilla Dishes</p>
+                <p>Mexican cuisine is famous for using tortillas, which are thin, flat breads made from corn or wheat flour. There are three popular dishes that use tortillas as their main ingredient: Tacos, Quesadillas, and Enchiladas. These dishes are not only delicious but also very easy to customize with various fillings.</p>
+                <p style="margin-top:8px;">First is the Taco. A taco is a small, hand-sized tortilla folded around a filling. People usually fill it with grilled beef, shredded chicken, or beans. To make it fresh, they add toppings like chopped onions, cilantro, and a squeeze of lime juice. It is a perfect snack or a light meal that you can eat with your hands.</p>
+                <p style="margin-top:8px;">Second is the Quesadilla. The name comes from "queso," which means cheese in Spanish. To make a quesadilla, you put a lot of cheese inside a folded tortilla and grill it until the cheese melts. Sometimes people add mushrooms or pieces of chicken. It is warm, crunchy outside, and very gooey on the inside.</p>
+                <p style="margin-top:8px;">Finally, there are Enchiladas. Unlike tacos, enchiladas are rolled tortillas filled with chicken or beans, then placed in a baking dish. They are covered with a savory chili sauce and sprinkled with cheese, then baked in the oven. Because they are served with a lot of sauce, people usually eat enchiladas using a fork and a knife.</p>
+              </div>
+              <p class="teks-soal">Based on the text, we know that tortillas ....</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q4" value="A" onchange="updateIndikator(4)"> A. have spicy and sweet taste</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="B" onchange="updateIndikator(4)"> B. are soft both inside and outside</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="C" onchange="updateIndikator(4)"> C. are made of corn or wheat flour</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="D" onchange="updateIndikator(4)"> D. are rarely enjoyed with chili sauce</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 05 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="5">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 05</span>
+              <span class="petunjuk-luar-box">This text is for question number 3 to 5.</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">Popular Mexican Tortilla Dishes</p>
+                <p>Mexican cuisine is famous for using tortillas, which are thin, flat breads made from corn or wheat flour. There three popular dishes that use tortillas as their main ingredient: Tacos, Quesadillas, and Enchiladas. These dishes are not only delicious but also very easy to customize with various fillings.</p>
+                <p style="margin-top:8px;">First is the Taco. A taco is a small, hand-sized tortilla folded around a filling. People usually fill it with grilled beef, shredded chicken, or beans. To make it fresh, they add toppings like chopped onions, cilantro, and a squeeze of lime juice. It is a perfect snack or a light meal that you can eat with your hands.</p>
+                <p style="margin-top:8px;">Second is the Quesadilla. The name comes from "queso," which means cheese in Spanish. To make a quesadilla, you put a lot of cheese inside a folded tortilla and grill it until the cheese melts. Sometimes people add mushrooms or pieces of chicken. It is warm, crunchy outside, and very <u>gooey</u> on the inside.</p>
+                <p style="margin-top:8px;">Finally, there are Enchiladas. Unlike tacos, enchiladas are rolled tortillas filled with chicken or beans, then placed in a baking dish. They are covered with a savory chili sauce and sprinkled with cheese, then baked in the oven. Because they are served with a lot of sauce, people usually eat enchiladas using a fork and a knife.</p>
+              </div>
+              <p class="teks-soal">“…crunchy on the outside, and very <u>gooey</u> on the inside.” (paragraph 3)<br>The word "gooey" is closest in meaning to ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q5" value="A" onchange="updateIndikator(5)"> A. greasy</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="B" onchange="updateIndikator(5)"> B. sugary</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="C" onchange="updateIndikator(5)"> C. salty</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="D" onchange="updateIndikator(5)"> D. sticky</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 06 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="6">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 06</span>
+              <span class="petunjuk-luar-box">This text is for question number 6 to 8.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-6-8.jpg" alt="Recipe" />
+              </div>
+              <p class="teks-soal">What is the writer’s purpose in writing the text?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q6" value="A" onchange="updateIndikator(6)"> A. To describe how to make fresh lemonade.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="B" onchange="updateIndikator(6)"> B. To persuade the readers to try a new recipe.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="C" onchange="updateIndikator(6)"> C. To inform the readers how easy to make lemonade is.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="D" onchange="updateIndikator(6)"> D. To tell the readers about the materials needed to make lemonade.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 07 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="7">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 07</span>
+              <span class="petunjuk-luar-box">This text is for question number 6 to 8.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-6-8.jpg" alt="Recipe" />
+              </div>
+              <p class="teks-soal">What should we do before we serve lemonade?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q7" value="A" onchange="updateIndikator(7)"> A. Pour it into a big jug.</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="B" onchange="updateIndikator(7)"> B. Stir all the ingredients well.</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="C" onchange="updateIndikator(7)"> C. Decorate it with lemon slices.</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="D" onchange="updateIndikator(7)"> D. Taste it and check the sweetness.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 08 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="8">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 08</span>
+              <span class="petunjuk-luar-box">This text is for question number 6 to 8.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-6-8.jpg" alt="Recipe" />
+              </div>
+              <p class="teks-soal">“… until <u>it</u> begins to dissolve.” (Step 2)<br>The word “it” refers to ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q8" value="A" onchange="updateIndikator(8)"> A. pitcher</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="B" onchange="updateIndikator(8)"> B. cup</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="C" onchange="updateIndikator(8)"> C. lemon</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="D" onchange="updateIndikator(8)"> D. sugar</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 09 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="9">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 09</span>
+              <span class="petunjuk-luar-box">This text is for question number 9 to 11.</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">My Home Sweet Home</p>
+                <p>I live in a beautiful house in Central Java. It is a traditional Javanese house called a Joglo. My house is mostly made of strong teak wood. It looks very unique and artistic compared to the modern houses in my neighborhood.</p>
+                <p style="margin-top:8px;">The most interesting part of my house is the roof. The roof is very tall and shaped like a mountain. In the middle of the house, there are four main wooden pillars called Soko Guru. These pillars are very strong because they support the heavy roof. My father says that these pillars represent strength and balance.</p>
+                <p style="margin-top:8px;">In front of the house, there is a wide-open area called the Pendopo. We don’t have walls there, so the air feels very fresh and cool. My family usually uses the Pendopo to welcome guests or to practice traditional dances. Behind the Pendopo, there is the Pringgitan and the inner rooms for sleeping.</p>
+                <p style="margin-top:8px;">I love my Joglo house because it is cool even when the weather is hot outside. It is not just a place to live; it is also part of our great culture. I always help my parents to clean the wooden carvings to keep them beautiful.</p>
+              </div>
+              <p class="teks-soal">The writer’s intention in writing the text is ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q9" value="A" onchange="updateIndikator(9)"> A. to describe how the writer’s family feels about their traditional home</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="B" onchange="updateIndikator(9)"> B. to persuade the writer’s friends to stop by at his/her Joglo house</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="C" onchange="updateIndikator(9)"> C. to tell about the writer’s experience living in a small village</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="D" onchange="updateIndikator(9)"> D. to amuse the readers with the image of the unique house</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 10 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="10">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 10</span>
+              <span class="petunjuk-luar-box">This text is for question number 9 to 11.</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">My Home Sweet Home</p>
+                <p>I live in a beautiful house in Central Java. It is a traditional Javanese house called a Joglo. My house is mostly made of strong teak wood. It looks very unique and artistic compared to the modern houses in my neighborhood.</p>
+                <p style="margin-top:8px;">The most interesting part of my house is the roof. The roof is very tall and shaped like a mountain. In the middle of the house, there are four main wooden pillars called Soko Guru. These pillars are very strong because they support the heavy roof. My father says that these pillars represent strength and balance.</p>
+                <p style="margin-top:8px;">In front of the house, there is a wide-open area called the Pendopo. We don’t have walls there, so the air feels very fresh and cool. My family usually uses the Pendopo to welcome guests or to practice traditional dances. Behind the Pendopo, there is the Pringgitan and the inner rooms for sleeping.</p>
+                <p style="margin-top:8px;">I love my Joglo house because it is cool even when the weather is hot outside. It is not just a place to live; it is also part of our great culture. I always help my parents to clean the wooden carvings to keep them beautiful.</p>
+              </div>
+              <p class="teks-soal">According to the text, what is the function of the Pendopo?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q10" value="A" onchange="updateIndikator(10)"> A. To hold traditional dance performances.</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="B" onchange="updateIndikator(10)"> B. To welcome guests or practice dances.</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="C" onchange="updateIndikator(10)"> C. To store old wooden carvings.</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="D" onchange="updateIndikator(10)"> D. To sleep during the night.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 11 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="11">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 11</span>
+              <span class="petunjuk-luar-box">This text is for question number 9 to 11.</span>
+              <div class="blok-teks-bacaan">
+                <p class="judul-bacaan">My Home Sweet Home</p>
+                <p>I live in a beautiful house in Central Java. It is a traditional Javanese house called a Joglo. My house is mostly made of strong teak wood. It looks very unique and artistic compared to the modern houses in my neighborhood.</p>
+                <p style="margin-top:8px;">The most interesting part of my house is the roof. The roof is very tall and shaped like a mountain. In the middle of the house, there are four main wooden pillars called Soko Guru. These pillars are very strong because they support the heavy roof. My father says that these pillars represent strength and balance.</p>
+                <p style="margin-top:8px;">In front of the house, there is a wide-open area called the Pendopo. We don’t have walls there, so the air feels very fresh and cool. My family usually uses the Pendopo to welcome guests or to practice traditional dances. Behind the Pendopo, there is the Pringgitan and the inner rooms for sleeping.</p>
+                <p style="margin-top:8px;">I love my Joglo house because it is cool even when the weather is hot outside. It is not just a place to live; it is also part of our great culture. I always help my parents to clean the wooden carvings to keep them beautiful.</p>
+              </div>
+              <p class="teks-soal">"These pillars are very strong because they <u>support</u> the heavy roof." (Paragraph 2).<br>The word "support" means ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q11" value="A" onchange="updateIndikator(11)"> A. To break something.</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="B" onchange="updateIndikator(11)"> B. To hold something up.</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="C" onchange="updateIndikator(11)"> C. To make something fall.</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="D" onchange="updateIndikator(11)"> D. To decorate something.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 12 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="12">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 12</span>
+              <span class="petunjuk-luar-box">This text is for question number 12 and 13.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-12-13.jpg" alt="Notice" />
+              </div>
+              <p class="teks-soal">The intention of writing the text is ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q12" value="A" onchange="updateIndikator(12)"> A. to remind students to follow the rules</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="B" onchange="updateIndikator(12)"> B. to ask students to climb the mountains</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="C" onchange="updateIndikator(12)"> C. to tell students to work together carefully</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="D" onchange="updateIndikator(12)"> D. to prohibit students from making a loud noise</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 13 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="13">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 13</span>
+              <span class="petunjuk-luar-box">This text is for question number 12 and 13.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-12-13.jpg" alt="Notice" />
+              </div>
+              <p class="teks-soal">Where is the notice commonly found?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q13" value="A" onchange="updateIndikator(13)"> A. At a school yard.</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="B" onchange="updateIndikator(13)"> B. At the janitor's room.</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="C" onchange="updateIndikator(13)"> C. On a wall magazine.</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="D" onchange="updateIndikator(13)"> D. On a classroom wall.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 14 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="14">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 14</span>
+              <span class="petunjuk-luar-box">This text is for question number 14 and 15.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-14-15.jpg" alt="Card" />
+              </div>
+              <p class="teks-soal">From the text, we know that Fino …</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q14" value="A" onchange="updateIndikator(14)"> A. has just created a trophy.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="B" onchange="updateIndikator(14)"> B. is Gerard’s most reliable friend.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="C" onchange="updateIndikator(14)"> C. has unlimited talent and dedication.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="D" onchange="updateIndikator(14)"> D. has just won a martial arts competition.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 15 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="15">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 15</span>
+              <span class="petunjuk-luar-box">This text is for question number 14 and 15.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-14-15.jpg" alt="Card" />
+              </div>
+              <p class="teks-soal">“<u>Your</u> success is a reflection of your talent, ….”<br>The word “Your” refers to ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q15" value="A" onchange="updateIndikator(15)"> A. Gerard</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="B" onchange="updateIndikator(15)"> B. Fino</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="C" onchange="updateIndikator(15)"> C. Gerard and Fino</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="D" onchange="updateIndikator(15)"> D. All Gerard’s buddy</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 16 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="16">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 16</span>
+              <span class="petunjuk-luar-box">This text is for question number 16 to 19.</span>
+              <div class="blok-teks-bacaan">
+                <p>Last year, my family and I went to Jember to watch the famous Jember Fashion Carnaval (JFC). We arrived at Sudirman Central Park early in the morning to get the best spot. The atmosphere was very lively, and many people from different cities were already there, waiting excitedly for the parade to start.</p>
+                <p style="margin-top:8px;">When the show finally began, I was amazed by the costumes. The participants wore magnificent outfits with various themes, such as traditional culture and futuristic designs. They walked confidently along the 3.6-kilometer runway. I couldn't stop taking pictures of the performers who wore giant wings and colorful ornaments.</p>
+                <p style="margin-top:8px;">In the middle of the event, the sun felt very hot, but we did not care because the performances were so entertaining. We cheered for our favorite costumes and enjoyed the loud music. I even had a chance to take a selfie with one of the talented performers during a short break. It was a dream come true for me.</p>
+                <p style="margin-top:8px;">We went home in the evening, feeling exhausted but very happy. Watching JFC in person was much better than seeing it on television. It was an unforgettable experience, and I hope I can visit Jember again to watch the next festival.</p>
+              </div>
+              <p class="teks-soal">What is the writer’s intention in writing the text?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q16" value="A" onchange="updateIndikator(16)"> A. To explain the process of preparing the carnival costumes.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="B" onchange="updateIndikator(16)"> B. To describe the creativity of the costumes at the carnival.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="C" onchange="updateIndikator(16)"> C. To share the writer’s experience of watching a carnival.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="D" onchange="updateIndikator(16)"> D. To promote the greatness of Jember Fashion Carnaval.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 17 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="17">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 17</span>
+              <span class="petunjuk-luar-box">This text is for question number 16 to 19.</span>
+              <div class="blok-teks-bacaan">
+                <p>Last year, my family and I went to Jember to watch the famous Jember Fashion Carnaval (JFC). We arrived at Sudirman Central Park early in the morning to get the best spot. The atmosphere was very lively, and many people from different cities were already there, waiting excitedly for the parade to start.</p>
+                <p style="margin-top:8px;">When the show finally began, I was amazed by the costumes. The participants wore magnificent outfits with various themes, such as traditional culture and futuristic designs. They walked confidently along the 3.6-kilometer runway. I couldn't stop taking pictures of the performers who wore giant wings and colorful ornaments.</p>
+                <p style="margin-top:8px;">In the middle of the event, the sun felt very hot, but we did not care because the performances were so entertaining. We cheered for our favorite costumes and enjoyed the loud music. I even had a chance to take a selfie with one of the talented performers during a short break. It was a dream come true for me.</p>
+                <p style="margin-top:8px;">We went home in the evening, feeling exhausted but very happy. Watching JFC in person was much better than seeing it on television. It was an unforgettable experience, and I hope I can visit Jember again to watch the next festival.</p>
+              </div>
+              <p class="teks-soal">Why did the writer feel the experience was "a dream come true"?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q17" value="A" onchange="updateIndikator(17)"> A. Because the weather was very hot and sunny.</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="B" onchange="updateIndikator(17)"> B. Because the writer’s family could go home early.</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="C" onchange="updateIndikator(17)"> C. Because the writer enjoyed the music at the carnival.</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="D" onchange="updateIndikator(17)"> D. Because the writer could take a photo with a performer.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 18 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="18">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 18</span>
+              <span class="petunjuk-luar-box">This text is for question number 16 to 19.</span>
+              <div class="blok-teks-bacaan">
+                <p>Last year, my family and I went to Jember to watch the famous Jember Fashion Carnaval (JFC). We arrived at Sudirman Central Park early in the morning to get the best spot. The atmosphere was very lively, and many people from different cities Contracting center are already there, waiting excitedly for the parade to start.</p>
+                <p style="margin-top:8px;">When the show finally began, I was amazed by the costumes. The participants wore magnificent outfits with various themes, such as traditional culture and futuristic designs. They walked confidently along the 3.6-kilometer runway. I couldn't stop taking pictures of the performers who wore giant wings and colorful ornaments.</p>
+                <p style="margin-top:8px;">In the middle of the event, the sun felt very hot, but we did not care because the performances were so entertaining. We cheered for our favorite costumes and enjoyed the loud music. I even had a chance to take a selfie with one of the talented performers during a short break. It was a dream come true for me.</p>
+                <p style="margin-top:8px;">We went home in the evening, feeling exhausted but very happy. Watching JFC in person was much better than seeing it on television. It was an unforgettable experience, and I hope I can visit Jember again to watch the next festival.</p>
+              </div>
+              <p class="teks-soal">The second paragraph tells us about ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q18" value="A" onchange="updateIndikator(18)"> A. the distance of the parade runway</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="B" onchange="updateIndikator(18)"> B. the reason why the writer arrived early</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="C" onchange="updateIndikator(18)"> C. the amazing costumes worn by the performers</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="D" onchange="updateIndikator(18)"> D. the writer’s experience of taking photos at the carnival</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 19 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="19">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 19</span>
+              <span class="petunjuk-luar-box">This text is for question number 16 to 19.</span>
+              <div class="blok-teks-bacaan">
+                <p>Last year, my family and I went to Jember to watch the famous Jember Fashion Carnaval (JFC). We arrived at Sudirman Central Park early in the morning to get the best spot. The atmosphere was very lively, and many people from different cities were already there, waiting excitedly for the parade to start.</p>
+                <p style="margin-top:8px;">When the show finally began, I was amazed by the costumes. The participants wore magnificent outfits with various themes, such as traditional culture and futuristic designs. They walked <u>confidently</u> along the 3.6-kilometer runway. I couldn't stop taking pictures of the performers who wore giant wings and colorful ornaments.</p>
+                <p style="margin-top:8px;">In the middle of the event, the sun felt very hot, but we did not care because the performances were so entertaining. We cheered for our favorite costumes and enjoyed the loud music. I even had a chance to take a selfie with one of the talented performers during a short break. It was a dream come true for me.</p>
+                <p style="margin-top:8px;">We went home in the evening, feeling exhausted but very happy. Watching JFC in person was much better than seeing it on television. It was an unforgettable experience, and I hope I can visit Jember again to watch the next festival.</p>
+              </div>
+              <p class="teks-soal">“They walked <u>confidently</u> along the 3.6-kilometer runway.” (paragraph 2)<br>The underlined word ‘confidently’ means ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q19" value="A" onchange="updateIndikator(19)"> A. with anxiety and doubt</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="B" onchange="updateIndikator(19)"> B. in a very elegant manner</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="C" onchange="updateIndikator(19)"> C. in a slow and graceful way</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="D" onchange="updateIndikator(19)"> D. with a feeling of self-assurance</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 20 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="20">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 20</span>
+              <span class="petunjuk-luar-box">This poster is for questions 20 and 21.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-20-21.jpg" alt="Poster Save Planet" />
+              </div>
+              <p class="teks-soal">What is the goal of making the poster?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q20" value="A" onchange="updateIndikator(20)"> A. To give information to the readers on the importance of saving the earth.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="B" onchange="updateIndikator(20)"> B. To persuade people to do some acts on water and energy saving.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="C" onchange="updateIndikator(20)"> C. To tell information about the benefits on using reusable bottles.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="D" onchange="updateIndikator(20)"> D. To amuse the readers with a beautiful poster drawing.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 21 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="21">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 21</span>
+              <span class="petunjuk-luar-box">This poster is for questions 20 and 21.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-20-21.jpg" alt="Poster Save Planet" />
+              </div>
+              <p class="teks-soal">According to the poster, what can people do to help the Earth?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q21" value="A" onchange="updateIndikator(21)"> A. Cut down more trees.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="B" onchange="updateIndikator(21)"> B. Turn off all the lights at home.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="C" onchange="updateIndikator(21)"> C. Use more plastic bags and bottles.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="D" onchange="updateIndikator(21)"> D. Use reusable bags and recycle waste.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 22 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="22">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 22</span>
+              <span class="petunjuk-luar-box">This text is for question number 22 and 25.</span>
+              <div class="blok-teks-bacaan">
+                <p>One sunny morning, a Buffalo was walking near the river. He heard a loud cry for help. He followed the sound and found a Crocodile trapped under a heavy fallen tree branch. The Crocodile looked weak and pleaded, "Please, kind Buffalo, help me! This branch is crushing my back. I promise I will not hurt you."</p>
+                <p style="margin-top:8px;">The Buffalo felt sorry for the Crocodile. He used his strong horns to lift the heavy branch and freed the Crocodile. However, as soon as the Crocodile was free, he suddenly bit the Buffalo’s leg. "I am very hungry, Buffalo! You will be my lunch!" the Crocodile hissed. The Buffalo cried in pain and sadness, "Is this how you repay my kindness?"</p>
+                <p style="margin-top:8px;">Suddenly, a Mousedeer arrived. He listened to their stories. "Wait," the Mousedeer said calmly. "I cannot believe that such a heavy branch could be lifted by a Buffalo. And I cannot believe this Crocodile was trapped under it. Can you show me exactly how it happened?" The Crocodile, wanting to prove he wasn't lying, agreed to go back under the branch. The Buffalo then placed the heavy branch back onto the Crocodile’s back.</p>
+                <p style="margin-top:8px;">"Now, Buffalo, let's go!" the Mousedeer whispered. The Crocodile realized he was trapped again and started crying for help, but the Mousedeer and the Buffalo walked away. The Mousedeer said, "Remember, Buffalo, we should help others, but we must also be careful with those who are dishonest."</p>
+              </div>
+              <p class="teks-soal">What does the text mainly talk about?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q22" value="A" onchange="updateIndikator(22)"> A. A naive buffalo and an ungrateful crocodile.</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="B" onchange="updateIndikator(22)"> B. A clever mousedeer and its silly friends.</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="C" onchange="updateIndikator(22)"> C. A buffalo’s trick to get out of trouble.</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="D" onchange="updateIndikator(22)"> D. A sly crocodile and a wise buffalo.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 23 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="23">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 23</span>
+              <span class="petunjuk-luar-box">This text is for question number 22 and 25.</span>
+              <div class="blok-teks-bacaan">
+                <p>One sunny morning, a Buffalo was walking near the river. He heard a loud cry for help. He followed the sound and found a Crocodile trapped under a heavy fallen tree branch. The Crocodile looked weak and pleaded, "Please, kind Buffalo, help me! This branch is crushing my back. I promise I will not hurt you."</p>
+                <p style="margin-top:8px;">The Buffalo felt sorry for the Crocodile. He used his strong horns to lift the heavy branch and freed the Crocodile. However, as soon as the Crocodile was free, he suddenly bit the Buffalo’s leg. "I am very hungry, Buffalo! You will be my lunch!" the Crocodile hissed. The Buffalo cried in pain and sadness, "Is this how you repay my kindness?"</p>
+                <p style="margin-top:8px;">Suddenly, a Mousedeer arrived. He listened to their stories. "Wait," the Mousedeer said calmly. "I cannot believe that such a heavy branch could be lifted by a Buffalo. And I cannot believe this Crocodile was trapped under it. Can you show me exactly how it happened?" The Crocodile, wanting to prove he wasn't lying, agreed to go back under the branch. The Buffalo then placed the heavy branch back onto the Crocodile’s back.</p>
+                <p style="margin-top:8px;">"Now, Buffalo, let's go!" the Mousedeer whispered. The Crocodile realized he was trapped again and started crying for help, but the Mousedeer and the Buffalo walked away. The Mousedeer said, "Remember, Buffalo, we should help others, but we must also be careful with those who are dishonest."</p>
+              </div>
+              <p class="teks-soal">The Buffalo lifted the heavy branch from the Crocodile’s back … he felt sorry for the Crocodile.</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q23" value="A" onchange="updateIndikator(23)"> A. although</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="B" onchange="updateIndikator(23)"> B. so that</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="C" onchange="updateIndikator(23)"> C. because</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="D" onchange="updateIndikator(23)"> D. in order to</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 24 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="24">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 24</span>
+              <span class="petunjuk-luar-box">This text is for question number 22 and 25.</span>
+              <div class="blok-teks-bacaan">
+                <p>One sunny morning, a Buffalo was walking near the river. He heard a loud cry for help. He followed the sound and found a Crocodile trapped under a heavy fallen tree branch. The Crocodile looked weak and pleaded, "Please, kind Buffalo, help me! This branch is crushing my back. I promise I will not hurt you."</p>
+                <p style="margin-top:8px;">The Buffalo felt sorry for the Crocodile. He used his strong horns to lift the heavy branch and freed the Crocodile. However, as soon as the Crocodile was free, he suddenly bit the Buffalo’s leg. "I am very hungry, Buffalo! You will be my lunch!" the Crocodile hissed. The Buffalo cried in pain and sadness, "Is this how you repay my kindness?"</p>
+                <p style="margin-top:8px;">Suddenly, a Mousedeer arrived. He listened to their stories. "Wait," the Mousedeer said calmly. "I cannot believe that such a heavy branch could be lifted by a Buffalo. And I cannot believe this Crocodile was trapped under it. Can you show me exactly how it happened?" The Crocodile, wanting to prove he wasn't lying, agreed to go back under the branch. The Buffalo then placed the heavy branch back onto the Crocodile’s back.</p>
+                <p style="margin-top:8px;">"Now, Buffalo, let's go!" the Mousedeer <u>whispered</u>. The Crocodile realized he was trapped again and started crying for help, but the Mousedeer and the Buffalo walked away. The Mousedeer said, "Remember, Buffalo, we should help others, but we must also be careful with those who are dishonest."</p>
+              </div>
+              <p class="teks-soal">What is the moral lesson of the story?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q24" value="A" onchange="updateIndikator(24)"> A. We must always trust everyone we meet in the forest.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="B" onchange="updateIndikator(24)"> B. Don't be ungrateful to those who have helped you.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="C" onchange="updateIndikator(24)"> C. Strength is more important than intelligence.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="D" onchange="updateIndikator(24)"> D. Helping others will always bring us bad luck.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 25 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="25">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 25</span>
+              <span class="petunjuk-luar-box">This text is for question number 22 and 25.</span>
+              <div class="blok-teks-bacaan">
+                <p>One sunny morning, a Buffalo was walking near the river. He heard a loud cry for help. He followed the sound and found a Crocodile trapped under a heavy fallen tree branch. The Crocodile looked weak and pleaded, "Please, kind Buffalo, help me! This branch is crushing my back. I promise I will not hurt you."</p>
+                <p style="margin-top:8px;">The Buffalo felt sorry for the Crocodile. He used his strong horns to lift the heavy branch and freed the Crocodile. However, as soon as the Crocodile was free, he suddenly bit the Buffalo’s leg. "I am very hungry, Buffalo! You will be my lunch!" the Crocodile hissed. The Buffalo cried in pain and sadness, "Is this how you repay my kindness?"</p>
+                <p style="margin-top:8px;">Suddenly, a Mousedeer arrived. He listened to their stories. "Wait," the Mousedeer said calmly. "I cannot believe that such a heavy branch could be lifted by a Buffalo. And I cannot believe this Crocodile was trapped under it. Can you show me exactly how it happened?" The Crocodile, wanting to prove he wasn't lying, agreed to go back under the branch. The Buffalo then placed the heavy branch back onto the Crocodile’s back.</p>
+                <p style="margin-top:8px;">"Now, Buffalo, let's go!" the Mousedeer <u>whispered</u>. The Crocodile realized he was trapped again and started crying for help, but the Mousedeer and the Buffalo walked away. The Mousedeer said, "Remember, Buffalo, we should help others, but we must also be careful with those who are dishonest."</p>
+              </div>
+              <p class="teks-soal">“"Now, Buffalo, let's go!" the Mousedeer <u>whispered</u>.” (paragraph 4)<br>The word ‘whispered’ is closest in meaning to ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q25" value="A" onchange="updateIndikator(25)"> A. shouted</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="B" onchange="updateIndikator(25)"> B. muttered</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="C" onchange="updateIndikator(25)"> C. screamed</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="D" onchange="updateIndikator(25)"> D. barked</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 26 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="26">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 26</span>
+              <span class="petunjuk-luar-box">Text for number 26.</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Dito:</strong> I have the TKA tryout this afternoon. I really hope I can get a good score.</p>
+                <p><strong>Rani:</strong> I’m sure you will do your best. I wish you good luck for the test.</p>
+                <p><strong>Dito:</strong> Thanks, Rani!</p>
+                <p><strong>Rani:</strong> Pleasure.</p>
+              </div>
+              <p class="teks-soal">What does Rani wish for Dito?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q26" value="A" onchange="updateIndikator(26)"> A. That Dito can answer all questions in the tryout test</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="B" onchange="updateIndikator(26)"> B. That Dito gets a good score on the TKA tryout test</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="C" onchange="updateIndikator(26)"> C. That Dito passes the entrance test to senior school</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="D" onchange="updateIndikator(26)"> D. That Dito feels happy when doing the tryout test</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 27 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="27">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 27</span>
+              <p class="teks-soal">Fill in the blank with the correct form of the adjective in the comparative degree:<br>This problem is … (bad) than the one in the previous test.</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q27" value="A" onchange="updateIndikator(27)"> A. baddest</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="B" onchange="updateIndikator(27)"> B. badder</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="C" onchange="updateIndikator(27)"> C. worse</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="D" onchange="updateIndikator(27)"> D. worst</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 28 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="28">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 28</span>
+              <p class="teks-soal">Choose the correct phrasal verb to complete the sentence:<br>The class monitor decided to … the group discussion because most students had to join the school rehearsal.</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q28" value="A" onchange="updateIndikator(28)"> A. call off</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="B" onchange="updateIndikator(28)"> B. find out</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="C" onchange="updateIndikator(28)"> C. carry on</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="D" onchange="updateIndikator(28)"> D. put away</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 29 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="29">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 29</span>
+              <p class="teks-soal">Change the active sentence into the passive voice.<br>“The committee announced the winners at the end of the event.”</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q29" value="A" onchange="updateIndikator(29)"> A. The winners announced by the committee at the end of the event.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="B" onchange="updateIndikator(29)"> B. The winners are announced by the committee at the end of the event.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="C" onchange="updateIndikator(29)"> C. The winners was announced by the committee at the end of the event.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="D" onchange="updateIndikator(29)"> D. The winners were announced by the committee at the end of the event.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 30 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="30">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 30</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Salsa:</strong> What do you think of the MBG program at our school?</p>
+                <p><strong>Raka:</strong> I think it’s really comfortable. The system is simple but well-organized. What about you?</p>
+                <p><strong>Salsa:</strong> I like it too. The food is delicious and healthy.</p>
+                <p><strong>Raka:</strong> Yes, especially the chicken and vegetables!</p>
+              </div>
+              <p class="teks-soal">What can be inferred from Raka’s opinion about the MBG program?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q30" value="A" onchange="updateIndikator(30)"> A. He thinks the program is difficult for students to follow.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="B" onchange="updateIndikator(30)"> B. He believes the program runs in a neat and simple way.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="C" onchange="updateIndikator(30)"> C. He feels the food menu is not interesting for students.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="D" onchange="updateIndikator(30)"> D. He joins the program because many friends participate.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 31 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="31">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 31</span>
+              <p class="teks-soal">They were walking home ___ a loud thunderclap echoed through the sky.</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q31" value="A" onchange="updateIndikator(31)"> A. after</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="B" onchange="updateIndikator(31)"> B. while</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="C" onchange="updateIndikator(31)"> C. when</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="D" onchange="updateIndikator(31)"> D. before</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 32 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="32">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 32</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 32-35.</span>
+              <div class="blok-teks-bacaan">
+                <p>Maleo birds are native to Sulawesi and the nearby smaller island of Buton in Indonesia. They are found in tropical lowland and hill forests, but they nest in open sandy areas, volcanic soils, or beaches. They are usually shy and often silent, except around nesting grounds, where they build communal nests. The maleo's egg is very large, about five times as large as a domestic chicken’s egg. The female lays and covers each egg in a deep hole in the sand, allowing incubation to occur through solar or volcanic heating. Their diet consists mainly of fruits, seeds, mollusks, ants, termites, beetles, and other small invertebrates. They must find food independently and defend themselves from predators such as monitor lizards, reticulated pythons, wild pigs, and cats.</p>
+              </div>
+              <p class="teks-soal">The text tells us about ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q32" value="A" onchange="updateIndikator(32)"> A. maleo birds’ habitat</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="B" onchange="updateIndikator(32)"> B. the size of maleo birds’ eggs</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="C" onchange="updateIndikator(32)"> C. the characteristics of maleo birds</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="D" onchange="updateIndikator(32)"> D. the nesting process of maleo birds</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 33 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="33">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 33</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 32-35.</span>
+              <div class="blok-teks-bacaan">
+                <p>Maleo birds are native to Sulawesi and the nearby smaller island of Buton in Indonesia. They are found in tropical lowland and hill forests, but they nest in open sandy areas, volcanic soils, or beaches. They are usually shy and often silent, except around nesting grounds, where they build communal nests. The maleo's egg is very large, about five times as large as a domestic chicken’s egg. The female lays and covers each egg in a deep hole in the sand, allowing incubation to occur through solar or volcanic heating. Their diet consists mainly of fruits, seeds, mollusks, ants, termites, beetles, and other small invertebrates. They must find food independently and defend <u>themselves</u> from predators such as monitor lizards, reticulated pythons, wild pigs, and cats.</p>
+              </div>
+              <p class="teks-soal">“They must find food independently and defend <u>themselves</u> from predators …”<br>The word themselves refers to ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q33" value="A" onchange="updateIndikator(33)"> A. small invertebrates</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="B" onchange="updateIndikator(33)"> B. ants and termites</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="C" onchange="updateIndikator(33)"> C. maleo birds</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="D" onchange="updateIndikator(33)"> D. predators</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 34 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="34">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 34</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 32-35.</span>
+              <div class="blok-teks-bacaan">
+                <p>Maleo birds are native to Sulawesi and the nearby smaller island of Buton in Indonesia. They are found in tropical lowland and hill forests, but they nest in open sandy areas, volcanic soils, or beaches. They are usually shy and often silent, except around nesting grounds, where they build communal nests. The maleo's egg is very large, about five times as large as a domestic chicken’s egg. The female lays and covers each egg in a deep hole in the sand, allowing incubation to occur through solar or volcanic heating. Their diet consists mainly of fruits, seeds, mollusks, ants, termites, beetles, and other small invertebrates. They must find food independently and defend themselves from predators such as monitor lizards, reticulated pythons, wild pigs, and cats.</p>
+              </div>
+              <p class="teks-soal">The following statements are true, except ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q34" value="A" onchange="updateIndikator(34)"> A. Maleo birds live in forests in Sulawesi and Buton.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="B" onchange="updateIndikator(34)"> B. Maleo birds depend on humans to find their food.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="C" onchange="updateIndikator(34)"> C. Maleo birds use natural heat to incubate their eggs.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="D" onchange="updateIndikator(34)"> D. Maleo birds lay their eggs in sandy or volcanic areas.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 35 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="35">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 35</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 32-35.</span>
+              <div class="blok-teks-bacaan">
+                <p>Maleo birds are native to Sulawesi and the nearby smaller island of Buton in Indonesia. They are found in tropical lowland and hill forests, but they nest in open sandy areas, volcanic soils, or beaches. They are usually shy and often silent, except around nesting grounds, where they build communal nests. The maleo's egg is very large, about five times as large as a domestic chicken’s egg. The female lays and covers each egg in a deep hole in the sand, allowing <u>incubation</u> to occur through solar or volcanic heating. Their diet consists mainly of fruits, seeds, mollusks, ants, termites, beetles, and other small invertebrates. They must find food independently and defend themselves from predators such as monitor lizards, reticulated pythons, wild pigs, and cats.</p>
+              </div>
+              <p class="teks-soal">“… allows the <u>incubation</u> to take place …”<br>The word "incubation" is closest in meaning to ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q35" value="A" onchange="updateIndikator(35)"> A. warming</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="B" onchange="updateIndikator(35)"> B. covering</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="C" onchange="updateIndikator(35)"> C. hatching</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="D" onchange="updateIndikator(35)"> D. protection</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 36 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="36">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 36</span>
+              <span class="petunjuk-luar-box">The text below is for numbers 36– 39.</span>
+              <div class="blok-teks-bacaan">
+                <p>As Galang and Princess Althea walked deeper into the misty forest, they heard a strange tapping sound and found a field of moving stones called the Shifting Steps. Princess Althea said the stones would open only if arranged correctly. Galang studied the symbols, placed them in the right order, and a narrow path appeared.</p>
+                <p style="margin-top:8px;">Soon, they saw a small, winged creature trapped in a net. Galang freed it with his sword, and the grateful creature offered to guide them through a hidden trail toward the Silverblossom. It led them safely through the forest and told them about an ancient gate at the top of a hill.</p>
+                <p style="margin-top:8px;">After thanking the creature, they climbed the hill and found a vine-covered stone gate guarded by a lion statue with glowing eyes. The statue asked a riddle: “I speak without a mouth and return the words you say. What am I?” Galang answered, “An echo,” and the gate slowly opened.</p>
+              </div>
+              <p class="teks-soal">Why were Galang and Princess Althea able to pass the Shifting Steps?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q36" value="A" onchange="updateIndikator(36)"> A. They followed the winged creature’s instructions carefully.</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="B" onchange="updateIndikator(36)"> B. Princess Althea pushed the stones with her magic power.</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="C" onchange="updateIndikator(36)"> C. The stones stopped moving when the weather became calm.</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="D" onchange="updateIndikator(36)"> D. Galang understood the symbols and arranged them correctly.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 37 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="37">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 37</span>
+              <span class="petunjuk-luar-box">The text below is for numbers 36– 39.</span>
+              <div class="blok-teks-bacaan">
+                <p>As Galang and Princess Althea walked deeper into the misty forest, they heard a strange tapping sound and found a field of moving stones called the Shifting Steps. Princess Althea said the stones would open only if arranged correctly. Galang studied the symbols, placed them in the right order, and a narrow path appeared.</p>
+                <p style="margin-top:8px;">Soon, they saw a small, winged creature trapped in a net. Galang freed it with his sword, and the grateful creature offered to guide them through a hidden trail toward the Silverblossom. It led them safely through the forest and told them about an ancient gate at the top of a hill.</p>
+                <p style="margin-top:8px;">After thanking the creature, they climbed the hill and found a vine-covered stone gate guarded by a lion statue with glowing eyes. The statue asked a riddle: “I speak without a mouth and return the words you say. What am I?” Galang answered, “An echo,” and the gate slowly opened.</p>
+              </div>
+              <p class="teks-soal">What can be inferred about the winged creature after Galang freed it?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q37" value="A" onchange="updateIndikator(37)"> A. It felt afraid and immediately flew away from them.</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="B" onchange="updateIndikator(37)"> B. It became loyal and chose to travel with them forever.</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="C" onchange="updateIndikator(37)"> C. It showed gratitude by guiding them through a safer route.</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="D" onchange="updateIndikator(37)"> D. It asked Galang and Princess Althea to protect it from predators.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 38 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="38">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 38</span>
+              <span class="petunjuk-luar-box">The text below is for numbers 36– 39.</span>
+              <div class="blok-teks-bacaan">
+                <p>As Galang and Princess Althea walked deeper into the misty forest, they heard a strange tapping sound and found a field of moving stones called the Shifting Steps. Princess Althea said the stones would open only if arranged correctly. Galang studied the symbols, placed them in the right order, and a narrow path appeared.</p>
+                <p style="margin-top:8px;">Soon, they saw a small, winged creature trapped in a net. Galang freed it with his sword, and the grateful creature offered to guide them through a hidden trail toward the Silverblossom. It led them safely through the forest and told them about an ancient gate at the top of a hill.</p>
+                <p style="margin-top:8px;">After thanking the creature, they climbed the hill and found a vine-covered stone gate guarded by a lion statue with glowing eyes. The statue asked a riddle: “I speak without a mouth and return the words you say. What am I?” Galang answered, “An echo,” and the gate slowly opened.</p>
+              </div>
+              <p class="teks-soal">What does the riddle and Galang’s answer show about him?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q38" value="A" onchange="updateIndikator(38)"> A. He is physically strong and brave in dangerous places.</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="B" onchange="updateIndikator(38)"> B. He is careful and able to think logically under pressure.</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="C" onchange="updateIndikator(38)"> C. He depends on Princess Althea to solve difficult problems.</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="D" onchange="updateIndikator(38)"> D. He guesses the answer without understanding the meaning.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 39 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="39">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 39</span>
+              <span class="petunjuk-luar-box">The text below is for numbers 36– 39.</span>
+              <div class="blok-teks-bacaan">
+                <p>As Galang and Princess Althea walked deeper into the misty forest, they heard a strange tapping sound and found a field of moving stones called the Shifting Steps. Princess Althea said the stones would open only if arranged correctly. Galang studied the symbols, placed them in the right order, and a narrow path appeared.</p>
+                <p style="margin-top:8px;">Soon, they saw a small, winged creature trapped in a net. Galang freed it with his sword, and the grateful creature offered to guide them through a hidden trail toward the Silverblossom. It led them safely through the forest and told them about an ancient gate at the top of a hill.</p>
+                <p style="margin-top:8px;">After thanking the creature, they climbed the hill and found a vine-covered stone gate guarded by a lion statue with glowing eyes. The statue asked a riddle: “I speak without a mouth and return the words you say. What am I?” Galang answered, “An echo,” and the gate slowly opened.</p>
+              </div>
+              <p class="teks-soal">“I speak without a mouth and return the words you say. What am I?”<br>The indirect form of the sentence is ….</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q39" value="A" onchange="updateIndikator(39)"> A. The statue asked what it was that spoke without a mouth and returned the words you said.</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="B" onchange="updateIndikator(39)"> B. The statue asked what is it that speaks without a mouth and returns the words you said.</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="C" onchange="updateIndikator(39)"> C. The statue asked what it speaks without a mouth and returns the words you said.</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="D" onchange="updateIndikator(39)"> D. The statue asked what it spoke without a mouth and returned the words you said.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 40 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="40">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 40</span>
+              <span class="petunjuk-luar-box">Rearrange these jumbled sentences to make a good sequenced narrative story!</span>
+              <div class="blok-teks-bacaan">
+                <p>1) On a sunny day, Timun Mas was walking through a city full of Gen Z kids wearing trendy clothes and listening to music on their wireless earbuds.</p>
+                <p>2) Timun Mas panicked, but suddenly Selena, a stylish sorcerer with neon hair, helped her. She used her magic to trap Buto Ijo in glowing purple chains.</p>
+                <p>3) Buto Ijo struggled with the chains, but a group of Gen Z kids surrounded him, snapping pictures and posting them online.</p>
+                <p>4) Suddenly, Buto Ijo appeared, stomping down the street, scaring everyone.</p>
+                <p>5) Embarrassed, Buto Ijo grumbled, “This is too much!” and ran away.</p>
+              </div>
+              <p class="teks-soal">The correct sequence is ...</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q40" value="A" onchange="updateIndikator(40)"> A. 1 – 4 – 2 – 3 – 5</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="B" onchange="updateIndikator(40)"> B. 1 – 2 – 4 – 3 – 5</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="C" onchange="updateIndikator(40)"> C. 4 – 1 – 2 – 3 – 5</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="D" onchange="updateIndikator(40)"> D. 1 – 4 – 3 – 2 – 5</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 41 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="41">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 41</span>
+              <span class="petunjuk-luar-box">The dialogue below is for numbers 41 – 42.</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Rani :</strong> Okay, so we agreed to make a wall decoration from used cardboard. I’ve got an idea with it.</p>
+                <p><strong>Dika :</strong> What is it? Tell us.</p>
+                <p><strong>Rani :</strong> This is what we are going to make (showing a cardboard wall clock).</p>
+                <p><strong>Sinta :</strong> A clock?</p>
+                <p><strong>Bayu :</strong> It looks interesting. What is it made of?</p>
+                <p><strong>Dika :</strong> Yeah, what is it made of?</p>
+                <p><strong>Rani :</strong> The clock is made from a round piece of used cardboard as its base. For the numbers, I used colored paper cut into small circles. I also used bottle caps as the hour marks and painted the base to make it attractive.</p>
+                <p><strong>Sinta :</strong> Oh, I get it now.</p>
+                <p><strong>Rani :</strong> Then we attach the clock machine in the middle and decorate the background with paper patterns.</p>
+                <p><strong>Bayu :</strong> Ah, I got it. Shall we start preparing the things now?</p>
+              </div>
+              <p class="teks-soal">From the dialog, we can conclude that Rani paints the cardboard because it …</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q41" value="A" onchange="updateIndikator(41)"> A. helps the numbers stick properly.</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="B" onchange="updateIndikator(41)"> B. makes the clock look more attractive.</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="C" onchange="updateIndikator(41)"> C. shows the natural color of cardboard.</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="D" onchange="updateIndikator(41)"> D. matches the color of the bottle caps.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 42 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="42">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 42</span>
+              <span class="petunjuk-luar-box">The dialogue below is for numbers 41 – 42.</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Rani :</strong> Okay, so we agreed to make a wall decoration from used cardboard. I’ve got an idea with it.</p>
+                <p><strong>Dika :</strong> What is it? Tell us.</p>
+                <p><strong>Rani :</strong> This is what we are going to make (showing a cardboard wall clock).</p>
+                <p><strong>Sinta :</strong> A clock?</p>
+                <p><strong>Bayu :</strong> It looks interesting. What is it made of?</p>
+                <p><strong>Dika :</strong> Yeah, what is it made of?</p>
+                <p><strong>Rani :</strong> The clock is made from a round piece of used cardboard as its base. For the numbers, I used colored paper cut into small circles. I also used bottle caps as the hour marks and painted the base to make it attractive.</p>
+                <p><strong>Sinta :</strong> Oh, I get it now.</p>
+                <p><strong>Rani :</strong> Then we attach the clock machine in the middle and decorate the background with paper patterns.</p>
+                <p><strong>Bayu :</strong> Ah, I got it. Shall we start preparing the things now?</p>
+              </div>
+              <p class="teks-soal">What is the function of used bottle caps in making the clock?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q42" value="A" onchange="updateIndikator(42)"> A. To be the base of the clock.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="B" onchange="updateIndikator(42)"> B. To be the numbers of the clock.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="C" onchange="updateIndikator(42)"> C. To be the hour marks of the clock.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="D" onchange="updateIndikator(42)"> D. To be the decoration around the clock.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 43 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="43">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 43</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 43 – 45.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-43-45.jpg" alt="Postcard Offer" />
+              </div>
+              <p class="teks-soal">According to the advertisement, what is being offered for free?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q43" value="A" onchange="updateIndikator(43)"> A. Free delivery of postcard orders.</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="B" onchange="updateIndikator(43)"> B. A discount on printing business cards.</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="C" onchange="updateIndikator(43)"> C. Website design templates for businesses.</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="D" onchange="updateIndikator(43)"> D. One thousand free postcards for customers.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 44 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="44">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 44</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 43 – 45.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-43-45.jpg" alt="Postcard Offer" />
+              </div>
+              <p class="teks-soal">What must people do to claim the offer?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q44" value="A" onchange="updateIndikator(44)"> A. Purchasing postcards before the countdown ends.</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="B" onchange="updateIndikator(44)"> B. Registering through a social media platform.</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="C" onchange="updateIndikator(44)"> C. Providing a valid business email address.</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="D" onchange="updateIndikator(44)"> D. Visiting the store during working hours.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 45 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="45">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 45</span>
+              <span class="petunjuk-luar-box">This text below is for numbers 43 – 45.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-43-45.jpg" alt="Postcard Offer" />
+              </div>
+              <p class="teks-soal">What can be inferred from the phrase “Limited Time Offer” in the advertisement?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q45" value="A" onchange="updateIndikator(45)"> A. The promotion will end after a certain period of time.</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="B" onchange="updateIndikator(45)"> B. The promotion is restricted to selected customers only.</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="C" onchange="updateIndikator(45)"> C. The promotion applies to all products without exception.</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="D" onchange="updateIndikator(45)"> D. The promotion is available whenever customers need it.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 46 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="46">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 46</span>
+              <span class="petunjuk-luar-box">This dialogue below is for numbers 46 – 47.</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Ayu :</strong> Hi, Budi! I found an old picture of a historical figure, but I don’t know who he is. What should I do?</p>
+                <p><strong>Budi :</strong> You can use an image search engine. Just upload the picture to Google Images.</p>
+                <p><strong>Ayu :</strong> Really? How do I do that?</p>
+                <p><strong>Budi :</strong> Click the camera icon in Google Images, then upload the photo or paste the image link.</p>
+                <p><strong>Ayu :</strong> Oh, then what happens?</p>
+                <p><strong>Budi :</strong> The search engine will show you similar images and related information from various websites.</p>
+                <p><strong>Ayu :</strong> How do I know which information is correct?</p>
+                <p><strong>Budi :</strong> Make sure to choose trusted sources such as online encyclopedias, official websites, or journal articles. Also, check the publication date.</p>
+                <p><strong>Ayu :</strong> So, should I use the image feature and still pay attention to credible sources?</p>
+                <p><strong>Budi :</strong> Exactly. And don’t forget to compare information from several sources to make sure it’s accurate.</p>
+                <p><strong>Ayu :</strong> Thank you, Budi. Now I know how to search using an image!</p>
+                <p><strong>Budi :</strong> You’re welcome, Ayu. Good luck!</p>
+              </div>
+              <p class="teks-soal">Based on the dialog, how do we find information using an image in a search engine?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q46" value="A" onchange="updateIndikator(46)"> A. By typing keywords in search engines.</label>
+                <label class="label-pilihan"><input type="radio" name="q46" value="B" onchange="updateIndikator(46)"> B. By uploading the image to search engines.</label>
+                <label class="label-pilihan"><input type="radio" name="q46" value="C" onchange="updateIndikator(46)"> C. By reading journal articles in search engines.</label>
+                <label class="label-pilihan"><input type="radio" name="q46" value="D" onchange="updateIndikator(46)"> D. By checking the publication date in search engines.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 47 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="47">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 47</span>
+              <span class="petunjuk-luar-box">This dialogue below is for numbers 46 – 47.</span>
+              <div class="blok-teks-bacaan">
+                <p><strong>Ayu :</strong> Hi, Budi! I found an old picture of a historical figure, but I don’t know who he is. What should I do?</p>
+                <p><strong>Budi :</strong> You can use an image search engine. Just upload the picture to Google Images.</p>
+                <p><strong>Ayu :</strong> Really? How do I do that?</p>
+                <p><strong>Budi :</strong> Click the camera icon in Google Images, then upload the photo or paste the image link.</p>
+                <p><strong>Ayu :</strong> Oh, then what happens?</p>
+                <p><strong>Budi :</strong> The search engine will show you similar images and related information from various websites.</p>
+                <p><strong>Ayu :</strong> How do I know which information is correct?</p>
+                <p><strong>Budi :</strong> Make sure to choose trusted sources such as online encyclopedias, official websites, or journal articles. Also, check the publication date.</p>
+                <p><strong>Ayu :</strong> So, should I use the image feature and still pay attention to credible sources?</p>
+                <p><strong>Budi :</strong> Exactly. And don’t forget to compare information from several sources to make sure it’s accurate.</p>
+                <p><strong>Ayu :</strong> Thank you, Budi. Now I know how to search using an image!</p>
+                <p><strong>Budi :</strong> You’re welcome, Ayu. Good luck!</p>
+              </div>
+              <p class="teks-soal">To get accurate information, you should choose credible sources, except…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q47" value="A" onchange="updateIndikator(47)"> A. An online encyclopedia that explains the image</label>
+                <label class="label-pilihan"><input type="radio" name="q47" value="B" onchange="updateIndikator(47)"> B. A journal article discussing the figure in the image</label>
+                <label class="label-pilihan"><input type="radio" name="q47" value="C" onchange="updateIndikator(47)"> C. A personal blog that shares opinions about the image</label>
+                <label class="label-pilihan"><input type="radio" name="q47" value="D" onchange="updateIndikator(47)"> D. An official website that provides historical information</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 48 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="48">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 48</span>
+              <span class="petunjuk-luar-box">This picture is for numbers 48 – 49.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-48-49.jpg" alt="Internet Safety Tips" />
+              </div>
+              <p class="teks-soal">Based on the picture, why is it important to create complex passwords?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q48" value="A" onchange="updateIndikator(48)"> A. To protect your account with varied letters and symbols</label>
+                <label class="label-pilihan"><input type="radio" name="q48" value="B" onchange="updateIndikator(48)"> B. To help you remember your password very easily</label>
+                <label class="label-pilihan"><input type="radio" name="q48" value="C" onchange="updateIndikator(48)"> C. To make your account easier to access anytime</label>
+                <label class="label-pilihan"><input type="radio" name="q48" value="D" onchange="updateIndikator(48)"> D. To allow websites to store your data safely</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 49 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="49">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 49</span>
+              <span class="petunjuk-luar-box">This picture is for numbers 48 – 49.</span>
+              <div class="blok-gambar">
+                <img src="src/images/smp/ing-smp-48-49.jpg" alt="Internet Safety Tips" />
+              </div>
+              <p class="teks-soal">According to the picture, what should you do when receiving a suspicious email asking for personal information?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q49" value="A" onchange="updateIndikator(49)"> A. Reply to the email to confirm the message</label>
+                <label class="label-pilihan"><input type="radio" name="q49" value="B" onchange="updateIndikator(49)"> B. Share email with friends and ask for advice</label>
+                <label class="label-pilihan"><input type="radio" name="q49" value="C" onchange="updateIndikator(49)"> C. Send the information quickly to protect the account</label>
+                <label class="label-pilihan"><input type="radio" name="q49" value="D" onchange="updateIndikator(49)"> D. Ignore the email because it may be a scam attempt</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 50 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="50">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 50</span>
+              <span class="petunjuk-luar-box">Complete the steps on ‘how to use Google Translate by using an image’ with the correct order!</span>
+              <div class="blok-teks-bacaan">
+                <p>First, 1) <strong>.......</strong> Google Translate on your device.</p>
+                <p>Click the 2) <strong>.......</strong> icon to use the image feature.</p>
+                <p>Choose or take 3) <strong>.......</strong> that contains the text you want to translate.</p>
+                <p>4) <strong>.......</strong>, select the part of the picture with the text.</p>
+                <p>The application 5) <strong>.......</strong> the text automatically into your language.</p>
+              </div>
+              <p class="teks-soal">What is the correct sequential text structure to complete the missing technical procedure keywords above?</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q50" value="A" onchange="updateIndikator(50)"> A. close — flash — video — then — will download</label>
+                <label class="label-pilihan"><input type="radio" name="q50" value="B" onchange="updateIndikator(50)"> B. open — camera — image — after that — will translate</label>
+                <label class="label-pilihan"><input type="radio" name="q50" value="C" onchange="updateIndikator(50)"> C. open — audio — graphic — before — will translate</label>
+                <label class="label-pilihan"><input type="radio" name="q50" value="D" onchange="updateIndikator(50)"> D. restart — screen — image — completely — will translate</label>
+              </div>
+            </article>
+          </div>
+
+          <div class="bar-navigasi-soal">
+            <button type="button" class="btn-nav btn-back" id="btn-sebelumnya" onclick="navigasiKeSoal(-1)">
+              <i class="fa-solid fa-chevron-left"></i> Back
+            </button>
+            <button type="button" class="btn-nav btn-next" id="btn-selanjutnya" onclick="navigasiKeSoal(1)">
+              Next <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- STEP 3: SCREEN HASIL SKOR REALTIME -->
+      <section id="area-skor" class="kartu-skor" style="text-align:center;">
+        <i class="fa-solid fa-square-poll-vertical fa-4x" style="color: var(--warna-utama);"></i>
+        <h2 style="margin: 10px 0 4px;">Berikut Skor Anda!</h2>
+        <p style="margin: 0 0 16px;">Terima kasih Ustadz/Ustadzah atas partisipasinya dalam asesmen mutu.</p>
+        <div class="angka-skor" id="skor-akhir">0</div>
+        <div class="detail-jawaban-benar" id="detail-benar">0/50 (0 benar dari 50 soal)</div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="kaki-halaman">
+    <div class="isi-footer">
+      <p>© 2026 Manajemen BIAS Yaumi Fatimah</p>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       JS CBT ENGINE
+  =========================== -->
+  <script>
+    const kunciValidasi = {
+      q1: 'C', q2: 'A', q3: 'B', q4: 'C', q5: 'D',
+      q6: 'A', q7: 'C', q8: 'D', q9: 'A', q10: 'B',
+      q11: 'B', q12: 'A', q13: 'D', q14: 'D', q15: 'B',
+      q16: 'C', q17: 'D', q18: 'C', q19: 'D', q20: 'A',
+      q21: 'D', q22: 'A', q23: 'C', q24: 'B', q25: 'B',
+      q26: 'B', q27: 'C', q28: 'A', q29: 'D', q30: 'B',
+      q31: 'C', q32: 'C', q33: 'C', q34: 'B', q35: 'C',
+      q36: 'D', q37: 'C', q38: 'B', q39: 'A', q40: 'A',
+      q41: 'B', q42: 'C', q43: 'D', q44: 'C', q45: 'A',
+      q46: 'B', q47: 'C', q48: 'A', q49: 'D', q50: 'B'
+    };
+
+    let metadataUser = { nama: '', jenjang: '' };
+    let soalAktifSekarang = 1;
+    const totalSoalBatas = Object.keys(kunciValidasi).length;
+    let timerInterval = null;
+    let waktuSisaDetik = 90 * 60; 
+    
+    let riwayatJawabanUser = new Set();
+
+    let ujianSedangBerjalan = false;
+    let dialogSedangTerbuka = false;
+    let blurDariVisibility = false;
+    let hitungPelanggaran = 0;
+    const BATAS_PELANGGARAN = 4;
+
+    const KODE_AKSES_UJIAN = 'yf304';
+
+    function togglePasswordVisibility() {
+      const inputKode = document.getElementById('kode-akses');
+      const ikonMata = document.getElementById('tombol-mata');
+      
+      if (inputKode.type === 'password') {
+        inputKode.type = 'text';
+        ikonMata.classList.remove('fa-eye-slash');
+        ikonMata.classList.add('fa-eye');
+      } else {
+        inputKode.type = 'password';
+        ikonMata.classList.remove('fa-eye');
+        ikonMata.classList.add('fa-eye-slash');
+      }
+    }
+
+    function mulaiUjian() {
+      const namaVal = document.getElementById('nama').value.trim();
+      const jenjangVal = document.getElementById('jenjang').value;
+      const kodeVal = document.getElementById('kode-akses').value.trim();
+      const pesanSalah = document.getElementById('pesan-kode-salah');
+
+      if (!namaVal || !jenjangVal) {
+        alert('Maaf, Ustadz/Ustadzah wajib mengisi Nama Lengkap, memilih Jenjang, dan input kode ujian sebelum memulai!');
+        return;
+      }
+
+      if (kodeVal !== KODE_AKSES_UJIAN) {
+        pesanSalah.style.display = 'block';
+        document.getElementById('kode-akses').focus();
+        return;
+      }
+      pesanSalah.style.display = 'none';
+
+      metadataUser.nama = namaVal;
+      metadataUser.jenjang = jenjangVal;
+
+      document.getElementById('form-biodata').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'flex';
+      document.getElementById('area-ujian').style.display = 'block';
+
+      bikinPapanProgressMurni();
+      tampilkanNomorSoal(soalAktifSekarang);
+      mulaiPenghitungWaktu();
+      window.scrollTo(0, 0);
+
+      ujianSedangBerjalan = true;
+    }
+
+    function bikinPapanProgressMurni() {
+      const grupAwal = document.getElementById('grup-progress-awal');
+      const grupTengah = document.getElementById('grup-progress-tengah');
+      const grupAkhir = document.getElementById('grup-progress-akhir');
+      
+      grupAwal.innerHTML = '';
+      grupTengah.innerHTML = '';
+      grupAkhir.innerHTML = '';
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.createElement('div');
+        kotak.classList.add('kotak-nomor');
+        kotak.id = `kotak-nav-${i}`;
+        kotak.innerText = i < 10 ? `0${i}` : i;
+        kotak.setAttribute('onclick', `lompatKeSoal(${i})`);
+        
+        if (i <= 20) {
+          grupAwal.appendChild(kotak);
+        } else if (i <= 40) {
+          grupTengah.appendChild(kotak);
+        } else {
+          grupAkhir.appendChild(kotak);
+        }
+      }
+    }
+
+    function pindahHalamanTab(pageIndex) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
+      document.querySelectorAll('.konten-lembaran-soal').forEach(p => p.classList.remove('aktif'));
+
+      document.getElementById(`tab-btn-${pageIndex}`).classList.add('aktif');
+      document.getElementById(`lembaran-page-${pageIndex}`).classList.add('aktif');
+    }
+
+    function bukaPanelProgress() {
+      if (soalAktifSekarang <= 20) {
+        pindahHalamanTab(1);
+      } else if (soalAktifSekarang <= 40) {
+        pindahHalamanTab(2);
+      } else {
+        pindahHalamanTab(3);
+      }
+      document.getElementById('overlay-nav').style.display = 'block';
+    }
+    
+    function tutupPanelProgress() {
+      document.getElementById('overlay-nav').style.display = 'none';
+    }
+    function tutupPanelProgressLuar(e) {
+      if (e.target.id === 'overlay-nav') {
+        tutupPanelProgress();
+      }
+    }
+
+    function tampilkanNomorSoal(nomor) {
+      const kumpulanSoal = document.querySelectorAll('.kontainer-item-soal');
+      kumpulanSoal.forEach(soal => soal.classList.remove('aktif'));
+
+      const targetSoal = document.querySelector(`.kontainer-item-soal[data-nomor="${nomor}"]`);
+      if (targetSoal) targetSoal.classList.add('aktif');
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.getElementById(`kotak-nav-${i}`);
+        if (kotak) {
+          kotak.classList.remove('sudah-isi');
+          if (riwayatJawabanUser.has(i)) {
+            kotak.classList.add('sudah-isi');
+          }
+        }
+      }
+
+      document.getElementById('btn-sebelumnya').disabled = (nomor === 1);
+      
+      const btnNext = document.getElementById('btn-selanjutnya');
+      if (nomor === totalSoalBatas) {
+        btnNext.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Submit';
+        btnNext.style.background = '#0f766e';
+      } else {
+        btnNext.innerHTML = 'Next <i class="fa-solid fa-chevron-right"></i>';
+        btnNext.style.background = 'var(--warna-utama)';
+      }
+    }
+
+    function navigasiKeSoal(arah) {
+      if (arah === 1 && soalAktifSekarang === totalSoalBatas) {
+        document.getElementById('form-soal').requestSubmit();
+        return;
+      }
+      
+      let targetBaru = soalAktifSekarang + arah;
+      if (targetBaru >= 1 && targetBaru <= totalSoalBatas) {
+        soalAktifSekarang = targetBaru;
+        tampilkanNomorSoal(soalAktifSekarang);
+      }
+    }
+
+    function lompatKeSoal(nomor) {
+      soalAktifSekarang = nomor;
+      tampilkanNomorSoal(soalAktifSekarang);
+      tutupPanelProgress();
+    }
+
+    function updateIndikator(nomor) {
+      riwayatJawabanUser.add(nomor);
+      const elemenKotak = document.getElementById(`kotak-nav-${nomor}`);
+      if (elemenKotak && soalAktifSekarang !== nomor) {
+        elemenKotak.classList.add('sudah-isi');
+      }
+    }
+
+    function mulaiPenghitungWaktu() {
+      timerInterval = setInterval(() => {
+        waktuSisaDetik--;
+        
+        let menit = Math.floor(waktuSisaDetik / 60);
+        let detik = waktuSisaDetik % 60;
+
+        menit = menit < 10 ? '0' + menit : menit;
+        detik = detik < 10 ? '0' + detik : detik;
+
+        document.getElementById('countdown-timer').innerText = `${menit}:${detik}`;
+
+        if (waktuSisaDetik <= 0) {
+          clearInterval(timerInterval);
+          alert('Batas waktu pengerjaan 90 menit telah habis! Jawaban Anda akan langsung dikirim otomatis.');
+          evaluasiPaksaWaktuHabis();
+        }
+      }, 1000);
+    }
+
+    function prosesEvaluasi(event) {
+      if (event) event.preventDefault();
+      clearInterval(timerInterval);
+      ujianSedangBerjalan = false;
+
+      const formCbt = document.getElementById('form-soal');
+      const dataParsed = new FormData(formCbt);
+      
+      let akumulasiBenar = 0;
+
+      for (let propertiSoal in kunciValidasi) {
+        if (dataParsed.get(propertiSoal) === kunciValidasi[propertiSoal]) {
+          akumulasiBenar++;
+        }
+      }
+
+      let nilaiAkhir = Math.round((akumulasiBenar / totalSoalBatas) * 100);
+
+      document.getElementById('skor-akhir').innerText = nilaiAkhir;
+      document.getElementById('detail-benar').innerText = `${akumulasiBenar}/50 (${akumulasiBenar} benar dari 50 soal)`;
+      
+      document.getElementById('area-ujian').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'none';
+      document.getElementById('area-skor').style.display = 'block';
+      window.scrollTo(0, 0);
+
+      kirimKeGoogleSheet(nilaiAkhir);
+    }
+
+    function evaluasiPaksaWaktuHabis() {
+      prosesEvaluasi(null);
+    }
+
+    function kirimKeGoogleSheet(skor, percobaan = 1) {
+      // GANTI URL DI BAWAH INI DENGAN URL WEB APP KAMU
+      const endpointWebApps = "https://script.google.com/macros/s/AKfyf...PASTE_URL_WEB_APP_KAMU_DISINI.../exec";
+      const MAKSIMAL_PERCOBAAN = 5;
+
+      const detailElemen = document.getElementById('detail-benar');
+      if (percobaan === 1) {
+        detailElemen.innerHTML += "<br><span id='status-sync' style='color:#dd6b20; font-size:0.9rem; display:block; margin-top:10px;'><i class='fa-solid fa-spinner fa-spin'></i> Menyimpan nilai ke database... Mohon jangan tutup halaman ini.</span>";
+      }
+
+      fetch(endpointWebApps, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nama: metadataUser.nama,
+          jenjang: metadataUser.jenjang,
+          skor: skor,
+          kategori: "ING_SMP",
+          timestamp: new Date().toLocaleString('id-ID')
+        })
+      })
+      .then(() => {
+        console.log('Sync Google Sheets Selesai.');
+        const statusSync = document.getElementById('status-sync');
+        if (statusSync) {
+          statusSync.innerHTML = "<i class='fa-solid fa-circle-check' style='color:#38a169;'></i> Nilai berhasil disimpan aman di database!";
+        }
+      })
+      .catch(err => {
+        console.error('Error Sync:', err);
+        
+        if (percobaan < MAKSIMAL_PERCOBAAN) {
+          setTimeout(() => {
+            kirimKeGoogleSheet(skor, percobaan + 1);
+          }, 3000);
+        } else {
+          const statusSync = document.getElementById('status-sync');
+          if (statusSync) {
+            statusSync.innerHTML = "<i class='fa-solid fa-circle-xmark' style='color:#e53e3e;'></i> Koneksi sibuk. Silakan screenshot halaman ini sebagai bukti nilai ke panitia.";
+          }
+        }
+      });
+    }
+
+    /* SISTEM KEAMANAN MODAL */
+    function pancingPeringatan(judulPesan, isiPesan) {
+      if (dialogSedangTerbuka) return;
+      dialogSedangTerbuka = true;
+      hitungPelanggaran++;
+
+      const sisaPercobaan = BATAS_PELANGGARAN - hitungPelanggaran;
+      const judulFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Batas Pelanggaran Tercapai!"
+        : judulPesan + " (Peringatan " + hitungPelanggaran + "/" + BATAS_PELANGGARAN + ")";
+
+      const isiFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Anda telah meninggalkan halaman ujian sebanyak " + BATAS_PELANGGARAN + " kali. Sesi ujian dianggap tidak sah..."
+        : isiPesan + " Sisa toleransi: " + sisaPercobaan + "x.";
+
+      document.getElementById('modal-judul').textContent = judulFinal;
+      document.getElementById('modal-isi').textContent = isiFinal;
+
+      const tombolKembali = document.getElementById('tombol-kembali');
+      if (hitungPelanggaran >= BATAS_PELANGGARAN) {
+        tombolKembali.style.display = 'none';
+        setTimeout(function() {
+          ujianSedangBerjalan = false;
+          window.location.reload();
+        }, 3000);
+      } else {
+        tombolKembali.style.display = '';
+      }
+
+      document.getElementById('modal-peringatan').style.display = 'flex';
+    }
+
+    function modalKonfirmasiLeave() {
+      ujianSedangBerjalan = false;
+      dialogSedangTerbuka = false;
+      document.getElementById('modal-peringatan').style.display = 'none';
+      window.location.reload();
+    }
+
+    function modalKombaliUjian() {
+      document.getElementById('modal-peringatan').style.display = 'none';
+      setTimeout(function() {
+        dialogSedangTerbuka = false;
+        blurDariVisibility = false;
+      }, 500);
+    }
+
+    const pesanModal = {
+      judul: "Dilarang meninggalkan laman ujian!",
+      isi: "Aktivitas meninggalkan halaman ujian dideteksi. Berpindah aplikasi, klik luar browser, atau membuka jendela lain tidak diizinkan."
+    };
+
+    document.addEventListener("visibilitychange", function() {
+      if (ujianSedangBerjalan && document.visibilityState === "hidden") {
+        blurDariVisibility = true;
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("blur", function() {
+      if (ujianSedangBerjalan && !dialogSedangTerbuka && !blurDariVisibility) {
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("keyup", function(e) {
+      if (ujianSedangBerjalan) {
+        if (e.key === "PrintScreen" || (e.ctrlKey && e.key === "p")) {
+          pancingPeringatan(
+            "Dilarang mengambil screenshot!",
+            "Dilarang keras mencetak atau mengambil screenshot halaman ujian."
+          );
+        }
+      }
+    });
+  </script>
+
+  <!-- MODAL PERINGATAN CURANG -->
+  <div id="modal-peringatan" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 32, 44, 0.75); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #fff; border-radius: 14px; max-width: 420px; width: 100%; padding: 28px 24px 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); text-align: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+      <div style="font-size: 2.4rem; color: #C53030; margin-bottom: 12px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="modal-judul" style="font-size: 1.1rem; font-weight: 700; color: #C53030; margin-bottom: 10px;"></h3>
+      <p id="modal-isi" style="font-size: 0.9rem; color: #4A5568; line-height: 1.6; margin-bottom: 24px;"></p>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="modalKonfirmasiLeave()" style="flex: 1; padding: 12px; background: transparent; color: #C53030; border: 2px solid #C53030; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i><span>Keluar</span>
+        </button>
+        <button id="tombol-kembali" onclick="modalKombaliUjian()" style="flex: 2; padding: 12px; background: var(--warna-utama); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-arrow-right-to-bracket" style="margin-right: 6px;"></i><span>Kembali</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
