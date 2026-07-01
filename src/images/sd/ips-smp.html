@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IPS SMPIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===========================
+       TOKEN SISTEM (Nuansa Orange Estetik)
+    =========================== */
+    :root {
+      --warna-utama: #ea580c;
+      --warna-utama-gelap: #c2410c;
+      --warna-krem: #fff7ed;
+      --warna-krem-gelap: #ffedd5;
+      --warna-putih: #FFFFFF;
+      --warna-teks: #1A202C;
+      --warna-teks-redup: #4a5568;
+
+      /* Status Navigasi Progress */
+      --warna-belum-jawab: #E2E8F0;
+      --warna-sudah-jawab: #C6F6D5;
+      --warna-teks-hijau: #22543D;
+
+      --font-teks: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --radius: 12px;
+      --bayangan: 0 4px 20px rgba(234, 88, 12, 0.08);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-teks);
+      background-color: #fffaf5;
+      color: var(--warna-teks);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pembungkus-desktop {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    nav.pita-navigasi {
+      background: var(--warna-putih);
+      border-bottom: 2px solid var(--warna-krem-gelap);
+      padding: 16px 20px;
+      width: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
+    .isi-nav {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .logo-nav {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--warna-utama);
+      letter-spacing: 0.5px;
+    }
+
+    .seksi-konten {
+      padding: 24px 0 60px;
+    }
+    .kartu-form, .kartu-soal, .kartu-skor {
+      background: var(--warna-putih);
+      border-radius: var(--radius);
+      box-shadow: var(--bayangan);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .judul-sub-kartu {
+      color: var(--warna-utama);
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-bottom: 2px solid var(--warna-krem);
+      padding-bottom: 8px;
+    }
+    
+    .grup-input { margin-bottom: 20px; }
+    .grup-input label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+    .grup-input input {
+      width: 100%; padding: 12px; height: 48px; border: 2px solid var(--warna-krem-gelap); border-radius: 8px; outline: none; font-size: 1rem; font-family: inherit;
+    }
+    
+    .grup-input select {
+      width: 100%; 
+      height: 48px;
+      padding: 0 36px 0 12px;
+      border: 2px solid var(--warna-krem-gelap); 
+      border-radius: 8px; 
+      outline: none; 
+      font-size: 1rem; 
+      font-family: inherit;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c2410c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: calc(100% - 16px) center;
+      background-size: 16px;
+      background-color: var(--warna-putih);
+    }
+    .grup-input input:focus, .grup-input select:focus { border-color: var(--warna-utama); }
+
+    .tombol-primer {
+      display: inline-block; width: 100%; background: var(--warna-utama); color: white; border: none;
+      padding: 14px; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center; font-family: inherit;
+    }
+    .tombol-primer:hover { background: var(--warna-utama-gelap); }
+
+    /* ===========================
+       BAR UTILITY CBT ATAS
+    =========================== */
+    #info-ujian { display: none; }
+    .bar-kontrol-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .kotak-timer-cbt {
+      background: var(--warna-putih);
+      border: 1px solid var(--warna-krem-gelap);
+      box-shadow: var(--bayangan);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #dc2626;
+      height: 43px;
+    }
+
+    .btn-trigger-progress {
+      background: var(--warna-putih);
+      color: var(--warna-utama);
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--bayangan);
+      height: 43px;
+    }
+    .btn-trigger-progress:hover { background: var(--warna-krem); }
+
+    /* ===========================
+       FLOATING OVERLAY PANEL
+    =========================== */
+    .overlay-progress-cbt {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(26, 32, 44, 0.4);
+      z-index: 9999;
+    }
+    .panel-floating-progress {
+      position: absolute;
+      top: 75px;
+      left: 20px;
+      background: white;
+      width: calc(100% - 40px);
+      max-width: 360px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      padding: 18px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    @media (min-width: 768px) {
+      .panel-floating-progress { left: calc((100vw - 720px)/2); }
+    }
+    @media (min-width: 1025px) {
+      .panel-floating-progress { left: calc((100vw - 760px)/2); }
+    }
+
+    .header-panel-cbt {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--warna-krem-gelap);
+      padding-bottom: 6px;
+    }
+    .judul-panel-cbt { font-weight: 700; color: var(--warna-utama); font-size: 0.95rem; }
+    .btn-tutup-panel { background: none; border: none; font-size: 1.1rem; cursor: pointer; color: var(--warna-teks-redup); }
+
+    .bar-tab-lembaran {
+      display: flex; gap: 4px; margin-bottom: 12px; background: #EDF2F7; padding: 4px; border-radius: 6px;
+    }
+    .tab-item {
+      flex: 1; padding: 6px 2px; font-size: 0.78rem; font-weight: 700; text-align: center; border: none; background: none; cursor: pointer; border-radius: 4px; color: var(--warna-teks-redup); font-family: inherit;
+    }
+    .tab-item.aktif {
+      background: var(--warna-putih); color: var(--warna-utama); box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .konten-lembaran-soal { display: none; }
+    .konten-lembaran-soal.aktif { display: block; }
+
+    .grid-progress {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+    }
+    .kotak-nomor {
+      background: var(--warna-belum-jawab);
+      border: 1px solid #CBD5E0;
+      text-align: center; padding: 8px 0; font-weight: 700;
+      font-size: 0.8rem; border-radius: 6px; cursor: pointer; transition: all 0.1s; color: var(--warna-teks-redup);
+    }
+    .kotak-nomor:hover { border-color: var(--warna-utama); }
+    
+    .kotak-nomor.sudah-isi { 
+      background: var(--warna-sudah-jawab); 
+      border: 1px solid #48BB78; 
+      color: var(--warna-teks-hijau); 
+    }
+
+    /* ===========================
+       WIZARD SOAL CAROUSEL
+    =========================== */
+    #area-ujian { display: none; }
+    .kontainer-item-soal { display: none; }
+    .kontainer-item-soal.aktif { display: block; }
+    
+    .nomor-soal { font-size: 0.8rem; color: var(--warna-utama); font-weight: 700; text-transform: uppercase; margin-bottom: 4px; display: block; }
+    .teks-soal { font-size: 1.05rem; font-weight: 500; line-height: 1.6; margin-bottom: 16px; }
+    
+    .petunjuk-luar-box {
+      font-family: var(--font-teks);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--warna-teks);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .blok-teks-bacaan {
+      background: #fdfdfd; border: 1px solid var(--warna-krem-gelap); border-left: 4px solid var(--warna-utama);
+      border-radius: 8px; padding: 16px 18px; margin-bottom: 16px; font-size: 0.95rem; line-height: 1.8; color: var(--warna-teks);
+    }
+    .blok-teks-bacaan .judul-bacaan {
+      font-weight: 700; color: var(--warna-utama); text-align: center; margin-bottom: 10px; font-size: 1rem;
+    }
+
+    .blok-gambar {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .blok-gambar img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid var(--warna-krem-gelap);
+    }
+
+    /* FITUR TABEL RESPONSIVE DAN FLEKSIBEL */
+    .wadah-tabel-fleksibel {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 16px;
+      border: 1px solid var(--warna-krem-gelap);
+      border-radius: 8px;
+    }
+    .wadah-tabel-fleksibel table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 400px;
+    }
+    .wadah-tabel-fleksibel th, .wadah-tabel-fleksibel td {
+      border: 1px solid var(--warna-krem-gelap);
+      padding: 10px 12px;
+      font-size: 0.95rem;
+      text-align: left;
+    }
+    .wadah-tabel-fleksibel th {
+      background-color: var(--warna-krem);
+      font-weight: 600;
+    }
+    
+    .pilihan-jawaban { display: flex; flex-direction: column; gap: 10px; }
+    .label-pilihan { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border: 1px solid var(--warna-krem-gelap); border-radius: 8px; cursor: pointer; font-size: 0.95rem; background: var(--warna-putih); transition: background 0.15s; line-height: 1.5; }
+    .label-pilihan:hover { background: #fff7ed; border-color: #CBD5E0; }
+    .label-pilihan input[type="radio"] { accent-color: var(--warna-utama); width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0; }
+
+    .bar-navigasi-soal { display: flex; justify-content: space-between; gap: 16px; margin-top: 24px; border-top: 1px solid var(--warna-krem-gelap); padding-top: 16px; }
+    .btn-nav { flex: 1; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; text-align: center; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: inherit; }
+    .btn-back { background: var(--warna-krem); color: var(--warna-utama); border: 1px solid var(--warna-krem-gelap); }
+    .btn-next { background: var(--warna-utama); color: white; }
+    .btn-back:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    #area-skor { display: none; }
+    .angka-skor { font-size: 4.5rem; font-weight: 700; color: var(--warna-utama); margin: 4px 0 2px; line-height: 1; }
+    .detail-jawaban-benar { font-size: 1.1rem; font-weight: 600; color: var(--warna-teks-redup); margin: 0 0 12px; }
+
+    footer.kaki-halaman { 
+      background: var(--warna-putih); padding: 16px 0; text-align: center; font-size: 0.8rem; color: var(--warna-teks-redup); width: 100%; border-top: 2px solid var(--warna-krem-gelap); margin-top: auto; box-shadow: 0 -2px 10px rgba(0,0,0,0.01);
+    }
+
+    .pembungkus-password { position: relative; display: flex; align-items: center; }
+    .pembungkus-password input { padding-right: 45px; }
+    .ikon-mata { position: absolute; right: 16px; color: var(--warna-teks-redup); cursor: pointer; font-size: 1.1rem; user-select: none; transition: color 0.2s; }
+    .ikon-mata:hover { color: var(--warna-utama); }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <nav class="pita-navigasi">
+    <div class="isi-nav">
+      <span class="logo-nav">IPS SMPIT</span>
+    </div>
+  </nav>
+
+  <div class="pembungkus-desktop">
+    <main class="seksi-konten">
+      
+      <!-- STEP 1: AUTH BIO -->
+      <section id="form-biodata" class="kartu-form">
+        <h2 class="judul-sub-kartu"><i class="fa-solid fa-user-check"></i> Autentikasi Pengajar</h2>
+        <div class="grup-input">
+          <label for="nama">Nama Lengkap (Tanpa Gelar):</label>
+          <input type="text" id="nama" placeholder="Contoh: Nabila Nailatus Sakina" required />
+        </div>
+        <div class="grup-input">
+          <label for="jenjang">Jenjang Dituju / Mengajar:</label>
+          <select id="jenjang" required>
+            <option value="" disabled selected>-- Pilih Jenjang --</option>
+            <option value="Daycare">Daycare</option>
+            <option value="Batita">Batita</option>
+            <option value="PAUD">PAUD</option>
+            <option value="PG">PG</option>
+            <option value="TK">TK</option>
+            <option value="SD">SD</option>
+            <option value="SMP">SMP</option>
+            <option value="SMA">SMA</option>
+          </select>
+        </div>
+        <div class="grup-input">
+          <label for="kode-akses">Kode Akses Ujian:</label>
+          <div class="pembungkus-password">
+            <input type="password" id="kode-akses" placeholder="Masukkan kode dari pengawas" required />
+            <i class="fa-solid fa-eye-slash ikon-mata" id="tombol-mata" onclick="togglePasswordVisibility()"></i>
+          </div>
+        </div>
+        <p id="pesan-kode-salah" style="display:none; color:#C53030; font-size:0.88rem; margin: -12px 0 16px; font-weight:600;">
+          <i class="fa-solid fa-circle-exclamation"></i> Kode akses salah. Silakan coba lagi.
+        </p>
+        <button type="button" class="tombol-primer" onclick="mulaiUjian()">Mulai Sesi Ujian</button>
+      </section>
+
+      <!-- UTILITY HEADER BAR -->
+      <section id="info-ujian" class="bar-kontrol-cbt">
+        <button type="button" class="btn-trigger-progress" onclick="bukaPanelProgress()">
+          <i class="fa-solid fa-list-check"></i> Check Progress
+        </button>
+        <div class="kotak-timer-cbt">
+          <i class="fa-solid fa-hourglass-half"></i> <span id="countdown-timer">90:00</span>
+        </div>
+      </section>
+
+      <!-- FLOATING SLIM TAB PANEL OVERLAY -->
+      <div class="overlay-progress-cbt" id="overlay-nav" onclick="tutupPanelProgressLuar(event)">
+        <div class="panel-floating-progress">
+          <div class="header-panel-cbt">
+            <span class="judul-panel-cbt"><i class="fa-solid fa-compass"></i> Peta Lembar Jawaban</span>
+            <button type="button" class="btn-tutup-panel" onclick="tutupPanelProgress()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          
+          <div class="bar-tab-lembaran">
+            <button type="button" class="tab-item aktif" id="tab-btn-1" onclick="pindahHalamanTab(1)">No. 01 - 20</button>
+            <button type="button" class="tab-item" id="tab-btn-2" onclick="pindahHalamanTab(2)">No. 21 - 40</button>
+            <button type="button" class="tab-item" id="tab-btn-3" onclick="pindahHalamanTab(3)">No. 41 - 50</button>
+          </div>
+          
+          <div class="konten-lembaran-soal aktif" id="lembaran-page-1">
+            <div class="grid-progress" id="grup-progress-awal"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-2">
+            <div class="grid-progress" id="grup-progress-tengah"></div>
+          </div>
+          <div class="konten-lembaran-soal" id="lembaran-page-3">
+            <div class="grid-progress" id="grup-progress-akhir"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: AREA CBT CAROUSEL SOAL (50 SOAL IPS) -->
+      <section id="area-ujian">
+        <form id="form-soal" onsubmit="prosesEvaluasi(event)">
+          
+          <!-- ==================== SOAL 01 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="1">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 01</span>
+              <p class="teks-soal">Secara geografis, Indonesia terletak diantara benua Asia dan Australia. Hal ini memiliki dampak positif terhadap perekonomian nasional. Berikut ini yang bukan termasuk dampak positif letak geografis tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q1" value="A" onchange="updateIndikator(1)"> A. Indonesia menjadi jalur silang lalu lintas perdagangan internasional.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="B" onchange="updateIndikator(1)"> B. Indonesia menjadi jalur singgah kapal-kapal antar negara.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="C" onchange="updateIndikator(1)"> C. Indonesia menjadi jalur singgah peredaran narkotika internasional.</label>
+                <label class="label-pilihan"><input type="radio" name="q1" value="D" onchange="updateIndikator(1)"> D. Indonesia menjadi jalur singgah maskapai penerbangan antar negara.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 02 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="2">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 02</span>
+              <p class="teks-soal">Manusia pada masa awal kehidupan sering berpindah-pindah tempat dan memanfaatkan alam sekitar secara langsung tanpa mengolahnya secara permanen. Kegiatan manusia pada masa tersebut dapat dijelaskan sebagai…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q2" value="A" onchange="updateIndikator(2)"> A. hidup menetap dan bercocok tanam.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="B" onchange="updateIndikator(2)"> B. hidup nomaden dengan berburu dan meramu.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="C" onchange="updateIndikator(2)"> C. hidup menetap dengan sistem perdagangan.</label>
+                <label class="label-pilihan"><input type="radio" name="q2" value="D" onchange="updateIndikator(2)"> D. hidup berkelompok dengan teknologi logam.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 03 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="3">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 03</span>
+              <p class="teks-soal">Di sebuah daerah pesisir, hasil tangkapan ikan menurun drastis selama beberapa bulan terakhir. Hal ini terjadi karena penggunaan alat tangkap yang merusak ekosistem laut sehingga populasi ikan berkurang. Faktor utama yang menyebabkan kelangkaan pada pernyataan tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q3" value="A" onchange="updateIndikator(3)"> A. keterbatasan sumber daya alam.</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="B" onchange="updateIndikator(3)"> B. pertumbuhan penduduk yang cepat.</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="C" onchange="updateIndikator(3)"> C. distribusi yang tidak merata.</label>
+                <label class="label-pilihan"><input type="radio" name="q3" value="D" onchange="updateIndikator(3)"> D. kebutuhan manusia yang tidak terbatas.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 04 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="4">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 04</span>
+              <p class="teks-soal">Indonesia memiliki wilayah laut yang sangat luas dan kaya akan sumber daya alam seperti ikan, rumput laut, dan terumbu karang. Pemanfaatan sumber daya alam tersebut dapat memberikan dampak positif bagi masyarakat pesisir. Manfaat utama pemanfaatan sumber daya alam laut tersebut bagi masyarakat pesisir adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q4" value="A" onchange="updateIndikator(4)"> A. meningkatkan ketergantungan masyarakat pada impor hasil laut.</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="B" onchange="updateIndikator(4)"> B. memperluas lapangan kerja dan meningkatkan pendapatan nelayan.</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="C" onchange="updateIndikator(4)"> C. mengurangi aktivitas ekonomi masyarakat pesisir.</label>
+                <label class="label-pilihan"><input type="radio" name="q4" value="D" onchange="updateIndikator(4)"> D. menyebabkan masyarakat pesisir berpindah ke wilayah perkotaan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 05 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="5">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 05</span>
+              <p class="teks-soal">Pak Rudi bekerja sebagai buruh harian lepas. Penghasilannya tidak tetap dan ia tinggal di rumah kontrakan sederhana. Namun, ia aktif sebagai pengurus RT dan sering menjadi penengah konflik warga. Berdasarkan pernyataan tersebut, analisis yang tepat mengenai status sosial Pak Rudi adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q5" value="A" onchange="updateIndikator(5)"> A. status sosial Pak Rudi tinggi karena memiliki peran penting di masyarakat.</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="B" onchange="updateIndikator(5)"> B. status ekonomi Pak Rudi tinggi karena memiliki pengaruh sosial.</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="C" onchange="updateIndikator(5)"> C. status sosial Pak Rudi sepenuhnya rendah karena pekerjaannya.</label>
+                <label class="label-pilihan"><input type="radio" name="q5" value="D" onchange="updateIndikator(5)"> D. status sosial Pak Rudi rendah secara ekonomi, tetapi memiliki status sosial tinggi di lingkungan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 06 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="6">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 06</span>
+              <span class="petunjuk-luar-box">Perhatikan pernyataan berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Seorang murid mengatakan: “Karena Indonesia berada di antara dua benua, Indonesia memiliki banyak gunung api.”</p>
+              </div>
+              <p class="teks-soal">Analisis yang tepat berdasarkan pernyataan diatas adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q6" value="A" onchange="updateIndikator(6)"> A. benar, karena benua menyebabkan gunung api.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="B" onchange="updateIndikator(6)"> B. salah, karena gunung api dipengaruhi letak geologis, bukan letak geografis.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="C" onchange="updateIndikator(6)"> C. benar, karena samudra membentuk gunung api.</label>
+                <label class="label-pilihan"><input type="radio" name="q6" value="D" onchange="updateIndikator(6)"> D. salah, karena garis bujur menyebabkan gunung api.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 07 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="7">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 07</span>
+              <span class="petunjuk-luar-box">Perhatikan gambar berikut!</span>
+              <div class="blok-gambar">
+                <img src="ips-smp-7.jpg" alt="Piramida Penduduk" style="max-width: 100%; height: auto;">
+              </div>
+              <p class="teks-soal">Ciri utama yang paling tepat dari Gambar piramida penduduk disamping adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q7" value="A" onchange="updateIndikator(7)"> A. angka kelahiran rendah dan penduduk menua.</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="B" onchange="updateIndikator(7)"> B. angka kelahiran tinggi dan jumlah anak besar.</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="C" onchange="updateIndikator(7)"> C. angka kematian sangat rendah dan penduduk stabil.</label>
+                <label class="label-pilihan"><input type="radio" name="q7" value="D" onchange="updateIndikator(7)"> D. migrasi masuk besar pada usia tua.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 08 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="8">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 08</span>
+              <span class="petunjuk-luar-box">Perhatikan wacana sejarah berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>"Pada abad ke-15 hingga 17, bangsa-bangsa Eropa seperti Portugis, Spanyol, Belanda, dan Inggris melakukan pelayaran jarak jauh melintasi samudra. Motivasi mereka sering dirangkum dalam konsep 3G: Gold, Glory, Gospel. Namun, dalam praktiknya, ketiga tujuan ini tidak selalu berjalan seimbang. Ada wilayah yang lebih mengalami eksploitasi ekonomi, ada pula yang mengalami dominasi politik, serta ada yang menjadi sasaran penyebaran agama secara intensif."</p>
+              </div>
+              <p class="teks-soal">Pernyataan yang paling tepat untuk menunjukkan wacana diatas hubungan Gold dan munculnya Kolonialisme adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q8" value="A" onchange="updateIndikator(8)"> A. bangsa Eropa melakukan pelayaran semata-mata untuk meneliti benua baru.</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="B" onchange="updateIndikator(8)"> B. penyebaran agama Kristen menjadi alasan utama penaklukan wilayah Asia.</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="C" onchange="updateIndikator(8)"> C. bangsa Eropa menolak perdagangan dan lebih memilih pertanian.</label>
+                <label class="label-pilihan"><input type="radio" name="q8" value="D" onchange="updateIndikator(8)"> D. rempah-rempah menjadi komoditas penting sehingga mendorong perebutan jalur dagang dan Pelabuhan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 09 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="9">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 09</span>
+              <span class="petunjuk-luar-box">Perhatikan tabel dampak Cultur Stelsel berikut!</span>
+              
+              <div class="wadah-tabel-fleksibel">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Pihak</th>
+                      <th>Dampak</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Belanda</td>
+                      <td>Keuntungan Besar</td>
+                    </tr>
+                    <tr>
+                      <td>Rakyat</td>
+                      <td>Kelaparan, Kerja Berat</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="teks-soal">Kesimpulan paling tepat dari tabel tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q9" value="A" onchange="updateIndikator(9)"> A. tanam paksa tidak berpengaruh.</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="B" onchange="updateIndikator(9)"> B. tanam paksa menguntungkan semua pihak.</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="C" onchange="updateIndikator(9)"> C. tanam paksa menciptakan ketimpangan sosial-ekonomi.</label>
+                <label class="label-pilihan"><input type="radio" name="q9" value="D" onchange="updateIndikator(9)"> D. tanam paksa membuat rakyat kaya.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 10 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="10">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 10</span>
+              <p class="teks-soal">Pemicu Perang Diponegoro sering dikaitkan dengan pemasangan patok jalan di tanah Diponegoro. Makna historis paling tepat dari peristiwa ini adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q10" value="A" onchange="updateIndikator(10)"> A. rakyat menolak pembangunan jalan karena tidak suka modernisasi.</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="B" onchange="updateIndikator(10)"> B. belanda tidak memahami kondisi tanah Jawa.</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="C" onchange="updateIndikator(10)"> C. simbol campur tangan kolonial terhadap hak tanah, adat, dan wibawa bangsawan lokal.</label>
+                <label class="label-pilihan"><input type="radio" name="q10" value="D" onchange="updateIndikator(10)"> D. Diponegoro ingin membangun jalan sendiri</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 11 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="11">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 11</span>
+              <p class="teks-soal">Perubahan sosial budaya dapat terjadi karena pengaruh dari luar masyarakat, seperti kontak dengan kebudayaan lain. Hal ini sering kali membawa transformasi dalam berbagai aspek kehidupan masyarakat tradisional, mulai dari cara pemenuhan kebutuhan, sistem pengetahuan, hingga pola interaksi sosial. Contoh perubahan yang dialami oleh masyarakat tradisional akibat pengaruh eksternal adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q11" value="A" onchange="updateIndikator(11)"> A. perubahan dari berburu-meramu ke bercocok tanam menetap, karena pengaruh kelompok tetangga yang sudah maju.</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="B" onchange="updateIndikator(11)"> B. perubahan upacara adat menjadi lebih meriah karena peningkatan hasil panen.</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="C" onchange="updateIndikator(11)"> C. pergantian kepemimpinan adat dari ayah ke anak sesuai hukum waris turun-temurun.</label>
+                <label class="label-pilihan"><input type="radio" name="q11" value="D" onchange="updateIndikator(11)"> D. perpindahan tempat tingah sementara (nomaden) karena musim kemarau yang merupakan siklus alam.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 12 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="12">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 12</span>
+              <p class="teks-soal">Di sebuah desa yang terisolasi, pembangunan jalan aspal and jaringan internet tinggi akhirnya terselesaikan. Akses yang sebelumnya sangat terbatas, kini menjadi lancar. Banyak pemuda desa mulai mempelajari keterampilan digital, mempromosikan produk kerajinan lokal secara online, and terhubung dengan pasar yang lebih luas. Selain itu, informasi mengenai teknik pertanian modern and kesehatan juga mudah diakses oleh warga. Dampak positif dari perubahan sosial yang terjadi adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q12" value="A" onchange="updateIndikator(12)"> A. meningkatnya arus urbanisasi ke kota besar karena transportasi lancar.</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="B" onchange="updateIndikator(12)"> B. melemahnya nilai-nilai kegotongroyongan tradisional di masyarakat desa.</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="C" onchange="updateIndikator(12)"> C. munculnya peluang ekonomi baru and peningkatan akses informasi bagi warga desa.</label>
+                <label class="label-pilihan"><input type="radio" name="q12" value="D" onchange="updateIndikator(12)"> D. terjadinya konflik status sosial antara kelompok yang melek teknologi and yang tidak.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 13 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="13">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 13</span>
+              <p class="teks-soal">Awalnya, kegiatan musyawarah desa, arisan, and undangan perayaan selalu dilakukan dengan tatap muka. Kini, hampir semua koordinasi dilakukan melalui grup online. Frekuensi kumpul-kumpul warga di balai desa pun berkurang. Namun, di sisi lain, para pemuda desa berhasil memasarkan produk kerajinan lokal hingga ke luar negeri berkat platform e-commerce and media sosial. Mereka juga aktif belajar keterampilan baru dari tutorial online. Pernyataan yang paling tepat menganalisis kompleksitas tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q13" value="A" onchange="updateIndikator(13)"> A. teknologi hanya membawa dampak positif dengan memperluas pemasaran produk desa.</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="B" onchange="updateIndikator(13)"> B. teknologi secara pasti mengurangi solidaritas sosial karena mengurangi interaksi tatap muka.</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="C" onchange="updateIndikator(13)"> C. teknologi menciptakan perubahan paradigma interaksi, dari berbasis kedekatan fisik menjadi jaringan digital, dengan konsekuensi yang menguntungkan and merugikan.</label>
+                <label class="label-pilihan"><input type="radio" name="q13" value="D" onchange="updateIndikator(13)"> D. masalah utama adalah penyebaran hoaks, sedangkan dampak lainnya dapat diabaikan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 14 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="14">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 14</span>
+              <p class="teks-soal">Perubahan pola kerja dari sektor agraris ke sektor industri menyebabkan meningkatnya urbanisasi. Namun, hal ini juga memicu munculnya kawasan permukiman kumuh di kota. Berdasarkan fenomena tersebut, dampak perubahan sosial dapat dievaluasi sebagai…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q14" value="A" onchange="updateIndikator(14)"> A. perubahan sosial meningkatkan kesejahteraan seluruh lapisan masyarakat.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="B" onchange="updateIndikator(14)"> B. urbanisasi sepenuhnya memperbaiki kualitas hidup masyarakat desa.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="C" onchange="updateIndikator(14)"> C. perubahan sosial tanpa perencanaan dapat menimbulkan masalah sosial baru.</label>
+                <label class="label-pilihan"><input type="radio" name="q14" value="D" onchange="updateIndikator(14)"> D. industrialisasi tidak berpengaruh terhadap struktur sosial masyarakat.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 15 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="15">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 15</span>
+              <p class="teks-soal">Masuknya budaya populer global menyebabkan sebagian remaja lebih mengidolakan gaya hidup luar negeri dibandingkan budaya lokal. Upaya paling tepat yang dapat dilakukan pelajar untuk mengatasi dampak negatif tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q15" value="A" onchange="updateIndikator(15)"> A. memilih and memadukan budaya global dengan nilai budaya lokal.</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="B" onchange="updateIndikator(15)"> B. menolak semua bentuk budaya asing.</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="C" onchange="updateIndikator(15)"> C. mengikuti tren global agar tidak tertinggal zaman.</label>
+                <label class="label-pilihan"><input type="radio" name="q15" value="D" onchange="updateIndikator(15)"> D. menghindari penggunaan media sosial sepenuhnya.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 16 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="16">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 16</span>
+              <p class="teks-soal">Penggunaan aplikasi transportasi online di kota besar menyebabkan berkurangnya penggunaan angkutan konvensional. Fenomena ini menunjukkan modernisasi dalam kehidupan masyarakat karena…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q16" value="A" onchange="updateIndikator(16)"> A. masyarakat dipaksa mengikuti perkembangan zaman</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="B" onchange="updateIndikator(16)"> B. teknologi menjadi satu-satunya alat transportasi.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="C" onchange="updateIndikator(16)"> C. efisiensi and rasionalitas menjadi dasar pengambilan keputusan.</label>
+                <label class="label-pilihan"><input type="radio" name="q16" value="D" onchange="updateIndikator(16)"> D. semua pekerjaan manusia digantikan mesin.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 17 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="17">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 17</span>
+              <p class="teks-soal">Fenomena "cultural hybridization" (hibridisasi budaya) seperti munculnya musik dangdut dengan aransemen elektro atau seni batik dengan motif karakter pop global sering terjadi. Analisislah dampak sosial-budaya utama dari fenomena hibridisasi adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q17" value="A" onchange="updateIndikator(17)"> A. menunjukkan kepunahan murni budaya lokal karena terkontaminasi budaya asing.</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="B" onchange="updateIndikator(17)"> B. merupakan bentuk resistensi pasif terhadap globalisasi budaya Barat.</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="C" onchange="updateIndikator(17)"> C. dapat menjadi strategi adaptasi and revitalisasi budaya lokal agar tetap relevan di tengah arus global.</label>
+                <label class="label-pilihan"><input type="radio" name="q17" value="D" onchange="updateIndikator(17)"> D. membuktikan bahwa generasi muda telah kehilangan jati diri and Nasionalisme.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 18 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="18">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 18</span>
+              <p class="teks-soal">Di sebuah daerah perbatasan antar desa, sering terjadi sengketa lahan penggembalaan ternak. Untuk menyelesaikannya, masyarakat setempat tidak langsung mengajukan gugatan ke pengadilan negara, tetapi terlebih dahulu menggelar "Rembug Desa" atau "Musyawarah" yang dipimpin oleh tetua adat dengan melibatkan semua pihak yang bersengketa. Dari kasus tersebut, karakteristik kearifan lokal dalam penyelesaian konflik yang paling menonjol adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q18" value="A" onchange="updateIndikator(18)"> A. mengutamakan hierarki and keputusan mutlak dari tetua adat.</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="B" onchange="updateIndikator(18)"> B. menghindari konflik dengan membagi lahan secara sama rata tanpa pertimbangan.</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="C" onchange="updateIndikator(18)"> C. merupakan prosedur informal yang tidak memiliki kekuatan hukum sama sekali.</label>
+                <label class="label-pilihan"><input type="radio" name="q18" value="D" onchange="updateIndikator(18)"> D. memiliki mekanisme partisipatif yang mengedepankan konsensus and rekonsiliasi sosial.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 19 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="19">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 19</span>
+              <p class="teks-soal">Sistem pertanian "Huma" atau ladang berpindah sering dibilang merusak hutan. Padahal, aturan aslinya punya prinsip: ada masa istirahat lahan yang lama, menanam berbagai jenis tanaman, and dilarang membakar lahan sembarangan. Berdasarkan aturan aslinya itu, penilaian yang tepat tentang sistem "Huma" untuk menghadapi perubahan iklim sekarang adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q19" value="A" onchange="updateIndikator(19)"> A. sistem ini harus dihentikan and diganti dengan sawit yang lebih menguntungkan.</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="B" onchange="updateIndikator(19)"> B. sistem ini berpotensi menjadi contoh pertanian yang menyatu dengan hutan.</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="C" onchange="updateIndikator(19)"> C. sistem ini bisa diteruskan asalkan masa istirahat lahannya dipendekkan and diberi banyak pupuk kimia.</label>
+                <label class="label-pilihan"><input type="radio" name="q19" value="D" onchange="updateIndikator(19)"> D. sistem ini hanya cocok untuk suku pedalaman, tidak bisa jadi solusi pertanian masa kini.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 20 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="20">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 20</span>
+              <p class="teks-soal">Masuknya budaya populer global membuat sebagian remaja lebih menyukai gaya hidup modern dibandingkan tradisi daerahnya. Tindakan yang paling tepat untuk menunjukkan pentingnya menjaga kearifan lokal dalam situasi tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q20" value="A" onchange="updateIndikator(20)"> A. membatasi akses remaja terhadap budaya luar.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="B" onchange="updateIndikator(20)"> B. menggabungkan unsur tradisi lokal ke dalam kegiatan sekolah.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="C" onchange="updateIndikator(20)"> C. mengganti tradisi lokal dengan budaya yang lebih modern.</label>
+                <label class="label-pilihan"><input type="radio" name="q20" value="D" onchange="updateIndikator(20)"> D. membiarkan perubahan budaya terjadi secara alami.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 21 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="21">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 21</span>
+              <p class="teks-soal">Pak Roni adalah seorang petani sayuran. Ia ingin menukar sebagian hasil panen kubisnya dengan seekor ayam milik Pak Jono. Syarat mutlak agar pertukaran barter ini dapat terlaksana dengan lancar adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q21" value="A" onchange="updateIndikator(21)"> A. kubis and ayam harus memiliki berat yang setara.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="B" onchange="updateIndikator(21)"> B. nilai ekonomis kubis harus lebih tinggi daripada ayam.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="C" onchange="updateIndikator(21)"> C. baik Pak Roni maupun Pak Jono harus saling membutuhkan barang.</label>
+                <label class="label-pilihan"><input type="radio" name="q21" value="D" onchange="updateIndikator(21)"> D. harus ada surat perjanjian tertulis untuk menghindari perselisihan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 22 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="22">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 22</span>
+              <span class="petunjuk-luar-box">Perhatikan pernyataan berikut:</span>
+              <div class="blok-teks-bacaan">
+                <p>1) Dinar Kuwait digunakan dalam transaksi perdagangan minyak antarnegara.</p>
+                <p>2) Yen Jepang hanya dapat digunakan secara sah untuk transaksi di wilayah Jepang.</p>
+                <p>3) Rupiah digunakan untuk membayar barang di pasar swalayan Jakarta.</p>
+                <p>4) Kartu kredit diterima untuk pembayaran di hotel-hotel internasional.</p>
+              </div>
+              <p class="teks-soal">Berdasarkan klasifikasi uang, pasangan yang tepat antara pernyataan and jenis uang berdasarkan kawasan berlakunya adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q22" value="A" onchange="updateIndikator(22)"> A. 1) uang internasional; 2) uang domestik; 3) uang kartal; 4) uang giral.</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="B" onchange="updateIndikator(22)"> B. 1) uang internasional; 2) uang domestik; 3) uang domestik; 4) uang giral.</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="C" onchange="updateIndikator(22)"> C. 1) uang regional; 2) uang domestik; 3) uang kartal; 4) uang internasional.</label>
+                <label class="label-pilihan"><input type="radio" name="q22" value="D" onchange="updateIndikator(22)"> D. 1) uang regional; 2) uang domestik; 3) uang domestik; 4) uang kartal.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 23 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="23">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 23</span>
+              <span class="petunjuk-luar-box">Perhatikan beberapa pernyataan berikut terkait karakteristik Lembaga Keuangan Bukan Bank:</span>
+              <div class="blok-teks-bacaan">
+                <p>1) Mengeluarkan surat-surat berharga untuk menghimpun dana dari masyarakat.</p>
+                <p>2) Menyalurkan dana untuk pembiayaan investasi perusahaan.</p>
+                <p>3) Selalu menghimpun dana langsung dari masyarakat dalam bentuk simpanan (tabungan, deposito).</p>
+                <p>4) Beroperasi berdasarkan prinsip bagi hasil atau imbal jasa (fee-based).</p>
+              </div>
+              <p class="teks-soal">Berdasarkan Keputusan Menteri Keuangan No. KEP-38/MK/IV/1972, karakteristik utama yang membedakan LKBB dengan bank umum adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q23" value="A" onchange="updateIndikator(23)"> A. 1 and 2</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="B" onchange="updateIndikator(23)"> B. 1 and 3</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="C" onchange="updateIndikator(23)"> C. 2 and 4</label>
+                <label class="label-pilihan"><input type="radio" name="q23" value="D" onchange="updateIndikator(23)"> D. 3 and 4</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 24 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="24">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 24</span>
+              <p class="teks-soal">Menurut karakteristik masyarakat jaringan yang diungkapkan Jan Van Dijk, fenomena dimana sebuah lagu atau tarian menjadi viral dalam hitungan jam di berbagai platform media sosial merupakan perwujudan dari ciri…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q24" value="A" onchange="updateIndikator(24)"> A. individualisasi, karena setiap orang menikmati konten tersebut secara terpisah melalui perangkatnya masing-masing.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="B" onchange="updateIndikator(24)"> B. gaya hidup yang dinamis, karena tren baru dapat tercipta and menyebar dengan sangat cepat di media sosial.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="C" onchange="updateIndikator(24)"> C. jejaring koneksi geografis, karena konten tersebut dapat diakses oleh orang-orang di berbagai wilayah yang berbeda.</label>
+                <label class="label-pilihan"><input type="radio" name="q24" value="D" onchange="updateIndikator(24)"> D. simpul komunikasi yang rumit, karena melibatkan interaksi antara banyak pengguna and algoritma platform.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 25 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="25">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 25</span>
+              <p class="teks-soal">Mike Ribble menekankan prinsip “Respect” sebagai pondasi interaksi di dunia digital. Jika dikaitkan dengan fenomena netizen Indonesia berdasarkan data tersebut, contoh pelanggaran prinsip “Respect” yang paling mungkin terjadi adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q25" value="A" onchange="updateIndikator(25)"> A. pengguna internet memilih YouTube sebagai platform utama untuk menonton video edukasi.</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="B" onchange="updateIndikator(25)"> B. warganet menggunakan kata-kata kasar atau menyebarkan ujaran kebencian di kolom komentar.</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="C" onchange="updateIndikator(25)"> C. meningkatnya jumlah akun media sosial aktif diiringi dengan penggunaan password yang kuat.</label>
+                <label class="label-pilihan"><input type="radio" name="q25" value="D" onchange="updateIndikator(25)"> D. netizen lebih memilih WhatsApp untuk berkomunikasi dengan keluarga karena pertimbangan efisiensi.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 26 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="26">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 26</span>
+              <p class="teks-soal">Berdasarkan teks, istilah “warganet” di Indonesia merupakan adaptasi dari konsep “netizen”. Jika prinsip “Educate” Mike Ribble diterapkan secara optimal, dampak yang paling realistis terhadap peran warganet Indonesia adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q26" value="A" onchange="updateIndikator(26)"> A. warganet akan mengurangi penggunaan internet agar terhindar dari risiko dunia digital.</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="B" onchange="updateIndikator(26)"> B. penggunaan aplikasi seperti Twitter and Line akan menurun karena dianggap kurang edukatif.</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="C" onchange="updateIndikator(26)"> C. jumlah pengguna internet Indonesia akan tetap sama, tetapi akun media sosial aktif justru berkurang.</label>
+                <label class="label-pilihan"><input type="radio" name="q26" value="D" onchange="updateIndikator(26)"> D. warganet menjadi lebih kritis dalam menerima informasi and mampu menggunakan media sosial.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 27 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="27">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 27</span>
+              <p class="teks-soal">Jika pada tahun 1950 perdagangan internasional sangat bergantung pada transportasi laut and udara konvensional, sedangkan saat ini E-Commerce mendominasi transaksi jasa and barang digital, maka dampak paling signifikan dari perubahan ini terhadap pola distribusi barang adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q27" value="A" onchange="updateIndikator(27)"> A. produsen harus membuka cabang di lebih banyak negara.</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="B" onchange="updateIndikator(27)"> B. jalur distribusi menjadi lebih panjang karena melibatkan platform digital.</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="C" onchange="updateIndikator(27)"> C. konsumen dapat mengakses produk langsung dari produsen tanpa perantara.</label>
+                <label class="label-pilihan"><input type="radio" name="q27" value="D" onchange="updateIndikator(27)"> D. harga barang menjadi lebih tinggi karena biaya teknologi.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 28 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="28">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 28</span>
+              <p class="teks-soal">Perkembangan teknologi telah menggeser sistem pembayaran dari cara konvensional menuju elektronik. Berdasarkan ilustrasi tersebut, pernyataan yang paling tepat menggambarkan esensi sistem pembayaran elektronik adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q28" value="A" onchange="updateIndikator(28)"> A. sistem pembayaran yang mengharuskan penggunaan kartu kredit dari bank ternama.</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="B" onchange="updateIndikator(28)"> B. pembayaran yang hanya dapat dilakukan melalui aplikasi dompet elektronik seperti GoPay.</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="C" onchange="updateIndikator(28)"> C. sistem pembayaran yang sepenuhnya menggantikan uang tunai di semua transaksi.</label>
+                <label class="label-pilihan"><input type="radio" name="q28" value="D" onchange="updateIndikator(28)"> D. mekanisme pemindahan uang secara digital melalui platform yang diatur OJK.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 29 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="29">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 29</span>
+              <p class="teks-soal">Berdasarkan analisis terhadap fenomena sosial-ekonomi, rendahnya literasi finansial masyarakat Indonesia seperti yang diuraikan dalam teks dapat mengakibatkan…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q29" value="A" onchange="updateIndikator(29)"> A. meningkatnya jumlah UMKM yang memanfaatkan kredit dari bank.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="B" onchange="updateIndikator(29)"> B. terciptanya stabilitas harga pasar karena uang banyak tersimpan di bank.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="C" onchange="updateIndikator(29)"> C. tingginya partisipasi masyarakat dalam sistem keuangan formal seperti asuransi.</label>
+                <label class="label-pilihan"><input type="radio" name="q29" value="D" onchange="updateIndikator(29)"> D. rentannya perekonomian nasional akibat rendahnya tabungan and tingginya konsumsi.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 30 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="30">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 30</span>
+              <span class="petunjuk-luar-box">Perhatikan kondisi berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Pak Bagas menerima gaji bulanan. Sebelum gaji dibayarkan, perusahaan memotong sebagian untuk iuran BPJS Ketenagakerjaan and pajak penghasilan. Sisa gaji yang diterima Pak Bagas kemudian digunakan untuk membayar cicilan rumah, kebutuhan sehari-hari, and ditabung.</p>
+              </div>
+              <p class="teks-soal">Berdasarkan penjelasan literasi finansial, ilustrasi tersebut bukan mencerminkan beberapa cakupan sekaligus adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q30" value="A" onchange="updateIndikator(30)"> A. mengenali pemasukan, karena Pak Bagas dapat membedakan antara penghasilan kotor and penghasilan bersih.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="B" onchange="updateIndikator(30)"> B. merancang alokasi berbagi, karena pembayaran pajak penghasilan termasuk dana berbagi wajib menurut hukum.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="C" onchange="updateIndikator(30)"> C. mengelola pengeluaran, karena ada alokasi untuk cicilan and kebutuhan sehari-hari.</label>
+                <label class="label-pilihan"><input type="radio" name="q30" value="D" onchange="updateIndikator(30)"> D. mengenali praktik tidak baik finansial, karena terdapat potongan gaji yang dilakukan oleh perusahaan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 31 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="31">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 31</span>
+              <span class="petunjuk-luar-box">Perhatikan kondisi berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Konstituante gagal menyusun UUD baru</p>
+                <p>Instabilitas politik semakin meningkat</p>
+                <p>Presiden mengeluarkan Dekret 5 Juli 1959</p>
+              </div>
+              <p class="teks-soal">Berdasarkan kondisi tersebut, kesimpulan yang paling tepat mengenai latar belakang Dekret Presiden adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q31" value="A" onchange="updateIndikator(31)"> A. keinginan presiden memperpanjang masa jabatan.</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="B" onchange="updateIndikator(31)"> B. kegagalan demokrasi parlementer menciptakan stabilitas.</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="C" onchange="updateIndikator(31)"> C. desakan militer untuk mengambil alih kekuasaan.</label>
+                <label class="label-pilihan"><input type="radio" name="q31" value="D" onchange="updateIndikator(31)"> D. tekanan dari negara asing.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 32 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="32">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 32</span>
+              <span class="petunjuk-luar-box">Perhatikan wacana berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>"Pada masa Orde Baru, pemerintah menekankan stabilitas politik sebagai syarat utama pembangunan nasional. Demi menjaga stabilitas tersebut, kebebasan pers dibatasi, partai politik disederhanakan, and militer diberi peran ganda melalui kebijakan dwifungsi ABRI. Di sisi lain, pembangunan ekonomi menunjukkan pertumbuhan yang cukup tinggi, terutama pada sektor industri and infrastruktur. Namun, pertumbuhan tersebut tidak sepenuhnya disertai pemerataan kesejahteraan. Praktik korupsi, kolusi, and nepotisme (KKN) semakin menguat, khususnya menjelang akhir pemerintahan Orde Baru."</p>
+              </div>
+              <p class="teks-soal">Berdasarkan wacana diatas, hubungan antara stabilitas politik and kebijakan pemerintah Orde Baru ditunjukkan oleh…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q32" value="A" onchange="updateIndikator(32)"> A. pembatasan kebebasan politik untuk mendukung pembangunan.</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="B" onchange="updateIndikator(32)"> B. penghapusan peran militer dalam pemerintahan.</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="C" onchange="updateIndikator(32)"> C. dominasi oposisi dalam sistem politik.</label>
+                <label class="label-pilihan"><input type="radio" name="q32" value="D" onchange="updateIndikator(32)"> D. penguatan peran pers sebagai pengawas pemerintah.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 33 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="33">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 33</span>
+              <span class="petunjuk-luar-box">Perhatikan wacana berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>"Pada masa sebelum Amandemen UUD 1945, Presiden memiliki kewenangan yang sangat besar. Tidak terdapat pembatasan masa jabatan presiden secara tegas. Setelah Reformasi, dilakukan empat kali Amandemen UUD 1945 untuk memperkuat demokrasi, membatasi kekuasaan, and menjamin Hak Asasi Manusia."</p>
+              </div>
+              <p class="teks-soal">Berdasarkan wacana diatas, alasan utama dilakukannya amandemen UUD 1945 adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q33" value="A" onchange="updateIndikator(33)"> A. menyesuaikan sistem pemerintahan Parlementer.</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="B" onchange="updateIndikator(33)"> B. menguatkan kekuasaan Presiden.</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="C" onchange="updateIndikator(33)"> C. membatasi kekuasaan and mencegah Otoritarianisme.</label>
+                <label class="label-pilihan"><input type="radio" name="q33" value="D" onchange="updateIndikator(33)"> D. mengurangi peran rakyat dalam Demokrasi.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 34 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="34">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 34</span>
+              <span class="petunjuk-luar-box">Perhatikan tabel berikut!</span>
+              
+              <div class="wadah-tabel-fleksibel">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>Indikator</th>
+                      <th>Negara A</th>
+                      <th>Negara B</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>PDB Perkapita</td>
+                      <td>Tinggi</td>
+                      <td>Sedang</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>IPM</td>
+                      <td>Sedang</td>
+                      <td>Tinggi</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Angka Melek Huruf</td>
+                      <td>Sedang</td>
+                      <td>tinggi</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="teks-soal">Kesimpulan yang tepat dari data tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q34" value="A" onchange="updateIndikator(34)"> A. negara A lebih maju karena PDB per kapitanya tinggi.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="B" onchange="updateIndikator(34)"> B. negara A and B memiliki tingkat pembangunan yang sama.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="C" onchange="updateIndikator(34)"> C. IPM tidak relevan untuk menilai pembangunan.</label>
+                <label class="label-pilihan"><input type="radio" name="q34" value="D" onchange="updateIndikator(34)"> D. negara B lebih maju karena kualitas hidup penduduk lebih baik.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 35 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="35">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 35</span>
+              <p class="teks-soal">Negara Y mengalami pertumbuhan ekonomi tinggi. Namun mayoritas penduduk bekerja informal dengan pendapatan rendah, and banyak anak putus sekolah. Pernyataan paling tepat adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q35" value="A" onchange="updateIndikator(35)"> A. IPM berpotensi rendah meskipun GDP naik.</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="B" onchange="updateIndikator(35)"> B. IPM pasti tinggi karena ekonomi tumbuh.</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="C" onchange="updateIndikator(35)"> C. GDP lebih tepat daripada IPM untuk menilai kesejahteraan.</label>
+                <label class="label-pilihan"><input type="radio" name="q35" value="D" onchange="updateIndikator(35)"> D. IPM tidak relevan untuk negara berkembang.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 36 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="36">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 36</span>
+              <span class="petunjuk-luar-box">Perhatikan wacana berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Bonus Demografi bisa menjadi peluang jika mayoritas penduduk usia produktif memiliki pendidikan and keterampilan tinggi. Namun, jika lapangan kerja berkualitas tidak tersedia, bonus demografi dapat berubah menjadi beban sosial. Negara maju biasanya mampu menciptakan industri produktif and layanan publik yang efektif.</p>
+              </div>
+              <p class="teks-soal">Berdasarkan stimulus, strategi paling tepat agar bonus demografi menjadi peluang adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q36" value="A" onchange="updateIndikator(36)"> A. menambah jumlah penduduk usia produktif tanpa meningkatkan kualitasnya.</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="B" onchange="updateIndikator(36)"> B. fokus pada pembangunan fisik tanpa memperhatikan pendidikan.</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="C" onchange="updateIndikator(36)"> C. memperkuat pendidikan, pelatihan kerja, and penciptaan lapangan kerja produktif.</label>
+                <label class="label-pilihan"><input type="radio" name="q36" value="D" onchange="updateIndikator(36)"> D. mengurangi industri agar lingkungan terjaga.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 37 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="37">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 37</span>
+              <p class="teks-soal">Masyarakat yang sehat akan memiliki angka harapan hidup yang lebih panjang, angka kesakitan yang rendah, and energi yang lebih besar. Salah satu indikator negara maju adalah kualitas layanan kesehatan. Dampak paling masuk akal jika kesehatan masyarakat meningkat adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q37" value="A" onchange="updateIndikator(37)"> A. produktivitas meningkat and beban ekonomi menurun.</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="B" onchange="updateIndikator(37)"> B. produktivitas tenaga kerja turun karena kesehatan yang buruk.</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="C" onchange="updateIndikator(37)"> C. angka kemiskinan meningkat karena kuangnya penapatan.</label>
+                <label class="label-pilihan"><input type="radio" name="q37" value="D" onchange="updateIndikator(37)"> D. jumlah pengangguran pasti naik and kurangnya lapangan kerja.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 38 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="38">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 38</span>
+              <span class="petunjuk-luar-box">Perhatikan karakteristk benua berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Benua A: jumlah negara paling banyak, banyak wilayah gurun and sabana, pertumbuhan penduduk tinggi.</p>
+                <p>Benua B: jumlah penduduk paling banyak, wilayah sangat luas, iklim beragam, pusat peradaban besar sejak lama.</p>
+              </div>
+              <p class="teks-soal">Karakteristik Benua di atas secara berurutan adalah merupakan karakteristik Benua…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q38" value="A" onchange="updateIndikator(38)"> A. Asia and Afrika</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="B" onchange="updateIndikator(38)"> B. Amerika and Asia</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="C" onchange="updateIndikator(38)"> C. Afrika and Eropa</label>
+                <label class="label-pilihan"><input type="radio" name="q38" value="D" onchange="updateIndikator(38)"> D. Afrika and Asiia</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 39 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="39">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 39</span>
+              <span class="petunjuk-luar-box">Perhatikan peta berikut!</span>
+              <div class="blok-gambar">
+                <img src="ips-smp-39.jpg" alt="Peta Benua" style="max-width: 100%; height: auto;">
+              </div>
+              <p class="teks-soal">Dari gambar peta di samping urutan benua yang terluas hingga benua yang terkecil ditunjukkan urutan nomor…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q39" value="A" onchange="updateIndikator(39)"> A. 2, 4, 3, 1, 5</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="B" onchange="updateIndikator(39)"> B. 2, 5, 1, 3, 4</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="C" onchange="updateIndikator(39)"> C. 4, 3, 2, 1, 5</label>
+                <label class="label-pilihan"><input type="radio" name="q39" value="D" onchange="updateIndikator(39)"> D. 5, 3, 1, 4, 2</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 40 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="40">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 40</span>
+              <span class="petunjuk-luar-box">Pahami artikel berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>"Asia merupakan benu terbesar dengan populasi penduduk terbanyak, Afrika mengalami pertumbuhan penduduk sangat cepat sehinga beberapa Negara menghadapi tanntangan dalam pendidikan dan kesehatan. Eropa memiliki tingkat pembangnan tinggi ditandai dengan kualitas hidup dan pelayanan public yang baik. Sementara itu Australia-Osenia dikenal sebagai kawasan dengan kepadatan penduduk rendah, namun insfrastrukturnya tidak merata terutama di Negara-negara kepulauan Pasifik."</p>
+              </div>
+              <p class="teks-soal">Berdasarkan artikel diatas dibawah ini pernyataan yang paling sesuai dengan artikel diatas adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q40" value="A" onchange="updateIndikator(40)"> A. Eropa memiliki indikator kualitas hidup yang lebih tinggi dibanding banyak wilayah lain.</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="B" onchange="updateIndikator(40)"> B. semua negara di Afrika memiliki pelayanan kesehatan yang sama baiknya dengan Eropa.</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="C" onchange="updateIndikator(40)"> C. Australia–Oseania memiliki infrastruktur merata karena jumlah penduduknya sedikit.</label>
+                <label class="label-pilihan"><input type="radio" name="q40" value="D" onchange="updateIndikator(40)"> D. Asia and Afrika memiliki luas wilayah yang hampir sama.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 41 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="41">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 41</span>
+              <p class="teks-soal">Teori Out of Africa menjelaskan bahwa Homo sapiens berasal dari Afrika. Salah satu bukti ilmiah yang menguatkan teori tersebut adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q41" value="A" onchange="updateIndikator(41)"> A. penemuan fosil manusia purba di eropa yang lebih tua dari Afrika.</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="B" onchange="updateIndikator(41)"> B. analisis dna mitokondria menunjukkan keragaman genetik terbesar berasal dari Afrika.</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="C" onchange="updateIndikator(41)"> C. persebaran manusia modern mengikuti pola migrasi melingkari Samudra Pasifik.</label>
+                <label class="label-pilihan"><input type="radio" name="q41" value="D" onchange="updateIndikator(41)"> D. Homo sapiens berkembang secara bersamaan di banyak wilayah dunia.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 42 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="42">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 42</span>
+              <span class="petunjuk-luar-box">Perhatikan tabel berikut!</span>
+              
+              <div class="wadah-tabel-fleksibel">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Negara</th>
+                      <th>Perkiraan Jumlah “Living Languages”</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Papua New Guinea</td>
+                      <td>840 bahasa — negara dengan keanekaragaman linguistik tertinggi di dunia</td>
+                    </tr>
+                    <tr>
+                      <td>Indonesia</td>
+                      <td>710-711 bahasa termasukbahasa daerah</td>
+                    </tr>
+                    <tr>
+                      <td>Nigeria</td>
+                      <td>530 bahasa</td>
+                    </tr>
+                    <tr>
+                      <td>India</td>
+                      <td>453 bahasa</td>
+                    </tr>
+                    <tr>
+                      <td>China (Tiongkok)</td>
+                      <td>306–309 bahasa (tergantung penghitungan dialek</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <p class="teks-soal">Tabel diatas menunjukkan bahwa di dunia ini banyak negara terdapat satu atau lebih bahasa resmi, namun dunia memiliki ribuan bahasa berbeda. Fakta ini paling tepat mendemonstrasikan bahwa keragaman bahasa dunia terutama disebabkan oleh…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q42" value="A" onchange="updateIndikator(42)"> A. dominasi beberapa bahasa saja.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="B" onchange="updateIndikator(42)"> B. sejarah migrasi, kolonialisme, and perkembangan budaya lokal di tiap wilayah.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="C" onchange="updateIndikator(42)"> C. upaya global menyatukan satu bahasa internasional.</label>
+                <label class="label-pilihan"><input type="radio" name="q42" value="D" onchange="updateIndikator(42)"> D. teknologi komunikasi modern yang menyeragamkan bahasa.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 43 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="43">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 43</span>
+              <p class="teks-soal">Indonesia memiliki keberagaman ras, dengan dominasi Ras Malayan Mongoloid (di sebagian besar wilayah), Melanesoid (Papua, Maluku), Asiatic Mongoloid (Tionghoa), and Veddoid. Jika suatu sekolah internasional ingin mencegah diskriminasi ras, tindakan yang paling tepat adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q43" value="A" onchange="updateIndikator(43)"> A. melarang murid membahas identitas dalam pergaulan.</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="B" onchange="updateIndikator(43)"> B. membuat aturan “tidak boleh berteman beda ras”.</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="C" onchange="updateIndikator(43)"> C. menyerahkan semua keputusan pada masing-masing murid.</label>
+                <label class="label-pilihan"><input type="radio" name="q43" value="D" onchange="updateIndikator(43)"> D. membangun budaya inklusif, sistem pelaporan aman, and pendidikan anti-bias.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 44 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="44">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 44</span>
+              <span class="petunjuk-luar-box">Perhatikan pernyataan-pernyataan berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>1) Negara A memiliki kekayaan sumber daya alam mineral melimpah, namun kekurangan teknologi pengolahan.</p>
+                <p>2) Negara B memiliki keahlian teknologi tinggi tetapi lahan pertanian terbatas.</p>
+                <p>3) Kedua negara pernah mengalami penjajahan di masa lalu and memiliki semangat membangun bangsa yang sama.</p>
+                <p>4) Terjadi kesamaan ideologi and sistem pemerintahan yang dijalankan.</p>
+              </div>
+              <p class="teks-soal">Berdasarkan pernyataan di atas, kombinasi yang paling tepat menjelaskan faktor pendorong terjadinya kerja sama internasional antara Negara A and Negara B adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q44" value="A" onchange="updateIndikator(44)"> A. 1) and 2)</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="B" onchange="updateIndikator(44)"> B. 1), 2), and 3)</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="C" onchange="updateIndikator(44)"> C. 2), 3,) and 4)</label>
+                <label class="label-pilihan"><input type="radio" name="q44" value="D" onchange="updateIndikator(44)"> D. 1), 2), 3), and 4)</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 45 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="45">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 45</span>
+              <span class="petunjuk-luar-box">Perhatikan logo atau gambar berikut!</span>
+              <div class="blok-gambar">
+                <img src="ips-smp-45.jpg" alt="UNESCO" style="max-width: 100%; height: auto;">
+              </div>
+              <p class="teks-soal">Gambar di samping merupakan salah satu lembaga khusus PBB yang bertugas…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q45" value="A" onchange="updateIndikator(45)"> A. Mengatasi kelaparan dunia, Meningkatkan produksi pangan, Mengembangkan pertanian, perikanan, and kehutanan.</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="B" onchange="updateIndikator(45)"> B. Melindungi hak pekerja, Mendorong kerja layak and keadilan sosial, Mendorong kerja layak and keadilan sosial.</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="C" onchange="updateIndikator(45)"> C. Menjaga stabilitas sistem keuangan dunia, Memberi pinjaman ke negara yang krisis ekonomi, Mengawasi kebijakan ekonomi global.</label>
+                <label class="label-pilihan"><input type="radio" name="q45" value="D" onchange="updateIndikator(45)"> D. Mengurus bidang pendidikan, ilmu pengetahuan, kebudayaan, and komunikasi.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 46 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="46">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 46</span>
+              <p class="teks-soal">Salah satu pilar prioritas Presidensi G20 Indonesia adalah "Transformasi Digital". Dalam konteks ekonomi pascapandemi, berikut yang merupakan dampak analitis dari prioritas tersebut terhadap UMKM di negara berkembang adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q46" value="A" onchange="updateIndikator(46)"> A. menyebabkan UMKM gulung tikar karena tidak mampu mengikuti teknologi.</label>
+                <label class="label-pilihan"><input type="radio" name="q46" value="B" onchange="updateIndikator(46)"> B. mempersempit pasar UMKM karena terfokus pada perdagangan digital.</label>
+                <label class="label-pilihan"><input type="radio" name="q46" value="C" onchange="updateIndikator(46)"> C. meningkatkan efisiensi and memperluas akses pasar UMKM melalui ekosistem digital, yang krusial untuk pemulihan.</label>
+                <label class="label-pilihan"><input type="radio" name="q46" value="D" onchange="updateIndikator(46)"> D. transformasi digital hanya menguntungkan perusahaan teknologi besar, bukan UMKM.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 47 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="47">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 47</span>
+              <p class="teks-soal">Di wilayah pesisir Kabupaten Pati, nelayan tradisional menghadapi tantangan ganda: penurunan hasil tangkapan ikan akibat penangkapan ikan berlebihan oleh kapal besar and kerusakan ekosistem mangrove (SDG 14: Ekosistem Laut). Berikut yang merupakan langkah strategis yang paling efektif untuk mengatasi kedua masalah tersebut secara simultan, dengan mempertimbangkan pembangunan berkelanjutan adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q47" value="A" onchange="updateIndikator(47)"> A. memberikan subsidi bahan bakar kepada nelayan tradisional agar bisa melaut lebih jauh and bersaing dengan kapal besar.</label>
+                <label class="label-pilihan"><input type="radio" name="q47" value="B" onchange="updateIndikator(47)"> B. melarang total aktivitas penangkapan ikan di seluruh wilayah pesisir untuk memulihkan ekosistem laut.</label>
+                <label class="label-pilihan"><input type="radio" name="q47" value="C" onchange="updateIndikator(47)"> C. menerapkan sistem kuota penangkapan ikan yang adil, merestorasi hutan mangrove dengan melibatkan komunitas lokal, and mengembangkan ekowisata berbasis mangrove sebagai sumber pendapatan alternatif.</label>
+                <label class="label-pilihan"><input type="radio" name="q47" value="D" onchange="updateIndikator(47)"> D. mengubah mata pencaharian seluruh nelayan menjadi petani darat tanpa mempertimbangkan kearifan lokal and potensi ekonomi laut.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 48 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="48">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 48</span>
+              <span class="petunjuk-luar-box">Perhatikan deskripsi berikut!</span>
+              <div class="blok-teks-bacaan">
+                <p>Tama menemukan bahwa banyak teman-temannya baik siswa laki-laki maupun siswa perempuan masih membuang sampah plastik sembarangan setelah jajan di kantin sekolah pada waktu istirahat.</p>
+              </div>
+              <p class="teks-soal">Selaku ketua OSIS tindakan preventif and edukatif yang harus dilakukan Tama dalam implementasi SDGs 12 (Konsumsi and Produksi Berkelanjutan) untuk mengatasi masalah ini adalah…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q48" value="A" onchange="updateIndikator(48)"> A. mengadakarn lhomba kebersihan antar kelas setiap minggu.</label>
+                <label class="label-pilihan"><input type="radio" name="q48" value="B" onchange="updateIndikator(48)"> B. mem asang poster-poster larangan membuang sampah sembarangan.</label>
+                <label class="label-pilihan"><input type="radio" name="q48" value="C" onchange="updateIndikator(48)"> C. membentuk duta lingkungan sekolah untuk mengkampanyekan pemilahan sampah and penggunaan tempat minum/makan reusable.</label>
+                <label class="label-pilihan"><input type="radio" name="q48" value="D" onchange="updateIndikator(48)"> D. memberikan hukuman denda bagi murid yang ketahuan membuang sampah sembarangan.</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 49 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="49">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 49</span>
+              <span class="petunjuk-luar-box">Perhatikan gambar berikut!</span>
+              <div class="blok-gambar">
+                <img src="ips-smp-49.jpg" alt="SDGs" style="max-width: 100%; height: auto;">
+              </div>
+              <p class="teks-soal">Gambar di samping menunjukkan salah satu pilar pembangunan berkelanjuan (SDGs ) yaitu pilar…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q49" value="A" onchange="updateIndikator(49)"> A. sosial</label>
+                <label class="label-pilihan"><input type="radio" name="q49" value="B" onchange="updateIndikator(49)"> B. lingkungan</label>
+                <label class="label-pilihan"><input type="radio" name="q49" value="C" onchange="updateIndikator(49)"> C. ekonomi</label>
+                <label class="label-pilihan"><input type="radio" name="q49" value="D" onchange="updateIndikator(49)"> D. hukum and tata kelola</label>
+              </div>
+            </article>
+          </div>
+
+          <!-- ==================== SOAL 50 ==================== -->
+          <div class="kontainer-item-soal" data-nomor="50">
+            <article class="kartu-soal">
+              <span class="nomor-soal">Soal 50</span>
+              <p class="teks-soal">Sebuah perusahaan tambang beroperasi di dekat pemukiman warga. Perusahaan tersebut berhasil menyerap banyak tenaga kerja lokal and meningkatkan pendapatan daerah, namun aktivitasnya menyebabkan polusi sumber air yang digunakan warga untuk kebutuhan sehari-hari. Berdasarkan prinsip SDGs, kondisi ini menunjukkan bahwa…</p>
+              <div class="pilihan-jawaban">
+                <label class="label-pilihan"><input type="radio" name="q50" value="A" onchange="updateIndikator(50)"> A. pembangunan sudah berhasil karena pilar ekonomi telah tercapai dengan optimal.</label>
+                <label class="label-pilihan"><input type="radio" name="q50" value="B" onchange="updateIndikator(50)"> B. terjadi ketimpangan pembangunan karena pilar ekonomi mengabaikan pilar lingkungan and sosial.</label>
+                <label class="label-pilihan"><input type="radio" name="q50" value="C" onchange="updateIndikator(50)"> C. pilar sosial sudah terpenuhi karena warga sekitar mendapatkan pekerjaan di perusahaan tersebut.</label>
+                <label class="label-pilihan"><input type="radio" name="q50" value="D" onchange="updateIndikator(50)"> D. perusahaan telah memenuhi prinsip keberlanjutan melalui tanggung jawab sosial (CSR).</label>
+              </div>
+            </article>
+          </div>
+
+          <div class="bar-navigasi-soal">
+            <button type="button" class="btn-nav btn-back" id="btn-sebelumnya" onclick="navigasiKeSoal(-1)">
+              <i class="fa-solid fa-chevron-left"></i> Back
+            </button>
+            <button type="button" class="btn-nav btn-next" id="btn-selanjutnya" onclick="navigasiKeSoal(1)">
+              Next <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- STEP 3: SCREEN HASIL SKOR REALTIME -->
+      <section id="area-skor" class="kartu-skor" style="text-align:center;">
+        <i class="fa-solid fa-square-poll-vertical fa-4x" style="color: var(--warna-utama);"></i>
+        <h2 style="margin: 10px 0 4px;">Berikut Skor Anda!</h2>
+        <p style="margin: 0 0 16px;">Terima kasih Ustadz/Ustadzah atas partisipasinya dalam asesmen mutu.</p>
+        <div class="angka-skor" id="skor-akhir">0</div>
+        <div class="detail-jawaban-benar" id="detail-benar">0/50 (0 benar dari 50 soal)</div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="kaki-halaman">
+    <div class="isi-footer">
+      <p>© 2026 Manajemen BIAS Yaumi Fatimah</p>
+    </div>
+  </footer>
+
+  <!-- ===========================
+       JS CBT ENGINE
+  =========================== -->
+  <script>
+    const kunciValidasi = {
+      q1: 'C', q2: 'B', q3: 'A', q4: 'B', q5: 'D',
+      q6: 'B', q7: 'B', q8: 'D', q9: 'C', q10: 'C',
+      q11: 'A', q12: 'C', q13: 'C', q14: 'C', q15: 'A',
+      q16: 'C', q17: 'C', q18: 'D', q19: 'B', q20: 'B',
+      q21: 'C', q22: 'B', q23: 'A', q24: 'C', q25: 'B',
+      q26: 'D', q27: 'C', q28: 'D', q29: 'D', q30: 'D',
+      q31: 'B', q32: 'A', q33: 'C', q34: 'D', q35: 'A',
+      q36: 'C', q37: 'A', q38: 'D', q39: 'D', q40: 'A',
+      q41: 'B', q42: 'B', q43: 'D', q44: 'B', q45: 'D',
+      q46: 'C', q47: 'C', q48: 'C', q49: 'A', q50: 'B'
+    };
+
+    let metadataUser = { nama: '', jenjang: '' };
+    let soalAktifSekarang = 1;
+    const totalSoalBatas = Object.keys(kunciValidasi).length;
+    let timerInterval = null;
+    let waktuSisaDetik = 90 * 60; 
+    
+    let riwayatJawabanUser = new Set();
+
+    let ujianSedangBerjalan = false;
+    let dialogSedangTerbuka = false;
+    let blurDariVisibility = false;
+    let hitungPelanggaran = 0;
+    const BATAS_PELANGGARAN = 4;
+
+    const KODE_AKSES_UJIAN = 'yf306';
+
+    function togglePasswordVisibility() {
+      const inputKode = document.getElementById('kode-akses');
+      const ikonMata = document.getElementById('tombol-mata');
+      
+      if (inputKode.type === 'password') {
+        inputKode.type = 'text';
+        ikonMata.classList.remove('fa-eye-slash');
+        ikonMata.classList.add('fa-eye');
+      } else {
+        inputKode.type === 'password';
+        ikonMata.classList.remove('fa-eye');
+        ikonMata.classList.add('fa-eye-slash');
+      }
+    }
+
+    function mulaiUjian() {
+      const namaVal = document.getElementById('nama').value.trim();
+      const jenjangVal = document.getElementById('jenjang').value;
+      const kodeVal = document.getElementById('kode-akses').value.trim();
+      const pesanSalah = document.getElementById('pesan-kode-salah');
+
+      if (!namaVal || !jenjangVal) {
+        alert('Maaf, Ustadz/Ustadzah wajib mengisi Nama Lengkap, memilih Jenjang, dan input kode ujian sebelum memulai!');
+        return;
+      }
+
+      if (kodeVal !== KODE_AKSES_UJIAN) {
+        pesanSalah.style.display = 'block';
+        document.getElementById('kode-akses').focus();
+        return;
+      }
+      pesanSalah.style.display = 'none';
+
+      metadataUser.nama = namaVal;
+      metadataUser.jenjang = jenjangVal;
+
+      document.getElementById('form-biodata').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'flex';
+      document.getElementById('area-ujian').style.display = 'block';
+
+      bikinPapanProgressMurni();
+      tampilkanNomorSoal(soalAktifSekarang);
+      mulaiPenghitungWaktu();
+      window.scrollTo(0, 0);
+
+      ujianSedangBerjalan = true;
+    }
+
+    function bikinPapanProgressMurni() {
+      const grupAwal = document.getElementById('grup-progress-awal');
+      const grupTengah = document.getElementById('grup-progress-tengah');
+      const grupAkhir = document.getElementById('grup-progress-akhir');
+      
+      grupAwal.innerHTML = '';
+      grupTengah.innerHTML = '';
+      grupAkhir.innerHTML = '';
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.createElement('div');
+        kotak.classList.add('kotak-nomor');
+        kotak.id = `kotak-nav-${i}`;
+        kotak.innerText = i < 10 ? `0${i}` : i;
+        kotak.setAttribute('onclick', `lompatKeSoal(${i})`);
+        
+        if (i <= 20) {
+          grupAwal.appendChild(kotak);
+        } else if (i <= 40) {
+          grupTengah.appendChild(kotak);
+        } else {
+          grupAkhir.appendChild(kotak);
+        }
+      }
+    }
+
+    function pindahHalamanTab(pageIndex) {
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('aktif'));
+      document.querySelectorAll('.konten-lembaran-soal').forEach(p => p.classList.remove('aktif'));
+
+      document.getElementById(`tab-btn-${pageIndex}`).classList.add('aktif');
+      document.getElementById(`lembaran-page-${pageIndex}`).classList.add('aktif');
+    }
+
+    function bukaPanelProgress() {
+      if (soalAktifSekarang <= 20) {
+        pindahHalamanTab(1);
+      } else if (soalAktifSekarang <= 40) {
+        pindahHalamanTab(2);
+      } else {
+        pindahHalamanTab(3);
+      }
+      document.getElementById('overlay-nav').style.display = 'block';
+    }
+    
+    function tutupPanelProgress() {
+      document.getElementById('overlay-nav').style.display = 'none';
+    }
+    function tutupPanelProgressLuar(e) {
+      if (e.target.id === 'overlay-nav') {
+        tutupPanelProgress();
+      }
+    }
+
+    function tampilkanNomorSoal(nomor) {
+      const kumpulanSoal = document.querySelectorAll('.kontainer-item-soal');
+      kumpulanSoal.forEach(soal => soal.classList.remove('aktif'));
+
+      const targetSoal = document.querySelector(`.kontainer-item-soal[data-nomor="${nomor}"]`);
+      if (targetSoal) targetSoal.classList.add('aktif');
+
+      for (let i = 1; i <= totalSoalBatas; i++) {
+        const kotak = document.getElementById(`kotak-nav-${i}`);
+        if (kotak) {
+          kotak.classList.remove('sudah-isi');
+          if (riwayatJawabanUser.has(i)) {
+            kotak.classList.add('sudah-isi');
+          }
+        }
+      }
+
+      document.getElementById('btn-sebelumnya').disabled = (nomor === 1);
+      
+      const btnNext = document.getElementById('btn-selanjutnya');
+      if (nomor === totalSoalBatas) {
+        btnNext.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Submit';
+        btnNext.style.background = '#c2410c';
+      } else {
+        btnNext.innerHTML = 'Next <i class="fa-solid fa-chevron-right"></i>';
+        btnNext.style.background = 'var(--warna-utama)';
+      }
+    }
+
+    function navigasiKeSoal(arah) {
+      if (arah === 1 && soalAktifSekarang === totalSoalBatas) {
+        document.getElementById('form-soal').requestSubmit();
+        return;
+      }
+      
+      let targetBaru = soalAktifSekarang + arah;
+      if (targetBaru >= 1 && targetBaru <= totalSoalBatas) {
+        soalAktifSekarang = targetBaru;
+        tampilkanNomorSoal(soalAktifSekarang);
+      }
+    }
+
+    function lompatKeSoal(nomor) {
+      soalAktifSekarang = nomor;
+      tampilkanNomorSoal(soalAktifSekarang);
+      tutupPanelProgress();
+    }
+
+    function updateIndikator(nomor) {
+      riwayatJawabanUser.add(nomor);
+      const elemenKotak = document.getElementById(`kotak-nav-${nomor}`);
+      if (elemenKotak && soalAktifSekarang !== nomor) {
+        elemenKotak.classList.add('sudah-isi');
+      }
+    }
+
+    function mulaiPenghitungWaktu() {
+      timerInterval = setInterval(() => {
+        waktuSisaDetik--;
+        
+        let menit = Math.floor(waktuSisaDetik / 60);
+        let detik = waktuSisaDetik % 60;
+
+        menit = menit < 10 ? '0' + menit : menit;
+        detik = detik < 10 ? '0' + detik : detik;
+
+        document.getElementById('countdown-timer').innerText = `${menit}:${detik}`;
+
+        if (waktuSisaDetik <= 0) {
+          clearInterval(timerInterval);
+          alert('Batas waktu pengerjaan 90 menit telah habis! Jawaban Anda akan langsung dikirim otomatis.');
+          evaluasiPaksaWaktuHabis();
+        }
+      }, 1000);
+    }
+
+    function prosesEvaluasi(event) {
+      if (event) event.preventDefault();
+      clearInterval(timerInterval);
+      ujianSedangBerjalan = false;
+
+      const formCbt = document.getElementById('form-soal');
+      const dataParsed = new FormData(formCbt);
+      
+      let akumulasiBenar = 0;
+
+      for (let propertiSoal in kunciValidasi) {
+        if (dataParsed.get(propertiSoal) === kunciValidasi[propertiSoal]) {
+          akumulasiBenar++;
+        }
+      }
+
+      let nilaiAkhir = Math.round((akumulasiBenar / totalSoalBatas) * 100);
+
+      document.getElementById('skor-akhir').innerText = nilaiAkhir;
+      document.getElementById('detail-benar').innerText = `${akumulasiBenar}/50 (${akumulasiBenar} benar dari 50 soal)`;
+      
+      document.getElementById('area-ujian').style.display = 'none';
+      document.getElementById('info-ujian').style.display = 'none';
+      document.getElementById('area-skor').style.display = 'block';
+      window.scrollTo(0, 0);
+
+      kirimKeGoogleSheet(nilaiAkhir);
+    }
+
+    function evaluasiPaksaWaktuHabis() {
+      prosesEvaluasi(null);
+    }
+
+    function kirimKeGoogleSheet(skor, percobaan = 1) {
+      const endpointWebApps = "https://script.google.com/macros/s/AKfycbyoz6oUzmeTdKUkqQsc87zpDxOuYnksPqnhY76kKMNFtuYASYZYRfUh6iqPCAbU-i1a/exec";
+      const MAKSIMAL_PERCOBAAN = 5;
+
+      const detailElemen = document.getElementById('detail-benar');
+      if (percobaan === 1) {
+        detailElemen.innerHTML += "<br><span id='status-sync' style='color:#dd6b20; font-size:0.9rem; display:block; margin-top:10px;'><i class='fa-solid fa-spinner fa-spin'></i> Menyimpan nilai ke database... Mohon jangan tutup halaman ini.</span>";
+      }
+
+      fetch(endpointWebApps, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nama: metadataUser.nama,
+          jenjang: metadataUser.jenjang,
+          skor: skor,
+          kategori: "IPS_SMP",
+          timestamp: new Date().toLocaleString('id-ID')
+        })
+      })
+      .then(() => {
+        console.log('Sync Google Sheets Selesai.');
+        const statusSync = document.getElementById('status-sync');
+        if (statusSync) {
+          statusSync.innerHTML = "<i class='fa-solid fa-circle-check' style='color:#38a169;'></i> Nilai berhasil disimpan aman di database!";
+        }
+      })
+      .catch(err => {
+        console.error('Error Sync:', err);
+        
+        if (percobaan < MAKSIMAL_PERCOBAAN) {
+          setTimeout(() => {
+            kirimKeGoogleSheet(skor, percobaan + 1);
+          }, 3000);
+        } else {
+          const statusSync = document.getElementById('status-sync');
+          if (statusSync) {
+            statusSync.innerHTML = "<i class='fa-solid fa-circle-xmark' style='color:#e53e3e;'></i> Koneksi sibuk. Silakan screenshot halaman ini sebagai bukti nilai ke panitia.";
+          }
+        }
+      });
+    }
+
+    /* SISTEM KEAMANAN MODAL */
+    function pancingPeringatan(judulPesan, isiPesan) {
+      if (dialogSedangTerbuka) return;
+      dialogSedangTerbuka = true;
+      hitungPelanggaran++;
+
+      const sisaPercobaan = BATAS_PELANGGARAN - hitungPelanggaran;
+      const judulFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Batas Pelanggaran Tercapai!"
+        : judulPesan + " (Peringatan " + hitungPelanggaran + "/" + BATAS_PELANGGARAN + ")";
+
+      const isiFinal = hitungPelanggaran >= BATAS_PELANGGARAN
+        ? "Anda telah meninggalkan halaman ujian sebanyak " + BATAS_PELANGGARAN + " kali. Sesi ujian dianggap tidak sah..."
+        : isiPesan + " Sisa toleransi: " + sisaPercobaan + "x.";
+
+      document.getElementById('modal-judul').textContent = judulFinal;
+      document.getElementById('modal-isi').textContent = isiFinal;
+
+      const tombolKembali = document.getElementById('tombol-kembali');
+      if (hitungPelanggaran >= BATAS_PELANGGARAN) {
+        tombolKembali.style.display = 'none';
+        setTimeout(function() {
+          ujianSedangBerjalan = false;
+          window.location.reload();
+        }, 3000);
+      } else {
+        tombolKembali.style.display = '';
+      }
+
+      document.getElementById('modal-peringatan').style.display = 'flex';
+    }
+
+    function modalKonfirmasiLeave() {
+      ujianSedangBerjalan = false;
+      dialogSedangTerbuka = false;
+      document.getElementById('modal-peringatan').style.display = 'none';
+      window.location.reload();
+    }
+
+    function modalKombaliUjian() {
+      document.getElementById('modal-peringatan').style.display = 'none';
+      setTimeout(function() {
+        dialogSedangTerbuka = false;
+        blurDariVisibility = false;
+      }, 500);
+    }
+
+    const pesanModal = {
+      judul: "Dilarang meninggalkan laman ujian!",
+      isi: "Aktivitas meninggalkan halaman ujian dideteksi. Berpindah aplikasi, klik luar browser, atau membuka jendela lain tidak diizinkan."
+    };
+
+    document.addEventListener("visibilitychange", function() {
+      if (ujianSedangBerjalan && document.visibilityState === "hidden") {
+        blurDariVisibility = true;
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("blur", function() {
+      if (ujianSedangBerjalan && !dialogSedangTerbuka && !blurDariVisibility) {
+        pancingPeringatan(pesanModal.judul, pesanModal.isi);
+      }
+    });
+
+    window.addEventListener("keyup", function(e) {
+      if (ujianSedangBerjalan) {
+        if (e.key === "PrintScreen" || (e.ctrlKey && e.key === "p")) {
+          pancingPeringatan(
+            "Dilarang mengambil screenshot!",
+            "Dilarang keras mencetak atau mengambil screenshot halaman ujian."
+          );
+        }
+      }
+    });
+  </script>
+
+  <!-- MODAL PERINGATAN CURANG -->
+  <div id="modal-peringatan" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 32, 44, 0.75); z-index: 99999; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: #fff; border-radius: 14px; max-width: 420px; width: 100%; padding: 28px 24px 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); text-align: center; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+      <div style="font-size: 2.4rem; color: #C53030; margin-bottom: 12px;">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h3 id="modal-judul" style="font-size: 1.1rem; font-weight: 700; color: #C53030; margin-bottom: 10px;"></h3>
+      <p id="modal-isi" style="font-size: 0.9rem; color: #4A5568; line-height: 1.6; margin-bottom: 24px;"></p>
+      <div style="display: flex; gap: 12px;">
+        <button onclick="modalKonfirmasiLeave()" style="flex: 1; padding: 12px; background: transparent; color: #C53030; border: 2px solid #C53030; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i><span>Keluar</span>
+        </button>
+        <button id="tombol-kembali" onclick="modalKombaliUjian()" style="flex: 2; padding: 12px; background: var(--warna-utama); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 0.88rem; cursor: pointer; font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px;">
+          <i class="fa-solid fa-arrow-right-to-bracket" style="margin-right: 6px;"></i><span>Kembali</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
